@@ -1,0 +1,1979 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>AI质检 - 开业预验收</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{--pm:#00A4F1;--qc:#FFA64C;--role:var(--pm);--bg:#F7F9FC;--card:#fff;--ink:#1D2129;--muted:#6E7681;--aux:#86909C;--rule:#EDF0F5;--green:#02C2C2;--red:#FF4C4C;--radius:4px}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans CJK SC","PingFang SC","Helvetica Neue",sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.6;max-width:375px;margin:0 auto;min-height:100vh;position:relative;overflow-x:hidden}
+/* 氛围光晕装饰 - 低透明度蓝色弥散 */
+body::before{content:'';position:fixed;top:-60px;left:50%;transform:translateX(-50%);width:380px;height:260px;background:radial-gradient(ellipse at center,rgba(0,164,241,.10) 0%,rgba(0,164,241,.04) 40%,transparent 70%);pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;bottom:-80px;left:50%;transform:translateX(-50%);width:340px;height:220px;background:radial-gradient(ellipse at center,rgba(0,164,241,.05) 0%,transparent 65%);pointer-events:none;z-index:0}
+
+/* Header - 顶部毛玻璃质感 */
+.header{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:375px;height:52px;background:rgba(255,255,255,.82);display:flex;align-items:center;justify-content:center;padding:0 16px;z-index:100;-webkit-backdrop-filter:blur(16px) saturate(180%);backdrop-filter:blur(16px) saturate(180%);border-bottom:1px solid rgba(0,164,241,.06)}
+.header .back-btn{width:36px;height:36px;display:flex;align-items:center;justify-content:center;border:none;background:none;cursor:pointer;color:var(--ink);position:absolute;left:8px;border-radius:50%;transition:background .15s}
+.header .back-btn:active{background:#E6F7FF}
+.header .back-btn svg{width:20px;height:20px;stroke-width:2.2}
+.header .title{font-size:17px;font-weight:600;color:var(--ink);text-align:center;letter-spacing:.2px}
+.header .role-btn{width:36px;height:36px;display:flex;align-items:center;justify-content:center;border:none;background:#E6F7FF;border-radius:50%;cursor:pointer;color:var(--pm);position:absolute;right:12px;transition:all .15s}
+.header .role-btn:active{background:#E6F7FF;transform:scale(.95)}
+.header .role-btn svg{width:18px;height:18px;stroke-width:1.8}
+
+/* Role Menu */
+.role-menu{position:fixed;top:56px;right:12px;background:#fff;border-radius:4px;box-shadow:0 4px 20px rgba(0,164,241,.12);z-index:200;display:none;overflow:hidden;min-width:150px;border:1px solid var(--rule)}
+.role-menu.show{display:block;animation:menuIn .2s ease}
+@keyframes menuIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.role-menu-item{padding:12px 18px;display:flex;align-items:center;gap:10px;font-size:14px;cursor:pointer;border-bottom:1px solid #F5F7FA}
+.role-menu-item:last-child{border-bottom:none}
+.role-menu-item:active{background:#E6F7FF}
+.role-menu-item .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.role-menu-item .dot.pm{background:var(--pm)}
+.role-menu-item .dot.qc{background:var(--qc)}
+.role-menu-item.active{font-weight:600;color:var(--pm)}
+
+/* Pages */
+.page{position:fixed;top:52px;left:50%;transform:translateX(-50%);width:100%;max-width:375px;bottom:0;background:transparent;overflow-y:auto;-webkit-overflow-scrolling:touch;transition:transform .28s ease,visibility 0s .28s;visibility:hidden;pointer-events:none;z-index:10}
+.page.active{transform:translateX(-50%) translateY(0);visibility:visible;pointer-events:auto;transition:transform .28s ease,visibility 0s 0s}
+.page::-webkit-scrollbar{display:none}
+.page-inner{padding:10px 10px 132px}
+
+/* Home page: flex layout for fixed hero + scrollable content */
+.page-home{top:0;display:flex;flex-direction:column;overflow:hidden}
+.page-home .home-content{overflow-y:auto;-webkit-overflow-scrolling:touch;flex:1;min-height:0}
+.page-home .home-content::-webkit-scrollbar{display:none}
+
+/* Status Bar - 蓝色角色卡片，内部柔和渐变 + 毛玻璃质感 */
+.status-bar{background:linear-gradient(135deg,rgba(0,164,241,.92) 0%,rgba(0,135,199,.88) 60%,rgba(169,228,255,.85) 100%);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-radius:var(--radius);padding:20px 22px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 6px 20px rgba(0,164,241,.22),inset 0 1px 0 rgba(255,255,255,.18);position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.12)}
+.status-bar::before{content:'';position:absolute;top:-30px;right:-25px;width:110px;height:110px;background:radial-gradient(circle,rgba(255,255,255,.18) 0%,transparent 70%);border-radius:50%}
+.status-bar::after{content:'';position:absolute;bottom:-40px;right:30px;width:80px;height:80px;background:radial-gradient(circle,rgba(255,255,255,.10) 0%,transparent 70%);border-radius:50%}
+.status-bar .sb-left{display:flex;flex-direction:column;gap:5px;position:relative;z-index:1}
+.status-bar .sb-label{font-size:12px;color:rgba(255,255,255,.82);letter-spacing:.2px}
+.status-bar .sb-value{font-size:18px;font-weight:700;color:#fff}
+.status-bar .sb-right{text-align:right;position:relative;z-index:1}
+.status-bar .sb-pct{font-size:30px;font-weight:800;color:#fff;line-height:1;letter-spacing:-.5px}
+.status-bar .sb-pct-label{font-size:11px;color:rgba(255,255,255,.78);margin-top:3px}
+
+/* Score Summary */
+.score-summary{background:#fff;border-radius:var(--radius);padding:16px 20px;margin-bottom:10px;box-shadow:0 2px 12px rgba(0,164,241,.05);border:1px solid rgba(0,164,241,.03)}
+.score-summary .ss-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0}
+.score-summary .ss-label{font-size:13px;color:var(--muted)}
+.score-summary .ss-value{font-size:15px;font-weight:600}
+.score-summary .ss-value.pm{color:var(--pm)}
+.score-summary .ss-value.qc{color:var(--qc)}
+
+/* Module Cards Grid */
+.module-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.module-card{background:#fff;border-radius:var(--radius);padding:20px 14px 16px;display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer;transition:all .2s;box-shadow:0 2px 12px rgba(0,164,241,.05);position:relative;overflow:hidden;border:1px solid rgba(0,164,241,.03)}
+.module-card:active{transform:scale(.97);box-shadow:0 1px 6px rgba(0,164,241,.08)}
+.module-card .mc-icon{font-size:28px;width:52px;height:52px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#E6F7FF 0%,#E6F7FF 100%);border-radius:4px;margin-bottom:4px}
+.module-card .mc-name{font-size:14px;font-weight:600;color:var(--ink)}
+.module-card .mc-count{font-size:11px;color:var(--aux)}
+.module-card .mc-progress{position:absolute;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--pm),#0087C7);border-radius:0 0 3px 0}
+.module-card .mc-badge{position:absolute;top:10px;right:10px;background:#E6F7FF;border-radius:4px;padding:2px 8px;font-size:10px;color:var(--aux);font-weight:500}
+.module-card .mc-done{position:absolute;bottom:8px;right:10px;font-size:10px;color:var(--pm);font-weight:600;background:#E6F7FF;padding:2px 8px;border-radius:4px}
+
+/* Sub-module List */
+.sub-list{display:flex;flex-direction:column;gap:10px}
+.sub-card{background:#fff;border-radius:var(--radius);padding:18px;display:flex;align-items:center;gap:14px;cursor:pointer;box-shadow:0 2px 12px rgba(0,164,241,.05);transition:all .15s;border:1px solid rgba(0,164,241,.03)}
+.sub-card:active{transform:scale(.98)}
+.sub-card .sc-icon{font-size:24px;width:46px;height:46px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#E6F7FF 0%,#E6F7FF 100%);border-radius:4px;flex-shrink:0}
+.sub-card .sc-info{flex:1}
+.sub-card .sc-name{font-size:15px;font-weight:600;color:var(--ink)}
+.sub-card .sc-count{font-size:12px;color:var(--aux);margin-top:3px}
+.sub-card .sc-arrow{color:var(--aux);font-size:22px;font-weight:300}
+.sub-card .sc-progress-bar{width:50px;height:4px;background:#EDF0F5;border-radius:2px;margin-top:6px;overflow:hidden}
+.sub-card .sc-progress-fill{height:100%;background:linear-gradient(90deg,var(--pm),#0087C7);border-radius:2px;transition:width .3s}
+
+/* Detail Page */
+.detail-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.detail-header .dh-icon{font-size:22px;width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#E6F7FF 0%,#E6F7FF 100%);border-radius:4px;flex-shrink:0}
+.detail-header .dh-name{font-size:18px;font-weight:700;flex:1;color:var(--ink)}
+.detail-header .dh-count{font-size:12px;color:var(--pm);background:#E6F7FF;padding:4px 12px;border-radius:999px;font-weight:600}
+
+/* Location Image */
+.loc-image{border-radius:var(--radius);overflow:hidden;margin-bottom:10px;box-shadow:0 4px 16px rgba(0,164,241,.1);position:relative}
+.loc-image img{display:block;width:100%;height:auto}
+.loc-image .loc-img-label{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(29,33,41,.7));color:#fff;font-size:12px;padding:28px 14px 10px;font-weight:500}
+
+/* Section Header - 左侧竖条 + 粗标题 + 灰描述 + 右侧胶囊计数 */
+.section-header{display:flex;align-items:center;gap:10px;margin:18px 0 10px;padding:0 4px}
+.section-header .sh-bar{width:4px;height:20px;border-radius:2px;background:linear-gradient(180deg,#00A4F1,#0087C7);flex-shrink:0}
+.section-header .sh-text{display:flex;align-items:baseline;gap:8px;flex:1;min-width:0}
+.section-header .sh-title{font-size:17px;font-weight:800;color:var(--ink);line-height:1.3;letter-spacing:-.3px}
+.section-header .sh-desc{font-size:12px;color:var(--aux);font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.section-header .sh-count{font-size:12px;font-weight:600;color:var(--pm);background:rgba(0,164,241,.1);padding:4px 12px;border-radius:999px;flex-shrink:0;letter-spacing:.2px}
+.section-header .sh-count.deduction{color:#FF4C4C;background:rgba(255,76,76,.1)}
+.section-header .sh-tag{display:none}
+
+/* Check Item */
+.check-item{background:#fff;border-radius:var(--radius);padding:16px 18px;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,164,241,.05);position:relative;border:1px solid rgba(0,164,241,.03)}
+.check-item.baseline{border-left:3px solid var(--red);padding-left:17px}
+.check-item .ci-name{font-size:14px;font-weight:600;margin-bottom:6px;display:flex;align-items:center;gap:6px;color:var(--ink);line-height:1.5}
+.check-item .ci-baseline-tag{font-size:10px;color:#fff;background:linear-gradient(135deg,#FF4C4C,#CB0000);padding:2px 8px;border-radius:999px;font-weight:500;flex-shrink:0}
+.check-item .ci-score{font-size:11px;font-weight:500;color:var(--pm);background:#E6F7FF;padding:2px 10px;border-radius:999px;margin-left:auto;flex-shrink:0;white-space:nowrap}
+.check-item .ci-standard{font-size:12px;color:var(--muted);line-height:1.7}
+.check-item .ci-tags{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.check-item .ci-tag{font-size:15px;font-weight:700;color:#3A5A9C;background:#F5F7FB;border:1.5px solid #E0E8F5;border-radius:14px;padding:10px 20px;letter-spacing:.5px}
+.filing-item .ci-tags{margin:5px 0}
+.filing-item .ci-tag{font-size:12px;font-weight:600;color:#3A5A9C;background:#E3E9F2;border:1px solid #D5DDEC;border-radius:7px;padding:3px 8px;letter-spacing:.3px;margin-right:4px;margin-bottom:4px}
+.filing-item .ci-tag:last-child{margin-right:0}
+.check-item .ci-design{font-size:12px;color:var(--pm);margin-top:4px}
+.ci-actions{display:flex;gap:8px;margin-top:12px}
+.ci-btn{flex:1;height:38px;border:1.5px solid var(--rule);border-radius:4px;font-size:13px;font-weight:500;cursor:pointer;background:#FAFBFD;color:var(--muted);transition:all .18s;display:flex;align-items:center;justify-content:center;gap:4px;font-family:inherit}
+.ci-btn.pass.active{background:#E6FAF6;border-color:#02C2C2;color:var(--green)}
+.ci-btn.fail.active{background:#FFEBEB;border-color:#FF4C4C;color:var(--red)}
+.ci-btn.partial.active{background:#FCF4E9;border-color:#FFA64C;color:#BB5E00}
+.ci-btn:active{transform:scale(.97)}
+
+/* Partial (比较符合) Score Input */
+.ci-actions-partial{gap:6px}
+.ci-actions-partial .ci-btn.pass{flex:0 0 28%}
+.ci-actions-partial .ci-btn.partial{flex:0 0 40%}
+.ci-actions-partial .ci-btn.fail{flex:0 0 28%}
+.partial-score{display:none;margin-top:10px;background:#FCF4E9;border:1px solid #FCF4E9;border-radius:4px;padding:12px 14px}
+.partial-score.show{display:block}
+.partial-score .ps-label{font-size:12px;color:#BB5E00;margin-bottom:8px;font-weight:500}
+.partial-score .ps-row{display:flex;align-items:center;gap:10px}
+.partial-score .ps-input{width:80px;height:40px;border:1.5px solid #FFA64C;border-radius:4px;text-align:center;font-size:18px;font-weight:700;color:#BB5E00;outline:none;background:#fff;-webkit-appearance:none;-moz-appearance:textfield;font-family:inherit}
+.partial-score .ps-input::-webkit-outer-spin-button,.partial-score .ps-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.partial-score .ps-cur{font-size:13px;color:#BB5E00;font-weight:600;flex:1}
+
+/* PM Result (QC read-only) */
+.ci-pm-result{font-size:12px;padding:5px 12px;border-radius:999px;margin-top:10px;display:inline-flex;align-items:center;gap:4px;font-weight:500}
+.ci-pm-result.pm-pass{background:#E6FAF6;color:var(--green)}
+.ci-pm-result.pm-fail{background:#FFEBEB;color:var(--red)}
+.ci-pm-result.pm-partial{background:#FCF4E9;color:#BB5E00}
+.ci-pm-result.pm-none{background:#F5F7FA;color:var(--aux)}
+
+/* Photo Upload */
+.photo-upload{display:none;margin-top:12px}
+.photo-upload.show{display:block}
+.photo-upload .pu-label{font-size:12px;color:var(--muted);margin-bottom:8px}
+.photo-upload .pu-area{border:1.5px dashed #A9E4FF;border-radius:4px;padding:18px;text-align:center;cursor:pointer;transition:all .2s;background:#E6F7FF}
+.photo-upload .pu-area:active{border-color:var(--pm);background:#E6F7FF}
+.photo-upload .pu-area svg{width:28px;height:28px;color:var(--pm);margin-bottom:6px}
+.photo-upload .pu-area .pu-text{font-size:12px;color:var(--muted)}
+.photo-upload .pu-preview{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.photo-upload .pu-preview img{width:72px;height:72px;object-fit:cover;border-radius:4px;border:1px solid var(--rule)}
+
+/* Filing Item */
+.filing-item{background:#fff;border-radius:var(--radius);padding:18px 18px 4px;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,164,241,.05);border:1px solid rgba(0,164,241,.03)}
+.filing-item .fi-name{font-size:15px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:6px;color:var(--ink);line-height:1.4}
+.filing-item .fi-name .ci-score{font-size:11px;font-weight:500;color:var(--pm);background:#E6F7FF;padding:2px 10px;border-radius:999px;margin-left:auto;flex-shrink:0;white-space:nowrap}
+.filing-item .fi-dir{font-size:12px;color:var(--pm);margin-bottom:4px;font-weight:500}
+.filing-item .fi-desc{font-size:13px;color:var(--muted);line-height:1.7}
+
+/* Value Input */
+.value-input{margin-top:10px}
+.value-input .vi-label{font-size:12px;color:var(--muted);margin-bottom:6px}
+.value-input input{width:100%;height:40px;border:1.5px solid var(--rule);border-radius:4px;padding:0 14px;font-size:14px;color:var(--ink);outline:none;background:#FAFBFD;font-family:inherit;transition:border-color .2s}
+.value-input input:focus{border-color:var(--pm);background:#fff;box-shadow:0 0 0 3px rgba(0,164,241,.08)}
+
+/* IT Placeholder */
+.it-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;text-align:center}
+.it-placeholder .it-icon{font-size:48px;margin-bottom:12px;opacity:.3}
+.it-placeholder .it-text{font-size:14px;color:var(--muted)}
+.it-placeholder .it-sub{font-size:12px;color:#BCC4D0;margin-top:4px}
+
+/* Score Detail (bottom of detail page) */
+.score-detail{background:#fff;border-radius:var(--radius);padding:18px 20px;margin-top:10px;box-shadow:0 2px 12px rgba(0,164,241,.05);border:1px solid rgba(0,164,241,.03)}
+.score-detail .sd-title{font-size:14px;font-weight:600;margin-bottom:14px;display:flex;align-items:center;gap:6px;color:var(--ink)}
+.score-detail .sd-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;font-size:13px}
+.score-detail .sd-row .sd-label{color:var(--muted)}
+.score-detail .sd-row .sd-val{font-weight:600}
+.score-detail .sd-row .sd-val.pm{color:var(--pm)}
+.score-detail .sd-row .sd-val.qc{color:var(--qc)}
+
+/* Toast */
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:rgba(29,33,41,.85);color:#fff;padding:10px 24px;border-radius:4px;font-size:13px;z-index:999;opacity:0;transition:opacity .25s;pointer-events:none;backdrop-filter:blur(8px)}
+.toast.show{opacity:1}
+
+/* Bottom Bar - 毛玻璃质感，上下两栏 */
+.bottom-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:375px;background:rgba(255,255,255,.92);border-top:1px solid rgba(0,164,241,.08);padding:10px 14px 12px;display:none;flex-direction:column;gap:10px;z-index:90;-webkit-backdrop-filter:blur(16px) saturate(180%);backdrop-filter:blur(16px) saturate(180%);box-shadow:0 -4px 20px rgba(0,164,241,.06)}
+.bottom-bar.show{display:flex}
+.bb-progress{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.bb-prog-label{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bb-prog-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.bb-prog-pct{font-size:14px;font-weight:700;color:var(--pm);line-height:1}
+.bb-prog-score{font-size:12px;font-weight:700;padding:3px 12px;border-radius:999px;background:#E6F7FF;color:var(--pm);white-space:nowrap;line-height:1.3}
+.bb-prog-bar{width:100%;height:4px;background:#EDF0F5;border-radius:2px;overflow:hidden}
+.bb-prog-fill{height:100%;border-radius:2px;transition:width .3s;background:var(--pm)}
+.bb-btns{display:flex;gap:10px}
+.bb-btn{height:44px;border:none;border-radius:4px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:6px}
+.bb-btn.primary{flex:2;background:linear-gradient(135deg,#0087C7 0%,#00A4F1 100%);color:#fff;box-shadow:0 4px 14px rgba(0,164,241,.3)}
+.bb-btn.primary:active{transform:scale(.98);box-shadow:0 2px 6px rgba(0,164,241,.2)}
+.bb-btn.secondary{flex:1;background:#fff;border:1.5px solid #D4E8FC;color:var(--ink)}
+.bb-btn.secondary:active{background:#E6F7FF}
+.bb-btn svg{width:18px;height:18px}
+
+/* Room Sampling */
+.room-info{background:#fff;border-radius:var(--radius);padding:20px 22px;margin-bottom:10px;box-shadow:0 2px 12px rgba(0,164,241,.05);border:1px solid rgba(0,164,241,.03)}
+.room-info .ri-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.room-info .ri-label{font-size:13px;color:var(--muted)}
+.room-info .ri-value{font-size:15px;font-weight:600;color:var(--ink)}
+.room-info .ri-tip{font-size:12px;color:var(--muted);line-height:1.7;margin-top:8px;padding:10px 14px;background:#E6F7FF;border-radius:4px}
+.room-info .ri-regen{margin-top:14px;height:40px;border:1.5px solid var(--pm);background:#fff;color:var(--pm);border-radius:4px;font-size:13px;cursor:pointer;width:100%;font-weight:500;font-family:inherit;transition:all .15s}
+.room-info .ri-regen:active{background:#E6F7FF;transform:scale(.98)}
+.room-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:0}
+.room-card{background:#fff;border-radius:4px;padding:16px 8px;text-align:center;cursor:pointer;box-shadow:0 2px 8px rgba(0,164,241,.05);transition:all .15s;position:relative;border:1.5px solid transparent}
+.room-card:active{transform:scale(.95)}
+.room-card .rc-num{font-size:18px;font-weight:700;color:var(--ink)}
+.room-card .rc-status{font-size:10px;margin-top:5px;color:var(--aux)}
+.room-card.done{border-color:#02C2C2;background:#E6FAF6}
+.room-card.done .rc-status{color:var(--green)}
+.room-card .rc-check{position:absolute;top:5px;right:5px;width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,#02C2C2,#007878);color:#fff;font-size:10px;display:none;align-items:center;justify-content:center;font-weight:700}
+.room-card.done .rc-check{display:flex}
+
+/* ===== Inspection View (sidebar + full expand) ===== */
+#page-inspection{overflow:hidden;display:flex;flex-direction:row}
+/* Inspection Sidebar - 参考药箱宝风格 */
+.insp-sidebar{width:64px;flex-shrink:0;background:#F7FAFE;border-right:none;overflow-y:auto;-webkit-overflow-scrolling:touch;z-index:10;position:relative;padding-bottom:132px}
+.insp-sidebar::-webkit-scrollbar{display:none}
+.insp-sidebar::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px;background:linear-gradient(90deg,#0087C7 0%,#00A4F1 50%,#A9E4FF 100%)}
+.insp-side-item{padding:14px 6px 12px;text-align:center;cursor:pointer;position:relative;transition:all .2s;background:transparent}
+.insp-side-item .isi-block{width:44px;height:44px;margin:0 auto;border-radius:8px;background:linear-gradient(135deg,#EDF4FE 0%,#E3EEFB 100%);display:flex;align-items:center;justify-content:center;font-size:20px;line-height:1;box-shadow:0 2px 8px rgba(0,135,199,.06),inset 0 1px 0 rgba(255,255,255,.8);transition:all .2s}
+.insp-side-item .isi-abbr{font-size:11px;font-weight:700;margin-top:6px;letter-spacing:.2px;color:var(--aux);transition:color .2s}
+.insp-side-item .isi-dot{width:7px;height:7px;border-radius:50%;margin:6px auto 0;background:#C8D2DC;transition:all .2s}
+.insp-side-item .isi-divider{position:absolute;bottom:0;left:10px;right:10px;height:1px;background:linear-gradient(90deg,transparent,rgba(0,135,199,.12),transparent)}
+.insp-side-item.active{background:linear-gradient(90deg,rgba(0,164,241,.14) 0%,rgba(0,164,241,.06) 40%,rgba(0,164,241,0) 100%)}
+.insp-side-item.active::before{content:'';position:absolute;left:0;top:10px;bottom:10px;width:4px;background:linear-gradient(180deg,#0087C7 0%,#00A4F1 50%,#0087C7 100%);border-radius:0 3px 3px 0;box-shadow:0 0 8px rgba(0,164,241,.4)}
+.insp-side-item.active .isi-block{background:linear-gradient(135deg,#00A4F1 0%,#4DB9F7 100%);box-shadow:0 4px 14px rgba(0,164,241,.32),inset 0 1px 0 rgba(255,255,255,.25)}
+.insp-side-item.active .isi-abbr{color:#0087C7}
+.insp-side-item:active .isi-block{transform:scale(.95)}
+.insp-side-subs{display:none;background:rgba(237,244,254,.4);padding:4px 0 8px}
+.insp-side-subs.show{display:block}
+.insp-side-sub{padding:7px 4px;text-align:center;font-size:10px;font-weight:600;color:var(--aux);cursor:pointer;white-space:nowrap;overflow:hidden;transition:all .15s;position:relative}
+.insp-side-sub::after{content:'';position:absolute;bottom:0;left:14px;right:14px;height:1px;background:rgba(0,135,199,.06)}
+.insp-side-sub:last-child::after{display:none}
+.insp-side-sub:active{background:rgba(0,164,241,.06);color:#0087C7}
+.insp-side-sub.active-sub{color:#0087C7;background:linear-gradient(90deg,rgba(0,164,241,.08) 0%,rgba(0,164,241,0) 100%)}
+.insp-side-sub.active-sub::before{content:'';position:absolute;left:0;top:4px;bottom:4px;width:3px;background:#00A4F1;border-radius:0 2px 2px 0}
+.insp-main{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:10px 10px 132px;position:relative}
+.insp-main::-webkit-scrollbar{display:none}
+.insp-module{margin-bottom:10px}
+.insp-module-header{display:flex;align-items:center;gap:10px;padding:16px 18px;background:#fff;border-radius:var(--radius);box-shadow:0 2px 12px rgba(0,164,241,.05);border:1px solid rgba(0,164,241,.03);margin-bottom:10px}
+.insp-badge{width:34px;height:34px;border-radius:4px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;flex-shrink:0;letter-spacing:.2px;box-shadow:0 2px 6px rgba(0,164,241,.15)}
+.insp-module-header .imh-name{font-size:14px;font-weight:600;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink)}
+.insp-module-header .imh-progress{font-size:11px;color:var(--aux);flex-shrink:0}
+.insp-module-header .imh-score{font-size:12px;font-weight:700;flex-shrink:0;margin-left:4px;background:#E6F7FF;padding:3px 10px;border-radius:999px}
+.insp-module-img{display:block;width:100%;height:auto;max-height:150px;object-fit:cover;border-radius:var(--radius);margin-bottom:10px}
+.insp-module-body{padding:0}
+.insp-submodule{margin-top:10px}
+.insp-sub-header{display:flex;align-items:center;gap:8px;margin:14px 0 10px}
+.insp-sub-badge{width:26px;height:26px;border-radius:4px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:9px;font-weight:700;flex-shrink:0}
+.insp-sub-header .ish-name{font-size:13px;font-weight:600;color:var(--ink);flex-shrink:0}
+.insp-sub-header .ish-line{flex:1;height:1px;background:linear-gradient(90deg,var(--rule),transparent)}
+.insp-sub-img{display:block;width:100%;height:auto;max-height:120px;object-fit:cover;border-radius:4px;margin-bottom:10px}
+
+/* ===== HOME PAGE (New Design) ===== */
+.home-hero{background:linear-gradient(160deg,#0087C7 0%,#00A4F1 35%,#0087C7 70%,#A9E4FF 100%);padding:52px 18px 60px;position:relative;overflow:hidden;flex-shrink:0;height:285px}
+.home-hero::before{content:'';position:absolute;top:-60px;right:-60px;width:240px;height:240px;background:radial-gradient(circle,rgba(255,255,255,.12) 0%,transparent 70%);border-radius:50%}
+.home-hero::after{content:'';position:absolute;bottom:-80px;left:-40px;width:200px;height:200px;background:radial-gradient(circle,rgba(169,228,255,.25) 0%,transparent 70%);border-radius:50%}
+.hero-top{display:flex;align-items:flex-start;justify-content:space-between;position:relative;z-index:1;margin-bottom:20px}
+.hero-title{font-size:32px;font-weight:800;color:#fff;letter-spacing:-.5px;line-height:1.2}
+.hero-subtitle{font-size:13px;color:rgba(255,255,255,.7);margin-top:6px}
+.hero-right{display:flex;gap:10px;align-items:center}
+.hero-role-btn{display:flex;align-items:center;gap:4px;height:32px;padding:0 12px;border-radius:4px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.2);color:#fff;cursor:pointer;font-family:inherit;font-size:13px;font-weight:600;transition:all .15s;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.hero-role-btn:active{background:rgba(255,255,255,.28);transform:scale(.95)}
+.hero-role-btn .role-label{line-height:1}
+.hero-role-btn svg{width:16px;height:16px}
+.hero-icon-btn{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;position:relative;transition:all .15s;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.hero-icon-btn:active{background:rgba(255,255,255,.28);transform:scale(.95)}
+.hero-icon-btn svg{width:20px;height:20px}
+.badge-dot{position:absolute;top:8px;right:8px;width:8px;height:8px;background:#FF4C4C;border-radius:50%;border:1.5px solid #00A4F1}
+.hero-progress-card{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.2);border-radius:4px;padding:18px 20px;display:flex;align-items:center;gap:18px;position:relative;z-index:1;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:0 8px 32px rgba(0,135,199,.15)}
+.hpc-ring{position:relative;width:60px;height:60px;flex-shrink:0}
+.hpc-ring .ring-svg{width:60px;height:60px}
+.ring-text{position:absolute;top:0;left:0;width:60px;height:60px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff}
+.hpc-info{flex:1;min-width:0}
+.hpc-title-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+.hpc-title{font-size:16px;font-weight:600;color:#fff}
+.hpc-score{font-size:14px;font-weight:600;color:#fff;background:rgba(255,255,255,.2);padding:3px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.18)}
+.hpc-sub{font-size:12px;color:rgba(255,255,255,.8);margin-bottom:10px}
+.hpc-bar{width:100%;height:5px;background:rgba(255,255,255,.2);border-radius:3px;overflow:hidden}
+.hpc-bar-fill{height:100%;background:#fff;border-radius:3px;transition:width .5s ease}
+
+/* Home Content Area */
+.home-content{padding:10px 10px 30px;background:var(--bg);border-radius:4px 4px 0 0;margin-top:-24px;position:relative;z-index:2;min-height:calc(100vh - 280px)}
+.module-list{display:flex;flex-direction:column;gap:10px}
+.mod-card{background:#fff;border-radius:var(--radius);padding:18px 18px 28px;display:flex;align-items:center;gap:16px;cursor:pointer;box-shadow:0 2px 12px rgba(0,164,241,.05);transition:all .2s;border:1px solid rgba(0,164,241,.03);position:relative;overflow:hidden}
+.mod-card:active{transform:scale(.98);box-shadow:0 1px 6px rgba(0,164,241,.08)}
+.mod-card .mc-icon-box{width:52px;height:52px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;box-shadow:0 4px 12px rgba(0,164,241,.12);position:relative;overflow:hidden}
+.mod-card .mc-icon-box::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.25) 0%,transparent 50%)}
+.mod-card .mc-mid{flex:1;min-width:0}
+.mod-card .mc-name{font-size:16px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.mod-card .mc-name .done-tag{font-size:10px;font-weight:600;color:#02C2C2;background:#E6FAF6;padding:2px 8px;border-radius:999px}
+.mod-card .mc-stats{font-size:12px;color:var(--aux);line-height:1.5;margin-top:4px;margin-bottom:8px}
+.mod-card .mc-right{display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative}
+.mod-card .mc-score-num{font-size:22px;font-weight:800;line-height:1;letter-spacing:-.5px;text-align:center}
+.mod-card .mc-score-num .mc-score-max{font-size:13px;font-weight:600;color:var(--aux);margin-left:1px}
+
+/* Hide old home elements that are replaced */
+#page-modules .status-bar,
+#page-modules .score-summary,
+#page-modules .module-grid{display:none!important}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <button class="back-btn" id="backBtn" onclick="goBack()" style="visibility:hidden">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+  </button>
+  <div class="title" id="headerTitle">AI质检</div>
+  <button class="role-btn" onclick="toggleRoleMenu(event)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+  </button>
+</div>
+
+<div class="role-menu" id="roleMenu">
+  <div class="role-menu-item active" id="roleItemPm" onclick="switchRole('pm')"><span class="dot pm"></span>项目经理</div>
+  <div class="role-menu-item" id="roleItemQc" onclick="switchRole('qc')"><span class="dot qc"></span>质检经理</div>
+</div>
+
+<!-- Page 1: Module List (Home) -->
+<div class="page active page-home" id="page-modules">
+  <div class="home-hero">
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-title">AI质检</div>
+        <div class="hero-subtitle" id="heroSubtitle">和颐至尊-上海徐汇桂林路地铁站店</div>
+      </div>
+      <div class="hero-right">
+        <button class="hero-role-btn" onclick="toggleRoleMenu(event)">
+          <span class="role-label" id="heroRoleLabel">项目经理</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="hero-progress-card" id="heroProgressCard">
+      <div class="hpc-ring">
+        <svg viewBox="0 0 60 60" class="ring-svg">
+          <circle cx="30" cy="30" r="25" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="5"/>
+          <circle cx="30" cy="30" r="25" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-dasharray="157" stroke-dashoffset="157" class="ring-fill" id="heroRingFill" transform="rotate(-90 30 30)"/>
+        </svg>
+        <div class="ring-text" id="heroRingText">0%</div>
+      </div>
+      <div class="hpc-info">
+        <div class="hpc-title-row">
+          <span class="hpc-title">整体质检进度</span>
+          <span class="hpc-score" id="heroScore">0/0分</span>
+        </div>
+        <div class="hpc-sub" id="heroSub">0/0 项已检 · 8大模块</div>
+        <div class="hpc-bar"><div class="hpc-bar-fill" id="heroBarFill" style="width:0%"></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="home-content">
+    <div class="module-list" id="moduleGrid"></div>
+  </div>
+</div>
+
+<!-- Page 2: Sub-module List -->
+<div class="page" id="page-submodules">
+  <div class="page-inner">
+    <div class="sub-list" id="subModuleList"></div>
+  </div>
+</div>
+
+<!-- Page 3: Detail -->
+<div class="page" id="page-detail">
+  <div class="page-inner" id="detailBody"></div>
+</div>
+
+<!-- Page: Inspection View (sidebar + full expand) -->
+<div class="page" id="page-inspection">
+  <div class="insp-sidebar" id="inspSidebar"></div>
+  <div class="insp-main" id="inspMain"></div>
+</div>
+
+<!-- Page 4: Room Sampling List -->
+<div class="page" id="page-rooms">
+  <div class="page-inner" id="roomsBody"></div>
+</div>
+
+<!-- Page 5: Room Detail -->
+<div class="page" id="page-room">
+  <div class="page-inner" id="roomDetailBody"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="bottom-bar" id="bottomBar">
+  <div class="bb-progress">
+    <span class="bb-prog-label" id="bbProgLabel">0/0 项已检</span>
+    <div class="bb-prog-right">
+      <span class="bb-prog-pct" id="bbProgPct">0%</span>
+      <span class="bb-prog-score" id="bbProgScore">0/0分</span>
+    </div>
+  </div>
+  <div class="bb-prog-bar"><div class="bb-prog-fill" id="bbProgFill" style="width:0%"></div></div>
+  <div class="bb-btns">
+    <button class="bb-btn secondary" onclick="goBack()">返回列表</button>
+    <button class="bb-btn primary" onclick="saveProgress()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+      <span id="bbPrimaryLabel">保存进度</span>
+    </button>
+  </div>
+</div>
+
+<script>
+/* ===== DATA ===== */
+var modules=[
+  {id:'filing',name:'备案',icon:'📋',type:'direct',img:null,
+    groups:[{type:'filing',label:'备案项',items:[
+      {name:'员工宿舍合规性',direction:'员工宿舍',description:'员工宿舍外租是否有合同，是否具备入住条件',score:2,scoreType:'deduction',tags:['A101','A102','A103','A201','A202']},
+      {name:'暗房数量',direction:'暗房',description:'评审图纸，暗房数量需备案',score:2,scoreType:'deduction',tags:['B101','B203','B305','B407','B509']},
+      {name:'客房面积',direction:'客房面积',description:'评审图纸，客房面积需备案',score:2,scoreType:'deduction',tags:['101','102','201','202','301','302','401','501','601']}
+    ]}]
+  },
+  {id:'guestroom',name:'客房',icon:'🛏️',type:'direct',img:'guestroom_feishu.jpg',
+    groups:[
+      {type:'objective',label:'客观项',scoreText:'符合：1分/项',items:[
+        {name:'客房总数',standard:'106间，与设计图纸一致',inputType:'value',score:1},
+        {name:'房型配比',standard:'单床64间(60%)、双床42间(40%)、亲子房3间，与设计图纸一致',inputType:'value',score:1},
+        {name:'客房层高',standard:'净高 2400mm',inputType:'value',score:1},
+        {name:'单床房面积',standard:'≥15m²',inputType:'value',score:1},
+        {name:'双床房面积',standard:'≥17m²',inputType:'value',score:1},
+        {name:'卫生间面积',standard:'≥3.5m²',inputType:'value',score:1},
+        {name:'暗房房号',standard:'&lt;10% · 共5间占4.7%',inputType:'value',score:1},
+        {name:'备案房号',standard:'备案房号列表',inputType:'value',score:0,tags:['101','102','201','202','301','302','401','501','601']}
+      ]},
+      {type:'subjective',label:'主观项',scoreText:'',items:[
+        {name:'装饰面观感天花',standard:'天花符合设计要求，顶面平整度及细节处理细致',score:2,scoreType:'partial',partialMin:0,partialMax:2,scoreTag:'符合：0.5分'},
+        {name:'装饰面观感墙面',standard:'材料、尺寸、色调符合公司标准',score:1,scoreType:'partial',partialMin:0,partialMax:1,scoreTag:'符合：1分'},
+        {name:'装饰面观感地面（瓷砖）',standard:'客房瓷砖地面无大面质量缺陷（超过30%以上客房地砖出现1㎡以上连续性整砖破损、空鼓松动、色差）',score:0.5,scoreTag:'符合：0.5分'},
+        {name:'装饰面观感地面（木地板）',standard:'客房木地板地面无大面质量缺陷（2m平整度>5mm、1㎡以上色差、0.5㎡以上连续性起鼓、起皮、划痕等）',score:0.5,scoreTag:'符合：1.5分'},
+        {name:'装饰面观感地面（材质）',standard:'地砖、地毯、地板材质符合公司标准',score:1.5,scoreType:'partial',partialMin:0,partialMax:1.5,scoreTag:'符合：1.5分'},
+        {name:'客房门：材料、式样、色调',standard:'材料、式样、色调符合标准',score:0.5,scoreTag:'符合：0.5分'},
+        {name:'洗手台：型号、式样',standard:'型号正确，符合公司设计要求',score:0.5,scoreTag:'符合：0.5分'},
+        {name:'淋浴间完好性',standard:'淋浴房符合施工所属品牌图纸（型材颜色、玻璃厚度、玻璃有明显3C标志、门扇开启角度、玻璃膜颜色）',score:1,scoreTag:'符合：1分'},
+        {name:'淋浴间花洒',standard:'型号正确，花洒底座安装高度、手持淋浴龙头花洒阀体安装高度符合设计要求',score:0.5,scoreTag:'符合：0.5分'},
+        {name:'淋浴间地漏',standard:'地漏型号、位置正确、坡度合理、无明显积水',score:0.5,scoreTag:'符合：0.5分'},
+        {name:'灯光照明型号',standard:'灯控系统完成，灯具型号、色温符合公司设计标准',score:1,scoreTag:'符合：1分'},
+        {name:'噪音测试',standard:'木门隔音降噪≥35分贝；隔墙：装配式≥45分贝，砌块≥40分贝（测试不少于三间）',score:0},
+        {name:'热水测试',standard:'测试不少于三间，热水供应正常',score:0},
+        {name:'电话测试',standard:'测试不少于三间，电话通话正常',score:0},
+        {name:'漏电保护测试',standard:'测试不少于三间，漏电保护功能正常',score:0},
+        {name:'淋浴房试水测试',standard:'测试不少于三间，排水顺畅无积水',score:0},
+        {name:'新风测试',standard:'测试不少于三间，新风系统运行正常',score:0},
+        {name:'空调测试',standard:'测试不少于三间，空调制冷制热正常',score:0},
+        {name:'排风扇风量',standard:'测试不少于三间，排风扇风量符合要求',score:0}
+      ]}
+    ]
+  },
+  {id:'functional',name:'功能辅房',icon:'🏠',type:'sub',img:null,
+    subModules:[
+      {id:'disinfection',name:'消毒间/布草间/总仓',icon:'🧴',img:null,
+        groups:[{type:'subjective',label:'主观项',scoreText:'',items:[
+          {name:'烟感、喷淋、灭火器',standard:'消防烟感联动报警器、喷淋头安装牢固、装饰圈与顶板结合严密。至少有烟感并进行联动测试。暗房需设置排风扇',score:0}
+        ]}]
+      },
+      {id:'equipment',name:'设备间与强弱电系统',icon:'⚙️',img:null,
+        groups:[{type:'subjective',label:'主观项',scoreText:'',items:[
+          {name:'总配电间电力供应',standard:'电力供应满足酒店需要、配电间设备运行正常、电压稳定。须有绝缘地垫、绝缘手套等',score:0},
+          {name:'配电系统、设备安装',standard:'酒店供电系统需满足三级配电要求，配电箱等设备安装完毕。须有绝缘地垫、绝缘手套等',score:0},
+          {name:'配电系统、设备安装',standard:'各楼层配电箱安装有消防强切模块，接线无松动，布线规范，线径符合设计要求，无裸线，有漏电保护。配电间内不得有水管，穿管孔洞封闭严密。',score:0}
+        ]}]
+      },
+      {id:'staff',name:'员工更衣室/员工宿舍',icon:'👷',img:null,
+        groups:[
+          {type:'objective',label:'客观项',scoreText:'',items:[
+            {name:'更衣室、淋浴房、宿舍',standard:'更衣间、宿舍、淋浴间装潢结束，配置齐全；消防、空调、网络到位；宿舍位置符合安全要求',score:0}
+          ]},
+          {type:'subjective',label:'主观项',scoreText:'',items:[
+            {name:'配置：床、衣柜、卫生间',standard:'员工宿舍和更衣室以平面设计方案为准，布局、通风等符合设计标准（暗房须有新风系统，符合要求）',score:0},
+            {name:'烟感、喷淋、灭火器',standard:'酒店范围内员工宿舍需要安装喷淋、烟感火灾探测器且联动有效',score:0}
+          ]}
+        ]
+      }
+    ]
+  },
+  {id:'public',name:'公区',icon:'🏛️',type:'sub',img:null,
+    subModules:[
+      {id:'elevator',name:'电梯厅',icon:'🛗',img:'elevator_feishu.jpg',
+        groups:[{type:'objective',label:'客观项',scoreText:'',items:[
+          {name:'电梯厅面积',standard:'电梯厅面积25m²，与设计图纸一致',inputType:'value',score:1,scoreTag:'符合：1分'},
+          {name:'电梯厅层高',standard:'电梯厅层高2800mm',inputType:'value',score:1,scoreTag:'符合：1分'},
+          {name:'轿厢品牌装饰',standard:'各品牌定制轿厢装饰符合设计',score:1,scoreTag:'符合：1分'},
+          {name:'轿厢配置',standard:'应急呼叫系统安装完成、监控系统安装完成、楼层梯控安装到位',score:0}
+        ]}]
+      },
+      {id:'corridor',name:'走廊',icon:'🚪',img:'corridor_feishu.jpg',
+        groups:[
+          {type:'objective',label:'客观项',scoreText:'符合：1分/项',items:[
+            {name:'走廊宽度',standard:'1600mm，与设计图纸一致',inputType:'value',score:1},
+            {name:'走廊净高',standard:'2400mm，与设计图纸一致',inputType:'value',score:1},
+            {name:'走廊装饰元素',standard:'地毯、各品牌门牌壁灯、墙面定制墙板符合设计',score:1}
+          ]},
+          {type:'subjective',label:'主观项',scoreText:'',items:[
+            {name:'装饰面观感天花',standard:'发现2处以下问题：墙壁角落、管道接缝等处阴湿、渗漏水现象为不合格',score:1,scoreTag:'符合：1分'},
+            {name:'装饰面观感墙面（渗漏）',standard:'发现2处以下问题：墙壁角落、管道接缝等处阴湿、渗漏水现象为不合格',score:1,scoreTag:'符合：1分'},
+            {name:'装饰面观感墙面（材料）',standard:'材料、尺寸、色调符合公司标准。踢脚线色调材质符合品牌标准',score:1.5,scoreType:'partial',partialMin:0,partialMax:1,scoreTag:'符合：1.5分'},
+            {name:'装饰面观感地面',standard:'地砖（石材）、地毯材料、色调符合标准',score:1.5,scoreType:'partial',partialMin:0,partialMax:1,scoreTag:'符合：1.5分'},
+            {name:'灯光照明型号',standard:'灯具型号、色温、照度符合公司设计标准',score:0.5,scoreTag:'符合：0.5分'},
+            {name:'窗户',standard:'窗户下沿高度低于900mm需安装护栏或具有防护作用的措施。有开启窗户加护栏，无开启窗户参照设计图纸',score:0}
+          ]}
+        ]
+      },
+      {id:'restaurant',name:'餐厅',icon:'🍽️',img:'restaurant_feishu.jpg',
+        groups:[
+          {type:'objective',label:'客观项',scoreText:'符合：1分/项',items:[
+            {name:'餐厅面积',standard:'116m²',inputType:'value',score:1},
+            {name:'餐厅层高',standard:'净高 2800mm',inputType:'value',score:1},
+            {name:'餐位数',standard:'41位',inputType:'value',score:1},
+            {name:'明档区设置',standard:'如家这碗面 明档区',score:1},
+            {name:'餐台长度',standard:'15000mm',inputType:'value',score:1},
+            {name:'餐厅核心墙面装饰',standard:'核心墙面装饰符合设计标准',score:1}
+          ]},
+          {type:'subjective',label:'主观项',scoreText:'',items:[
+            {name:'装饰面观感天花',standard:'天花材料、色调符合标准，平整度及细节收口处理细致，无渗漏水',score:2,scoreType:'partial',partialMin:0,partialMax:1,scoreTag:'符合：3分'},
+            {name:'装饰面观感墙面',standard:'墙面饰面材料、色调符合公司标准，踢脚线色调符合标准',score:1.5,scoreType:'partial',partialMin:0,partialMax:1.5,scoreTag:'符合：1.5分'},
+            {name:'装饰面观感地面',standard:'地面材料、尺寸、色调符合公司标准、美缝施工完成',score:1,scoreType:'partial',partialMin:0,partialMax:1,scoreTag:'符合：1.5分'},
+            {name:'灯光照明型号',standard:'灯具型号、色温、照度符合公司设计标准',score:0.5,scoreTag:'符合：0.5分'}
+          ]}
+        ]
+      },
+      {id:'kitchen',name:'厨房',icon:'🍳',img:null,
+        groups:[
+          {type:'objective',label:'客观项',scoreText:'',items:[
+            {name:'厨房面积',standard:'满足公司底线标准面积要求',inputType:'value',score:0}
+          ]},
+          {type:'subjective',label:'主观项',scoreText:'',items:[
+            {name:'厨房设备配置位置',standard:'厨房设备配置位置正确、符合设计图纸（或专业厂商深化图纸）',score:0},
+            {name:'厨房设备（排烟设备）',standard:'设备安装应设置减震措施；正常运行，无异响；管路布置合理，噪音不得影响客房',score:0},
+            {name:'消防配置',standard:'厨房消防系统中烟感为温感。喷淋为高温喷淋头',score:0}
+          ]}
+        ]
+      },
+      {id:'laundry_gym',name:'洗衣房/健身房',icon:'🧺',img:'laundry_gym_feishu.jpg',
+        groups:[
+          {type:'objective',label:'客观项',scoreText:'符合：1分/项',items:[
+            {name:'面积',standard:'36m²',inputType:'value',score:1},
+            {name:'完成面层高',standard:'2700mm',inputType:'value',score:1}
+          ]},
+          {type:'subjective',label:'主观项',scoreText:'',items:[
+            {name:'洗衣房-装饰面观感天花',standard:'吊顶符合公司设计要求',score:1,scoreTag:'符合：1分'},
+            {name:'洗衣房-装饰面观感墙面、地砖',standard:'墙面材料、铺设符合公司标准、地砖材料符合公司要求，美缝完成',score:0.5,scoreTag:'符合：0.5分'},
+            {name:'洗衣房-灯光照明型号',standard:'灯具型号、色温、照度符合公司设计标准',score:0.5,scoreTag:'符合：0.5分'},
+            {name:'洗衣房-洗衣烘干机',standard:'按图纸采购，摆放正确，安装牢固',score:0.5,scoreTag:'符合：0.5分'},
+            {name:'健身房-装饰面观感天花',standard:'吊顶符合公司设计要求',score:0.5,scoreTag:'符合：0.5分'},
+            {name:'健身房-装饰面观感墙面、地砖',standard:'墙面材料、铺设符合公司标准、地砖材料符合公司要求',score:0.5,scoreTag:'符合：0.5分'}
+          ]}
+        ]
+      },
+      {id:'meeting',name:'会议室',icon:'📋',img:null  /* 无效果图 */,
+        groups:[
+          {type:'objective',label:'客观项',scoreText:'',items:[
+            {name:'会议室配置',standard:'按设计方案完成装潢，设备安装到位',score:0}
+          ]},
+          {type:'subjective',label:'主观项',scoreText:'',items:[
+            {name:'装饰面观感天花',standard:'吊顶符合公司设计要求',score:0},
+            {name:'装饰面观感墙面、地砖',standard:'已施工完成，墙面材料、铺设符合公司标准、地面材料符合公司要求',score:0},
+            {name:'灯光照明型号',standard:'灯具型号、色温、照度符合公司设计标准',score:0}
+          ]}
+        ]
+      },
+      {id:'lobby',name:'大堂',icon:'🏨',img:'lobby_feishu.jpg',
+        groups:[
+          {type:'objective',label:'客观项',scoreText:'',items:[
+            {name:'大堂面积',standard:'215m²（长16655mm×宽9650mm）',inputType:'value',score:1,scoreTag:'符合：1分'},
+            {name:'大堂层高',standard:'净高 2800mm',inputType:'value',score:1,scoreTag:'符合：1分'},
+            {name:'品牌元素完整性',standard:'RUMI组合陈列完整',score:1,scoreTag:'符合：1分'},
+            {name:'自助机配置',standard:'自助机数量符合要求',score:1,scoreTag:'符合：1分'},
+            {name:'智能设备配置',standard:'智能送物机器人配置',score:1,scoreTag:'符合：1分'},
+            {name:'前台背景墙面装饰',standard:'前台背景墙面装饰符合设计标准',score:1,scoreTag:'符合：1分'},
+            {name:'大堂硬件标准',standard:'墙面装饰、家具、天花吊顶造型符合设计标准',score:5,scoreType:'partial',partialMin:0,partialMax:3,scoreTag:'符合：5分'},
+            {name:'大堂门电动感应门',standard:'电动感应门需能正常使用。旋转感应门需有防夹功能及急停按钮',score:0,scoreTag:'符合：1分'}
+          ]},
+          {type:'subjective',label:'主观项',scoreText:'',items:[
+            {name:'装饰面观感墙面',standard:'墙板存在大面积色差，踢脚线符合要求',score:1,scoreTag:'符合：1分'},
+            {name:'装饰面观感地面',standard:'地面材料、尺寸、色调符合公司标准、美缝施工完成',score:1,scoreTag:'符合：1.5分'},
+            {name:'公共卫生间装饰及功能',standard:'装饰已按图纸完成，功能使用正常',score:0}
+          ]}
+        ]
+      }
+    ]
+  },
+  {id:'facade',name:'外立面',icon:'🏢',type:'direct',imgs:['facade_feishu1.jpg','facade_feishu2.jpg'],
+    groups:[
+      {type:'objective',label:'客观项',scoreText:'',items:[
+        {name:'门头店招数量',standard:'门头店招 1个，顶部店招 1个',score:0.5,scoreTag:'符合：0.5分'},
+        {name:'门头尺寸',standard:'宽度 7500mm，高度 6500mm',inputType:'value',score:1,scoreTag:'符合：1分'},
+        {name:'门头店招字体高度',standard:'字体高度 1000mm',inputType:'value',score:1,scoreTag:'符合：1分'},
+        {name:'门头顶部店招字体高度',standard:'字体高度 1200mm',inputType:'value',score:1,scoreTag:'符合：1分'},
+        {name:'品牌元素符合性',standard:'外饰、品牌元素符合如家4.0设计标准',score:1,scoreTag:'符合：1分'}
+      ]}
+    ]
+  },
+  {id:'system',name:'系统',icon:'🔧',type:'sub',img:null,
+    subModules:[
+      {id:'fire',name:'消防系统',icon:'🧯',img:null  /* 无效果图 */,
+        groups:[
+          {type:'objective',label:'客观项',scoreText:'',items:[
+            {name:'消防图纸审批',standard:'消防设计图审通过，已取得消防部门同意文件',score:0},
+            {name:'消防设施配备清单',standard:'烟感、喷淋、消火栓、灭火器等按规范配齐',score:0}
+          ]},
+          {type:'subjective',label:'主观项',scoreText:'',items:[
+            {name:'所有设备间及机房',standard:'烟感、应急照明、灭火器符合规范要求，且无渗水现象',score:0},
+            {name:'防火门',standard:'防火门符合设计要求，有合格证。消防楼道常闭式安全门向外开启，安全门完好无明显破损、闭门器完好，保持常闭状态',score:0},
+            {name:'消防联动',standard:'电梯迫降、强电强切、消防广播、声光报警、应急照明、疏散指示、强排烟风机、防火分区卷帘功能正常使用',score:0},
+            {name:'消防手动测试、烟感系统',standard:'1、消防手动测试：\n消防报警信号必须引至前台区域（覆盖酒店管理区域消防报警点位的消防主机、消防分机、层显）。消防报警主机正常报警 ，并能获知火警位置，消防报警主机面板菜单不得有故障信息（如在测试中因故障信息未处理或喇叭线拔掉，或各种系统瘫痪等原因导致测试不报警）。报警显示地址与实际地址相符合，不得大于2个及以上测试报警显示地址错误或无法显示，如显示编码须主机旁附编码和位置对照表。\n2、烟感感应器安装到位(室内所有区域、独立空间都有烟感），报警装置在前台（或信号接到前台），测试烟感及手报,报警显示房号及位置,水泵等联动测试正常.控制为自动状态，厨房设置温感\n未达以上要求的须设立专人24小时不间断值守消控室，且保证所有消控室设备正常运转，发生情况时应第一时间规范开展处置：\n1、消控室由酒店管理，设立专人24小时不间断值守的，验收当日消控室需完成装修在使用状态，管理人员在岗。所有消防控制室设备正常运转，安装机械门锁。\n2、若消控室由第三方管理，设立专人24小时不间断值守的。',score:0},
+            {name:'消防手动报警',standard:'消防报警信号引至前台区域，消防报警主机正常报警并能获知火警位置，面板无故障信息，报警显示地址与实际地址相符',score:0},
+            {name:'消防广播/声光',standard:'有消防广播（或声光报警装置），工作正常',score:0},
+            {name:'疏散指示、消防通道',standard:'消防通道畅通，向外防火门开启正常。疏散指示正常使用、位置和配备数量合理',score:0},
+            {name:'喷淋',standard:'消防喷淋符合当地消防法规要求，按消防标准施工。消防栓水最不利点静压满足0.1Mpa；末端喷淋最不利点压力≥0.05Mpa',score:0},
+            {name:'消火栓及灭火器',standard:'消防栓箱体内水枪头、水带配置齐全，栓口正向朝外或使用可旋转式，水压正常',score:0},
+            {name:'走廊应急照明',standard:'2次2处应急照明不符合要求则项目整体不合格',score:0},
+            {name:'消防泵房水箱、水池',standard:'1、泵房水泵数量符合设计要求，安装规范，压力正常，控制为自动状态,照明、应急照明、防火门安装到位，湿式报警阀、水力警铃试验和水泵点动正常。\n2、水箱不得直接安放在地面。水箱容积符合设计要求，如与生活共用水箱，出水口位置高差正确，根据地区特点，正确设置保温层，安装无渗漏。\n3、消防水池正常蓄水，浮球阀完好,水位不低于水箱容量的2/3。',score:0},
+            {name:'消防楼梯',standard:'消防楼梯畅通，搭建的钢梯质量、尺寸、造型、栏杆高度符合规范要求',score:0},
+            {name:'强排烟、正压送风系统',standard:'强排烟和正压送风口百叶风口完好，安装平整，位置符合要求，排烟风机、正压风机安装规范，有防火阀，风机点动试验正常。与消防报警主机联动。',score:0}
+          ]}
+        ]
+      },
+      {id:'water',name:'给排水系统',icon:'💧',img:null  /* 无效果图 */,
+        groups:[{type:'subjective',label:'主观项',scoreText:'',items:[
+          {name:'设计图纸核对',standard:'设备表查看是否有设备缺失以及设备参数是否满足设计要求（水箱有效容积、消毒装置、过滤器、水泵参数、供回水管管径）',score:0},
+          {name:'基础稳定安全',standard:'屋面水箱必须设置基础（混凝土或钢结构），且受力于原建筑结构柱（或承重墙）上',score:0},
+          {name:'水箱无渗漏',standard:'水箱无渗漏水；北方城市水箱间须有防冻设施；水箱配置容量与设计图纸一致',score:0},
+          {name:'水泵有无异响',standard:'水泵就位在槽钢基础上，装上地脚螺栓，水泵有效固定且基础应设减震器。噪声不影响酒店正常运行',score:0},
+          {name:'设备主机安装',standard:'室外机与机座之间应加有阻尼减震器。系统运转平稳，无异常振动与声响，外机噪音不影响酒店正常运营',score:0}
+        ]}]
+      },
+      {id:'monitor',name:'监控系统',icon:'📹',img:null  /* 无效果图 */,
+        groups:[{type:'subjective',label:'主观项',scoreText:'',items:[
+          {name:'监控录像',standard:'监控录像保存90天以上，检查内存容量',score:0}
+        ]}]
+      },
+      {id:'audio',name:'背景音乐',icon:'🔊',img:null  /* 无效果图 */,
+        groups:[{type:'subjective',label:'主观项',scoreText:'',items:[
+          {name:'背景广播',standard:'背景广播正常使用',score:0}
+        ]}]
+      },
+      {id:'ac',name:'空调系统',icon:'❄️',img:null  /* 无效果图 */,
+        groups:[{type:'subjective',label:'主观项',scoreText:'',items:[
+          {name:'水泵异响、设备主机减震',standard:'水泵就位在槽钢基础上，装上地脚螺栓，水泵有效固定且基础应设减震器。室外机与机座之间应加有阻尼减震器。系统运转平稳，无异常振动与声响',score:0}
+        ]}]
+      }
+    ]
+  },
+  {id:'safety',name:'安全及其它',icon:'🛡️',type:'direct',img:null  /* 无效果图 */,
+    groups:[
+      {type:'objective',label:'客观项',scoreText:'',items:[
+        {name:'保险',standard:'已按规定缴纳相关险种（公众责任险、现金险、财产一切险、机损险等）',score:0},
+        {name:'央采率',standard:'一类央采符合要求',score:5}
+      ]},
+      {type:'subjective',label:'主观项',scoreText:'',items:[
+        {name:'结构安全',standard:'酒店整体建筑物没有倾斜或没有明显墙体结构性开裂（不包括墙体粉刷层开裂）',score:0},
+        {name:'材料、安全',standard:'搭建辅房不可用作经营和住人，用作辅房需配齐消防设施和设备。厨房不准违规使用钢瓶液化石油气。，材料符合防火要求，不得使用夹层为聚苯板的彩钢夹芯板，符合承重要求。对于彩钢夹芯板的补救措施：采取阻燃措施（外包铁皮或内衬防火材料）或在同一栋楼物业管理方出具不适用酒店区域的证明和加盟商相对应的安全承诺书。',score:0},
+        {name:'央采质量',standard:'现场央采产品抽样检查（抽任何两类工程央采物品）',score:10,scoreType:'partial',partialMin:0,partialMax:5,scoreTag:'符合：10分'}
+      ]}
+    ]
+  },
+  {id:'it',name:'IT',icon:'💻',type:'direct',img:null,
+    groups:[
+      {type:'objective',label:'底线项（必检）',scoreText:'',items:[
+        {name:'公安网监设备',standard:'酒店已采购启用网监设备',isBaseline:true,score:0},
+        {name:'酒店集团门户',standard:'集团门户已完成上线',isBaseline:true,score:0},
+        {name:'酒店合规投屏',standard:'集团统一智能电视系统/可扫码登录的一房一码的投屏。如不满足上述条件，电视机只可播放直播信号',isBaseline:true,score:0},
+        {name:'酒店宽带线路',standard:'酒店带宽标准符合1+1（专线100M+大带宽），带宽满足4:1',isBaseline:true,score:0},
+        {name:'无线设备',standard:'1. 标准酒店一房一面板（华为、锐捷、神州数码等）或带无线漫游的三网；2. 非标加盟酒店可沿用原先三网合同使用',isBaseline:true,score:0}
+      ]},
+      {type:'subjective',label:'常规检查项',scoreText:'',items:[
+        {name:'酒店客房电视信号',standard:'使用合规电视信号',score:0},
+        {name:'认证开启情况',standard:'门店认证开启归属方确认（首旅如家门户 / 公安网监认证）',score:0},
+        {name:'公区各类显示屏红外遮挡',standard:'红外遮挡完成，0.5米外手机遥控失效，仅近距离遥控器可用',score:0},
+        {name:'公区房价牌（网络白名单）',standard:'标准门店网络白名单已配置；非标门店按物理遮挡执行',score:0},
+        {name:'网关路由层级',standard:'门店网关是否为一级路由；若酒店网关为二级路由或单供内网，同时未部署网监设备，告知酒店依照集团要求采购并开启网监',score:0},
+        {name:'门锁、发票PMS直连',standard:'酒店需完成门锁与发票对于PMS系统的直连配置',score:0},
+        {name:'前台电脑',standard:'前台PMS专用电脑：CPU要求i5系列以上，处理器代数12代及以上，型号禁止带有H/U/P/K/F等字母后缀，仅允许纯数字结尾标准型号；内存16G及以上；硬盘512G固态硬盘及以上',score:0}
+      ]}
+    ]
+  }
+];
+
+/* ===== PINYIN & COLOR MAPS ===== */
+var modulePinyin={filing:'BA',guestroom:'KR',functional:'GF',public:'GQ',facade:'WLM',system:'XT',safety:'AQ',it:'IT'};
+var subModulePinyin={
+  disinfection:'XD',equipment:'SB',staff:'YG',
+  elevator:'DT',corridor:'ZL',restaurant:'CT',kitchen:'CF',laundry_gym:'XY',meeting:'HY',lobby:'DT',
+  fire:'XF',water:'GP',monitor:'JK',audio:'BJ',ac:'KT'
+};
+var moduleColors={filing:'#86909C',guestroom:'#00A4F1',functional:'#00A4F1',public:'#02C2C2',facade:'#00A4F1',system:'#FFA64C',safety:'#FF4C4C',it:'#00A4F1'};
+var sidebarExpanded={};
+
+/* ===== STATE ===== */
+var currentRole='pm';
+var currentModuleId=null;
+var currentSubModuleId=null;
+var checkResults={}; // key -> 'pass'|'fail'|'partial'  (PM用原始key, QC用'qc_'+key)
+var checkValues={};  // key -> string
+var checkPhotos={};  // key -> [dataURL,...]
+var checkPartialScores={}; // key -> number (比较符合得分)
+
+/* Room Sampling */
+var TOTAL_ROOMS=106;
+var SAMPLE_RATIO=0.10;
+var roomNumbers=[];      // generated sample room numbers
+var currentRoomIdx=null;
+var roomCheckResults={}; // roomKey -> 'pass'|'fail'|'partial'
+var roomCheckPhotos={};  // roomKey -> [dataURL,...]
+var roomCheckPartialScores={}; // roomKey -> number (比较符合得分)
+var roomCheckItems=[
+  {name:'装饰面观感天花',standard:'天花符合设计要求，顶面平整度及细节处理细致',score:2,scoreType:'partial',partialMin:0,partialMax:2},
+  {name:'装饰面观感墙面',standard:'材料、尺寸、色调符合公司标准',score:1,scoreType:'partial',partialMin:0,partialMax:1},
+  {name:'装饰面观感地面（瓷砖）',standard:'客房瓷砖地面无大面质量缺陷（超过30%以上客房地砖出现1㎡以上连续性整砖破损、空鼓松动、色差）',score:0.5},
+  {name:'装饰面观感地面（木地板）',standard:'客房木地板地面无大面质量缺陷（2m平整度>5mm、1㎡以上色差、0.5㎡以上连续性起鼓、起皮、划痕等）',score:0.5},
+  {name:'装饰面观感地面（材质）',standard:'地砖、地毯、地板材质符合公司标准',score:1.5,scoreType:'partial',partialMin:0,partialMax:1.5},
+  {name:'客房门：材料、式样、色调',standard:'材料、式样、色调符合标准',score:0.5},
+  {name:'洗手台：型号、式样',standard:'型号正确，符合公司设计要求',score:0.5},
+  {name:'淋浴间完好性',standard:'淋浴房符合施工所属品牌图纸（型材颜色、玻璃厚度、玻璃有明显3C标志、门扇开启角度、玻璃膜颜色）',score:1},
+  {name:'淋浴间花洒',standard:'型号正确，花洒底座安装高度、手持淋浴龙头花洒阀体安装高度符合设计要求',score:0.5},
+  {name:'淋浴间地漏',standard:'地漏型号、位置正确、坡度合理、无明显积水',score:0.5},
+  {name:'灯光照明型号',standard:'灯控系统完成，灯具型号、色温符合公司设计标准',score:1}
+];
+
+/* ===== KEY HELPERS ===== */
+function applyRole(){var r=document.querySelector(':root');r.style.setProperty('--role',currentRole==='pm'?'#00A4F1':'#FFA64C');}
+function getModule(id){return modules.find(function(m){return m.id===id;});}
+function getSubModule(modId,subId){var m=getModule(modId);if(!m||!m.subModules)return null;return m.subModules.find(function(s){return s.id===subId;});}
+function itemKey(modId,subId,gi,ii){return modId+'_'+(subId||'0')+'_'+gi+'_'+ii;}
+function myResultKey(key){return currentRole==='qc'?'qc_'+key:key;}
+function isDeductionItem(key){
+  var parts=key.split('_');
+  var modId=parts[0],subId=parts[1],gi=parseInt(parts[2]),ii=parseInt(parts[3]);
+  var mod=getModule(modId);if(!mod)return false;
+  var target=subId&&subId!=='0'?getSubModule(modId,subId):mod;
+  if(!target||!target.groups)return false;
+  var g=target.groups[gi];if(!g)return false;
+  var it=g.items[ii];return !!(it&&it.scoreType==='deduction');
+}
+
+function countAllItems(mod){
+  if(mod.type==='sub'){
+    return mod.subModules.reduce(function(s,sm){return s+countGroupItems(sm.groups);},0);
+  }
+  return countGroupItems(mod.groups);
+}
+function countGroupItems(groups){
+  return groups.reduce(function(s,g){return s+g.items.length;},0);
+}
+function countCompleted(mod){
+  var total=0;
+  if(mod.type==='sub'){
+    mod.subModules.forEach(function(sm){
+      sm.groups.forEach(function(g,gi){
+        g.items.forEach(function(it,ii){
+          if(checkResults[myResultKey(itemKey(mod.id,sm.id,gi,ii))])total++;
+        });
+      });
+    });
+  }else{
+    mod.groups.forEach(function(g,gi){
+      g.items.forEach(function(it,ii){
+        if(checkResults[myResultKey(itemKey(mod.id,null,gi,ii))])total++;
+      });
+    });
+  }
+  return total;
+}
+function countSubCompleted(modId,subId){
+  var mod=getModule(modId);if(!mod||mod.type!=='sub')return 0;
+  var c=0;
+  var sm=mod.subModules.find(function(s){return s.id===subId;});
+  if(!sm)return 0;
+  sm.groups.forEach(function(g,gi){
+    g.items.forEach(function(it,ii){
+      if(checkResults[myResultKey(itemKey(modId,subId,gi,ii))])c++;
+    });
+  });
+  return c;
+}
+
+/* ===== SCORING ===== */
+function calculatePMScore(){
+  var total=0,maxTotal=0;
+  var filingScore=20,filingMax=20,filingDeduct=0;
+  var details=[];
+  modules.forEach(function(mod){
+    var iter=function(g,gi,subId){
+      g.items.forEach(function(it,ii){
+        var key=itemKey(mod.id,subId,gi,ii);
+        if(it.scoreType==='deduction'){
+          if(checkResults[key]==='fail'){
+            filingScore-=it.score;
+            filingDeduct+=it.score;
+          }
+        }else{
+          maxTotal+=it.score;
+          if(checkResults[key]==='pass')total+=it.score;
+          else if(checkResults[key]==='partial')total+=(checkPartialScores[key]||0);
+        }
+      });
+    };
+    if(mod.type==='sub'){
+      mod.subModules.forEach(function(sm){sm.groups.forEach(function(g,gi){iter(g,gi,sm.id);});});
+    }else{
+      mod.groups.forEach(function(g,gi){iter(g,gi,null);});
+    }
+  });
+  return {total:total+filingScore,maxTotal:maxTotal+filingMax,regularTotal:total,regularMax:maxTotal,filingScore:filingScore,filingMax:filingMax,filingDeduct:filingDeduct};
+}
+
+function calculateQCScore(){
+  var total=0,maxTotal=0,checkedCount=0;
+  modules.forEach(function(mod){
+    var iter=function(g,gi,subId){
+      g.items.forEach(function(it,ii){
+        var key=itemKey(mod.id,subId,gi,ii);
+        var qk='qc_'+key;
+        if(checkResults[qk]){
+          checkedCount++;
+          var sc=it.score||0;
+          maxTotal+=sc;
+          if(checkResults[qk]==='pass')total+=sc;
+          else if(checkResults[qk]==='partial')total+=(checkPartialScores[qk]||0);
+        }
+      });
+    };
+    if(mod.type==='sub'){
+      mod.subModules.forEach(function(sm){sm.groups.forEach(function(g,gi){iter(g,gi,sm.id);});});
+    }else{
+      mod.groups.forEach(function(g,gi){iter(g,gi,null);});
+    }
+  });
+  return {total:total,maxTotal:maxTotal,checkedCount:checkedCount};
+}
+
+function renderScoreSummary(modId,subId){
+  var mod=getModule(modId);if(!mod)return '';
+  var target=subId?getSubModule(modId,subId):mod;
+  if(!target||!target.groups)return '';
+  var pmTotal=0,pmMax=0;
+  var qcTotal=0,qcMax=0,qcChecked=0;
+  var filingDeduct=0,filingMax=20,filingCount=0;
+  target.groups.forEach(function(g,gi){
+    g.items.forEach(function(it,ii){
+      var key=itemKey(modId,subId,gi,ii);
+      if(it.scoreType==='deduction'){
+        filingCount++;
+        if(checkResults[key]!=='pass')filingDeduct+=it.score;
+      }else{
+        pmMax+=it.score;
+        if(checkResults[key]==='pass')pmTotal+=it.score;
+        else if(checkResults[key]==='partial')pmTotal+=(checkPartialScores[key]||0);
+      }
+      if(checkResults['qc_'+key]){
+        qcChecked++;
+        qcMax+=(it.score||0);
+        if(checkResults['qc_'+key]==='pass')qcTotal+=(it.score||0);
+        else if(checkResults['qc_'+key]==='partial')qcTotal+=(checkPartialScores['qc_'+key]||0);
+      }
+    });
+  });
+  var html='<div class="score-detail">';
+  html+='<div class="sd-title">📊 本模块得分情况</div>';
+  if(filingCount>0){
+    var fScore=filingMax-filingDeduct;
+    html+='<div class="sd-row"><span class="sd-label">项目经理（备案扣分制）</span><span class="sd-val pm">'+fScore+'/'+filingMax+'分</span></div>';
+    if(filingDeduct>0)html+='<div class="sd-row"><span class="sd-label" style="font-size:12px">不符合扣分</span><span class="sd-val" style="color:var(--red);font-size:12px">-'+filingDeduct+'分</span></div>';
+  }else{
+    html+='<div class="sd-row"><span class="sd-label">项目经理</span><span class="sd-val pm">'+pmTotal+'/'+pmMax+'分</span></div>';
+  }
+  if(qcChecked>0){
+    html+='<div class="sd-row"><span class="sd-label">质检经理</span><span class="sd-val qc">'+qcTotal+'/'+qcMax+'分（已检查'+qcChecked+'项）</span></div>';
+  }
+  html+='</div>';
+  return html;
+}
+
+/* ===== RING PROGRESS SVG ===== */
+var MODULE_RING_COLORS={filing:'#86909C',guestroom:'#00A4F1',functional:'#00A4F1',public:'#02C2C2',facade:'#00A4F1',system:'#FFA64C',safety:'#FF4C4C',it:'#00A4F1'};
+function ringSVG(size,color,pct,bg){
+  var r=Math.round((size-4.5)/2);
+  var circ=2*Math.PI*r;
+  var off=circ*(1-pct/100);
+  var c=size/2;
+  var bgColor=bg||'#EDF0F5';
+  return '<svg viewBox="0 0 '+size+' '+size+'" width="'+size+'" height="'+size+'"><circle cx="'+c+'" cy="'+c+'" r="'+r+'" fill="none" stroke="'+bgColor+'" stroke-width="4.5"/><circle cx="'+c+'" cy="'+c+'" r="'+r+'" fill="none" stroke="'+color+'" stroke-width="4.5" stroke-linecap="round" stroke-dasharray="'+circ+'" stroke-dashoffset="'+off+'" transform="rotate(-90 '+c+' '+c+'"/></svg>';
+}
+
+/* ===== RENDER MODULE LIST (New Single Column) ===== */
+var moduleTagAbbr={filing:'BA',guestroom:'KF',functional:['XD','SB','YG'],public:['DT','ZL','CT','CH','XY','HY','DTa'],facade:['WM','ZM'],system:['DQ','SDS','KT','JZSB','XF','DT2','RG','PB'],safety:['XF2','AQ'],it:['WX','RW','AQGD','AJ']};
+function renderModuleList(filtered){
+  var grid=document.getElementById('moduleGrid');
+  var html='';
+  var totalAll=0,doneAll=0;
+  var modsToRender=modules;
+  modsToRender.forEach(function(mod){
+    var total=countAllItems(mod);
+    var done=countCompleted(mod);
+    totalAll+=total;doneAll+=done;
+    var pct=total>0?Math.round(done/total*100):0;
+    var sc=moduleScore(mod);
+    var isAllDone=(done===total&&total>0);
+    var color=isAllDone?'#02C2C2':(pct>0?'#FFA64C':'#86909C');
+
+    // Stats text
+    var statsText='';
+    var subCount=mod.subModules?mod.subModules.length:0;
+    var subDone=0;
+    if(mod.type==='sub'&&mod.subModules){
+      mod.subModules.forEach(function(sm){
+        var smDone=true;
+        sm.groups.forEach(function(g,gi){
+          g.items.forEach(function(it,ii){
+            var k=myResultKey(itemKey(mod.id,sm.id,gi,ii));
+            if(!checkResults[k]||checkResults[k]==='none')smDone=false;
+          });
+        });
+        if(smDone)subDone++;
+      });
+      statsText=subCount+'个子模块 · '+total+'项 · '+subDone+'/'+subCount+'完成';
+    }else{
+      statsText=total+'项 · '+done+'/'+total+'完成';
+    }
+
+    html+='<div class="mod-card" onclick="enterModule(\''+mod.id+'\')">';
+    // icon box with gradient
+    html+='<div class="mc-icon-box" style="background:linear-gradient(135deg,'+color+','+lightenColor(color,30)+');">'+mod.icon+'</div>';
+    // middle info
+    html+='<div class="mc-mid">';
+    html+='<div class="mc-name">'+mod.name+(isAllDone?' <span class="done-tag">已完成</span>':'')+'</div>';
+    html+='<div class="mc-stats">'+statsText+'</div>';
+    html+='</div>';
+    // right side: score number
+    html+='<div class="mc-right">';
+    html+='<div class="mc-score-num" style="color:'+(pct>0?color:'#86909C')+'">'+sc.total+'<span class="mc-score-max">/'+sc.max+'</span></div>';
+    html+='</div>';
+    html+='</div>';
+  });
+  if(!modsToRender.length){
+    html+='<div style="text-align:center;padding:60px 20px;color:var(--aux);font-size:14px">未找到匹配模块</div>';
+  }
+  grid.innerHTML=html;
+
+  // Update hero progress
+  var pctAll=totalAll>0?Math.round(doneAll/totalAll*100):0;
+  var pmScore=calculatePMScore();
+  var heroRingFill=document.getElementById('heroRingFill');
+  var circ=2*Math.PI*25;
+  var off=circ*(1-pctAll/100);
+  heroRingFill.style.strokeDashoffset=off;
+  document.getElementById('heroRingText').textContent=pctAll+'%';
+  document.getElementById('heroScore').textContent=pmScore.total+'/'+pmScore.maxTotal+'分';
+  document.getElementById('heroSub').textContent=doneAll+'/'+totalAll+' 项已检 · 8大模块';
+  document.getElementById('heroBarFill').style.width=pctAll+'%';
+}
+
+function lightenColor(hex,pct){
+  var r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+  var lr=Math.min(255,Math.round(r+(255-r)*pct/100));
+  var lg=Math.min(255,Math.round(g+(255-g)*pct/100));
+  var lb=Math.min(255,Math.round(b+(255-b)*pct/100));
+  return '#'+[lr,lg,lb].map(function(v){var s=v.toString(16);return s.length<2?'0'+s:s;}).join('');
+}
+function hexToRgba(hex,a){
+  var r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+  return 'rgba('+r+','+g+','+b+','+a+')';
+}
+
+/* ===== INSPECTION VIEW ===== */
+function moduleScore(mod){
+  var pmTotal=0,pmMax=0,filingDeduct=0,filingMax=20,filingCount=0;
+  var iter=function(g,gi,subId){
+    g.items.forEach(function(it,ii){
+      var key=itemKey(mod.id,subId,gi,ii);
+      if(it.scoreType==='deduction'){
+        filingCount++;
+        if(checkResults[key]!=='pass')filingDeduct+=it.score;
+      }else{
+        pmMax+=it.score;
+        if(checkResults[key]==='pass')pmTotal+=it.score;
+        else if(checkResults[key]==='partial')pmTotal+=(checkPartialScores[key]||0);
+      }
+    });
+  };
+  if(mod.type==='sub'){
+    mod.subModules.forEach(function(sm){sm.groups.forEach(function(g,gi){iter(g,gi,sm.id);});});
+  }else{
+    mod.groups.forEach(function(g,gi){iter(g,gi,null);});
+  }
+  if(filingCount>0)return{total:filingMax-filingDeduct,max:filingMax,isFiling:true};
+  return{total:pmTotal,max:pmMax,isFiling:false};
+}
+
+function renderModuleScoreSummary(mod){
+  var sc=moduleScore(mod);
+  var html='<div class="score-detail">';
+  html+='<div class="sd-title">📊 本模块得分情况</div>';
+  if(sc.isFiling){
+    html+='<div class="sd-row"><span class="sd-label">项目经理（备案扣分制）</span><span class="sd-val pm">'+sc.total+'/'+sc.max+'分</span></div>';
+  }else{
+    html+='<div class="sd-row"><span class="sd-label">项目经理</span><span class="sd-val pm">'+sc.total+'/'+sc.max+'分</span></div>';
+  }
+  if(currentRole==='qc'){
+    var qcTotal=0,qcMax=0,qcChecked=0;
+    var qiter=function(g,gi,subId){
+      g.items.forEach(function(it,ii){
+        var key=itemKey(mod.id,subId,gi,ii);
+        if(checkResults['qc_'+key]){
+          qcChecked++;qcMax+=(it.score||0);
+          if(checkResults['qc_'+key]==='pass')qcTotal+=(it.score||0);
+          else if(checkResults['qc_'+key]==='partial')qcTotal+=(checkPartialScores['qc_'+key]||0);
+        }
+      });
+    };
+    if(mod.type==='sub'){
+      mod.subModules.forEach(function(sm){sm.groups.forEach(function(g,gi){qiter(g,gi,sm.id);});});
+    }else{
+      mod.groups.forEach(function(g,gi){qiter(g,gi,null);});
+    }
+    if(qcChecked>0){
+      html+='<div class="sd-row"><span class="sd-label">质检经理</span><span class="sd-val qc">'+qcTotal+'/'+qcMax+'分（已检查'+qcChecked+'项）</span></div>';
+    }
+  }
+  html+='</div>';
+  return html;
+}
+
+function updateBottomBarScore(modId){
+  var label=document.getElementById('bbProgLabel');
+  var pctEl=document.getElementById('bbProgPct');
+  var scoreEl=document.getElementById('bbProgScore');
+  var fill=document.getElementById('bbProgFill');
+  var primaryLabel=document.getElementById('bbPrimaryLabel');
+  if(!label)return;
+  if(!modId){
+    label.textContent='';pctEl.textContent='';scoreEl.textContent='';fill.style.width='0%';return;
+  }
+  var mod=getModule(modId);
+  if(!mod){label.textContent='';pctEl.textContent='';scoreEl.textContent='';fill.style.width='0%';return;}
+  var total=countAllItems(mod);
+  var done=countCompleted(mod);
+  var pct=total>0?Math.round(done/total*100):0;
+  var isAllDone=(done===total&&total>0);
+  var statusColor=isAllDone?'#02C2C2':(pct>0?'#FFA64C':'#86909C');
+  var scoreBg=hexToRgba(statusColor,.08);
+  var sc=moduleScore(mod);
+  label.textContent=done+'/'+total+' 项已检';
+  pctEl.textContent=pct+'%';
+  pctEl.style.color=statusColor;
+  scoreEl.textContent=sc.total+'/'+sc.max+'分';
+  scoreEl.style.color=statusColor;
+  scoreEl.style.background=scoreBg;
+  fill.style.width=pct+'%';
+  fill.style.background=statusColor;
+  if(primaryLabel)primaryLabel.textContent='保存'+mod.name+'质检';
+}
+
+function updateRoomBottomBar(roomIdx){
+  var label=document.getElementById('bbProgLabel');
+  var pctEl=document.getElementById('bbProgPct');
+  var scoreEl=document.getElementById('bbProgScore');
+  var fill=document.getElementById('bbProgFill');
+  var primaryLabel=document.getElementById('bbPrimaryLabel');
+  if(!label)return;
+  var total=roomCheckItems.length;
+  var done=roomDoneCount(roomIdx);
+  var pct=total>0?Math.round(done/total*100):0;
+  var isAllDone=(done===total&&total>0);
+  var statusColor=isAllDone?'#02C2C2':(pct>0?'#FFA64C':'#86909C');
+  var scoreBg=hexToRgba(statusColor,.08);
+  var roomScore=calcRoomScore(roomIdx);
+  label.textContent=done+'/'+total+' 项已检';
+  pctEl.textContent=pct+'%';
+  pctEl.style.color=statusColor;
+  scoreEl.textContent=roomScore.earned+'/'+roomScore.max+'分';
+  scoreEl.style.color=statusColor;
+  scoreEl.style.background=scoreBg;
+  fill.style.width=pct+'%';
+  fill.style.background=statusColor;
+  if(primaryLabel)primaryLabel.textContent='保存客房质检';
+}
+
+var sectionDescMap={
+  'objective':'实测数据核验',
+  'subjective':'观感与功能检查',
+  'filing':'证照文件核查'
+};
+function sectionHeaderHTML(g){
+  var desc=g.desc||sectionDescMap[g.type]||'';
+  var scoreText=g.scoreText===undefined?'扣分项：2分/项':g.scoreText;
+  var countHTML=scoreText?'<span class="sh-count'+(g.type==='filing'?' deduction':'')+'">'+scoreText+'</span>':'';
+  return '<div class="section-header"><span class="sh-bar"></span><span class="sh-tag '+g.type+'">'+g.label+'</span><div class="sh-text"><span class="sh-title">'+g.label+'</span>'+(desc?'<span class="sh-desc">'+desc+'</span>':'')+'</div>'+countHTML+'</div>';
+}
+
+function renderSidebar(){
+  var sb=document.getElementById('inspSidebar');
+  if(!sb)return;
+  var html='';
+  modules.forEach(function(mod){
+    var abbr=modulePinyin[mod.id];
+    var total=countAllItems(mod);
+    var done=countCompleted(mod);
+    var pct=total>0?Math.round(done/total*100):0;
+    var isAllDone=(done===total&&total>0);
+    var dotColor=isAllDone?'#02C2C2':(pct>0?'#FFA64C':'#C8D2DC');
+    var hasSub=mod.type==='sub';
+    html+='<div class="insp-side-item" id="side_'+mod.id+'" onclick="onSidebarClick(\''+mod.id+'\')" data-status="'+dotColor+'">';
+    html+='<div class="isi-block"><span class="isi-emoji">'+mod.icon+'</span></div>';
+    html+='<div class="isi-abbr">'+abbr+'</div>';
+    html+='<div class="isi-dot" style="background:'+dotColor+'"></div>';
+    html+='<div class="isi-divider"></div>';
+    html+='</div>';
+    if(hasSub){
+      html+='<div class="insp-side-subs'+(sidebarExpanded[mod.id]?' show':'')+'" id="sidesub_'+mod.id+'">';
+      mod.subModules.forEach(function(sm){
+        var sabbr=subModulePinyin[sm.id]||'';
+        var stotal=sm.groups.reduce(function(s,g){return s+g.items.length;},0);
+        var sdone=countSubCompleted(mod.id,sm.id);
+        html+='<div class="insp-side-sub" id="sidesubitem_'+mod.id+'_'+sm.id+'" onclick="event.stopPropagation();onSideSubClick(\''+mod.id+'\',\''+sm.id+'\')">'+sabbr+'<div style="font-size:9px;color:var(--aux);margin-top:2px">'+sdone+'/'+stotal+'</div></div>';
+      });
+      html+='</div>';
+    }
+  });
+  sb.innerHTML=html;
+}
+
+function highlightSidebar(modId){
+  document.querySelectorAll('.insp-side-item').forEach(function(el){el.classList.remove('active');});
+  document.querySelectorAll('.insp-side-sub').forEach(function(el){el.classList.remove('active-sub');});
+  var el=document.getElementById('side_'+modId);
+  if(el){
+    el.classList.add('active');
+  }
+  if(currentSubModuleId){
+    var subEl=document.getElementById('sidesubitem_'+modId+'_'+currentSubModuleId);
+    if(subEl)subEl.classList.add('active-sub');
+  }
+}
+
+function updateSidebarDots(){
+  var pageInsp=document.getElementById('page-inspection');
+  if(!pageInsp||!pageInsp.classList.contains('active'))return;
+  modules.forEach(function(mod){
+    var total=countAllItems(mod);
+    var done=countCompleted(mod);
+    var pct=total>0?Math.round(done/total*100):0;
+    var isAllDone=(done===total&&total>0);
+    var dotColor=isAllDone?'#02C2C2':(pct>0?'#FFA64C':'#C8D2DC');
+    var item=document.getElementById('side_'+mod.id);
+    if(item){
+      var dot=item.querySelector('.isi-dot');
+      if(dot)dot.style.background=dotColor;
+    }
+    if(mod.type==='sub'){
+      mod.subModules.forEach(function(sm){
+        var sub=document.getElementById('sidesubitem_'+mod.id+'_'+sm.id);
+        if(sub){
+          var stotal=sm.groups.reduce(function(s,g){return s+g.items.length;},0);
+          var sdone=countSubCompleted(mod.id,sm.id);
+          var last=sub.lastElementChild;
+          if(last&&last.tagName==='DIV')last.textContent=sdone+'/'+stotal;
+        }
+      });
+    }
+  });
+}
+
+function onSideSubClick(modId,subId){
+  if(currentModuleId!==modId){
+    selectInspectionModule(modId);
+  }
+  setTimeout(function(){scrollToSubModule(modId,subId);},80);
+}
+
+function onSidebarClick(modId){
+  var mod=getModule(modId);if(!mod)return;
+  if(mod.type==='sub'){
+    var el=document.getElementById('sidesub_'+modId);
+    if(el){
+      sidebarExpanded[modId]=!sidebarExpanded[modId];
+      el.classList.toggle('show',sidebarExpanded[modId]);
+    }
+  }
+  selectInspectionModule(modId);
+}
+
+function scrollToModule(modId){
+  var el=document.getElementById('inspmod_'+modId);
+  var main=document.getElementById('inspMain');
+  if(!el||!main)return;
+  var top=el.getBoundingClientRect().top-main.getBoundingClientRect().top+main.scrollTop;
+  main.scrollTo({top:Math.max(top-6,0),behavior:'smooth'});
+  highlightSidebar(modId);
+}
+
+function scrollToSubModule(modId,subId){
+  var el=document.getElementById('inspsub_'+modId+'_'+subId);
+  var main=document.getElementById('inspMain');
+  if(!el||!main)return;
+  var top=el.getBoundingClientRect().top-main.getBoundingClientRect().top+main.scrollTop;
+  main.scrollTo({top:Math.max(top-6,0),behavior:'smooth'});
+  if(getModule(modId))highlightSidebar(modId);
+}
+
+function highlightSidebar(modId){
+  document.querySelectorAll('.insp-side-item').forEach(function(el){
+    el.classList.remove('active');
+    el.style.removeProperty('--sm');
+  });
+  var el=document.getElementById('side_'+modId);
+  if(el){
+    el.classList.add('active');
+    var mod=getModule(modId);
+    if(mod){
+      var total=countAllItems(mod);
+      var done=countCompleted(mod);
+      var pct=total>0?Math.round(done/total*100):0;
+      var isAllDone=(done===total&&total>0);
+      var c=isAllDone?'#02C2C2':(pct>0?'#FFA64C':'#86909C');
+      el.style.setProperty('--sm',c);
+    }
+  }
+}
+
+var inspScrollBound=false;
+function bindInspectionScroll(){
+  if(inspScrollBound)return;
+  inspScrollBound=true;
+}
+
+function selectInspectionModule(modId){
+  currentModuleId=modId;
+  currentSubModuleId=null;
+  renderInspectionView(modId);
+  highlightSidebar(modId);
+  var main=document.getElementById('inspMain');
+  if(main)main.scrollTop=0;
+  var mod=getModule(modId);
+  if(mod){
+    document.getElementById('headerTitle').textContent=mod.name;
+  }
+}
+
+function renderInspectionView(filterModId){
+  renderSidebar();
+  bindInspectionScroll();
+  var main=document.getElementById('inspMain');
+  if(!main)return;
+  var html='';
+  var modsToRender=filterModId?modules.filter(function(m){return m.id===filterModId;}):modules;
+  modsToRender.forEach(function(mod){
+    var total=countAllItems(mod);
+    var done=countCompleted(mod);
+    var pct=total>0?Math.round(done/total*100):0;
+    var sc=moduleScore(mod);
+    var isAllDone=(done===total&&total>0);
+    var modColor=isAllDone?'#02C2C2':(pct>0?'#FFA64C':'#86909C');
+    var scoreBg=pct>0?hexToRgba(modColor,.08):'#F5F7FA';
+    var scoreColor=pct>0?modColor:'#86909C';
+    var scoreText=sc.total+'/'+sc.max+'分';
+    html+='<div class="insp-module" id="inspmod_'+mod.id+'" data-mod="'+mod.id+'">';
+    html+='<div class="insp-module-header">';
+    html+='<div class="imh-name">'+mod.icon+' '+mod.name+'</div>';
+    html+='<div class="imh-progress">'+done+'/'+total+'项</div>';
+    html+='<div class="imh-score" style="background:'+scoreBg+';color:'+scoreColor+'">'+scoreText+'</div>';
+    html+='</div>';
+    if(mod.img){
+      html+='<img class="insp-module-img" src="assets/'+mod.img+'" alt="'+mod.name+'效果图" onerror="this.style.display=\'none\'">';
+    }
+    if(mod.imgs){
+      mod.imgs.forEach(function(im){html+='<img class="insp-module-img" src="assets/'+im+'" alt="'+mod.name+'效果图" onerror="this.style.display=\'none\'">';});
+    }
+    html+='<div class="insp-module-body">';
+    if(mod.type==='sub'){
+      mod.subModules.forEach(function(sm){
+        var sabbr=subModulePinyin[sm.id]||'';
+        var smTotal=countGroupItems(sm.groups);
+        var smDone=0;
+        sm.groups.forEach(function(g,gi){
+          g.items.forEach(function(it,ii){
+            var k=myResultKey(itemKey(mod.id,sm.id,gi,ii));
+            if(checkResults[k]&&checkResults[k]!=='none')smDone++;
+          });
+        });
+        var smPct=smTotal>0?Math.round(smDone/smTotal*100):0;
+        var smAllDone=(smDone===smTotal&&smTotal>0);
+        var smColor=smAllDone?'#02C2C2':(smPct>0?'#FFA64C':'#86909C');
+        html+='<div class="insp-submodule" id="inspsub_'+mod.id+'_'+sm.id+'">';
+        html+='<div class="insp-sub-header">';
+        html+='<div class="insp-sub-badge" style="background:'+smColor+'">'+sabbr+'</div>';
+        html+='<div class="ish-name">'+sm.name+'</div>';
+        html+='<div class="ish-line"></div>';
+        html+='</div>';
+        if(sm.img){
+          html+='<img class="insp-sub-img" src="assets/'+sm.img+'" alt="'+sm.name+'效果图" onerror="this.style.display=\'none\'">';
+        }
+        sm.groups.forEach(function(g,gi){
+          html+=sectionHeaderHTML(g);
+          g.items.forEach(function(it,ii){
+            var key=itemKey(mod.id,sm.id,gi,ii);
+            if(g.type==='filing')html+=renderFilingItem(key,it);
+            else html+=renderCheckItem(key,it);
+          });
+        });
+        html+='</div>';
+      });
+    }else{
+      mod.groups.forEach(function(g,gi){
+        html+=sectionHeaderHTML(g);
+        g.items.forEach(function(it,ii){
+          var key=itemKey(mod.id,null,gi,ii);
+          if(g.type==='filing')html+=renderFilingItem(key,it);
+          else html+=renderCheckItem(key,it);
+        });
+      });
+    }
+    html+='</div>';
+    html+='</div>';
+  });
+  main.innerHTML=html;
+  // Update bottom bar score for single-module inspection view
+  updateBottomBarScore(filterModId);
+  modsToRender.forEach(function(mod){
+    if(mod.type==='sub'){
+      mod.subModules.forEach(function(sm){
+        sm.groups.forEach(function(g,gi){
+          g.items.forEach(function(it,ii){
+            restoreItemState(itemKey(mod.id,sm.id,gi,ii));
+          });
+        });
+      });
+    }else{
+      mod.groups.forEach(function(g,gi){
+        g.items.forEach(function(it,ii){
+          restoreItemState(itemKey(mod.id,null,gi,ii));
+        });
+      });
+    }
+  });
+  highlightSidebar(currentModuleId||modules[0].id);
+}
+
+/* ===== ENTER MODULE ===== */
+function enterModule(id){
+  var mod=getModule(id);if(!mod)return;
+  currentModuleId=id;currentSubModuleId=null;
+  // QC role: guestroom -> room sampling flow first
+  if(currentRole==='qc'&&id==='guestroom'){
+    enterRoomSampling();
+    return;
+  }
+  document.getElementById('headerTitle').textContent=mod.name;
+  document.getElementById('backBtn').style.visibility='visible';
+  renderInspectionView(id);
+  showPage('page-inspection');
+  highlightSidebar(id);
+}
+
+/* ===== RENDER SUB-MODULE LIST ===== */
+function renderSubModuleList(modId){
+  var mod=getModule(modId);if(!mod)return;
+  var list=document.getElementById('subModuleList');
+  var html='';
+  mod.subModules.forEach(function(sm){
+    var total=countGroupItems(sm.groups);
+    var done=0;
+    sm.groups.forEach(function(g,gi){
+      g.items.forEach(function(it,ii){
+        if(checkResults[myResultKey(itemKey(modId,sm.id,gi,ii))])done++;
+      });
+    });
+    var pct=total>0?Math.round(done/total*100):0;
+    html+='<div class="sub-card" onclick="enterSubModule(\''+modId+'\',\''+sm.id+'\')">';
+    html+='<div class="sc-icon">'+(sm.icon||'📁')+'</div>';
+    html+='<div class="sc-info">';
+    html+='<div class="sc-name">'+sm.name+'</div>';
+    html+='<div class="sc-count">'+total+'项 · 已完成'+done+'项</div>';
+    html+='<div class="sc-progress-bar"><div class="sc-progress-fill" style="width:'+pct+'%"></div></div>';
+    html+='</div>';
+    html+='<div class="sc-arrow">›</div>';
+    html+='</div>';
+  });
+  list.innerHTML=html;
+}
+
+function enterSubModule(modId,subId){
+  currentSubModuleId=subId;
+  var sm=getSubModule(modId,subId);if(!sm)return;
+  document.getElementById('headerTitle').textContent=sm.name;
+  renderDetail(modId,subId);
+  showPage('page-detail');
+}
+
+/* ===== RENDER DETAIL ===== */
+function renderDetail(modId,subId){
+  var mod=getModule(modId);if(!mod)return;
+  var target=subId?getSubModule(modId,subId):mod;
+  if(!target)return;
+  var body=document.getElementById('detailBody');
+  var html='';
+  // header
+  var total=countGroupItems(target.groups);
+  var done=0;
+  target.groups.forEach(function(g,gi){
+    g.items.forEach(function(it,ii){
+      if(checkResults[myResultKey(itemKey(modId,subId,gi,ii))])done++;
+    });
+  });
+  html+='<div class="detail-header"><span class="dh-icon">'+(target.icon||mod.icon)+'</span><span class="dh-name">'+target.name+'</span><span class="dh-count">'+done+'/'+total+'</span></div>';
+  // image
+  if(target.img){
+    html+='<div class="loc-image"><img src="assets/'+target.img+'" alt="'+target.name+'效果图" onerror="this.parentElement.style.display=\'none\'"><div class="loc-img-label">'+target.name+' 效果图参考</div></div>';
+  }
+  if(target.imgs){
+    target.imgs.forEach(function(im){
+      html+='<div class="loc-image"><img src="assets/'+im+'" alt="'+target.name+'效果图" onerror="this.parentElement.style.display=\'none\'"><div class="loc-img-label">'+target.name+' 效果图参考</div></div>';
+    });
+  }
+  // groups
+  target.groups.forEach(function(g,gi){
+    html+=sectionHeaderHTML(g);
+    g.items.forEach(function(it,ii){
+      var key=itemKey(modId,subId,gi,ii);
+      if(g.type==='filing'){
+        html+=renderFilingItem(key,it);
+      }else{
+        html+=renderCheckItem(key,it);
+      }
+    });
+  });
+  // Score summary at bottom
+  html+=renderScoreSummary(modId,subId);
+  body.innerHTML=html;
+  // restore state
+  target.groups.forEach(function(g,gi){
+    g.items.forEach(function(it,ii){
+      var key=itemKey(modId,subId,gi,ii);
+      restoreItemState(key);
+    });
+  });
+}
+
+function scoreBadge(it){
+  return it.scoreTag?'<span class="ci-score">'+it.scoreTag+'</span>':'';
+}
+
+function renderCheckItem(key,it){
+  var html='<div class="check-item'+(it.isBaseline?' baseline':'')+'" id="item_'+key+'">';
+  html+='<div class="ci-name">'+(it.isBaseline?'<span class="ci-baseline-tag">底线</span>':'')+it.name+scoreBadge(it)+'</div>';
+  html+='<div class="ci-standard">'+(it.standard||'')+'</div>';
+  if(it.tags&&it.tags.length){
+    html+='<div class="ci-tags">';
+    it.tags.forEach(function(t){html+='<span class="ci-tag">'+t+'</span>';});
+    html+='</div>';
+  }
+  if(it.inputType==='value'){
+    var vk=myResultKey(key);
+    html+='<div class="value-input"><input type="text" placeholder="请输入实测值" oninput="onValueInput(\''+key+'\',this.value)" value="'+(checkValues[vk]||'')+'"></div>';
+  }
+  // QC mode: show PM result read-only
+  if(currentRole==='qc'){
+    var pmRes=checkResults[key];
+    var pmText=pmRes==='pass'?'符合':pmRes==='partial'?'比较符合':pmRes==='fail'?'不符合':'未检查';
+    var pmClass=pmRes==='pass'?'pm-pass':pmRes==='fail'?'pm-fail':pmRes==='partial'?'pm-partial':'pm-none';
+    html+='<div class="ci-pm-result '+pmClass+'">项目经理结果：'+pmText+'</div>';
+  }
+  var isPartial=it.scoreType==='partial';
+  html+='<div class="ci-actions'+(isPartial?' ci-actions-partial':'')+'">';
+  html+='<button class="ci-btn pass" id="pass_'+key+'" onclick="setResult(\''+key+'\',\'pass\')">✓ 符合</button>';
+  if(isPartial){
+    html+='<button class="ci-btn partial" id="partialbtn_'+key+'" onclick="setResult(\''+key+'\',\'partial\')">◐ 比较符合</button>';
+  }
+  html+='<button class="ci-btn fail" id="fail_'+key+'" onclick="setResult(\''+key+'\',\'fail\')">✗ 不符合</button>';
+  html+='</div>';
+  if(isPartial){
+    var pMin=it.partialMin||0;
+    var pMax=it.partialMax||0;
+    var defVal=checkPartialScores[myResultKey(key)];
+    if(defVal===undefined||defVal===null||isNaN(defVal))defVal=pMax;
+    html+='<div class="partial-score" id="partialbox_'+key+'">';
+    html+='<div class="ps-label">分值范围：'+pMin+' ~ '+pMax+' 分</div>';
+    html+='<div class="ps-row">';
+    html+='<input type="number" class="ps-input" id="psinput_'+key+'" min="'+pMin+'" max="'+pMax+'" step="0.5" value="'+defVal+'" oninput="onPartialInput(\''+key+'\','+pMin+','+pMax+',this.value)">';
+    html+='<div class="ps-cur">当前得分：<span id="pscur_'+key+'">'+defVal+'</span> 分</div>';
+    html+='</div></div>';
+  }
+  html+='<div class="photo-upload" id="photo_'+key+'">';
+  html+='<div class="pu-label">不符合照片（必传）</div>';
+  html+='<div class="pu-area" onclick="document.getElementById(\'file_'+key+'\').click()">';
+  html+='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>';
+  html+='<div class="pu-text">点击上传照片</div></div>';
+  html+='<input type="file" accept="image/*" capture="environment" id="file_'+key+'" style="display:none" onchange="onPhotoUpload(\''+key+'\',this)">';
+  html+='<div class="pu-preview" id="preview_'+key+'"></div>';
+  html+='</div>';
+  html+='</div>';
+  return html;
+}
+
+function renderFilingItem(key,it){
+  var html='<div class="filing-item" id="item_'+key+'">';
+  html+='<div class="fi-name">'+it.name+scoreBadge(it)+'</div>';
+  html+='<div class="fi-desc">'+it.description+'</div>';
+  if(it.tags&&it.tags.length){
+    html+='<div class="ci-tags">';
+    it.tags.slice(0,4).forEach(function(t){html+='<span class="ci-tag">'+t+'</span>';});
+    html+='</div>';
+  }
+  // QC mode: show PM result read-only
+  if(currentRole==='qc'){
+    var pmRes=checkResults[key];
+    var pmText=pmRes==='pass'?'符合':pmRes==='fail'?'不符合':'未检查';
+    var pmClass=pmRes==='pass'?'pm-pass':pmRes==='fail'?'pm-fail':'pm-none';
+    html+='<div class="ci-pm-result '+pmClass+'">项目经理结果：'+pmText+'</div>';
+  }
+  html+='<div class="photo-upload" id="photo_'+key+'">';
+  html+='<div class="pu-label">不符合照片（必传）</div>';
+  html+='<div class="pu-area" onclick="document.getElementById(\'file_'+key+'\').click()">';
+  html+='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>';
+  html+='<div class="pu-text">点击上传照片</div></div>';
+  html+='<input type="file" accept="image/*" capture="environment" id="file_'+key+'" style="display:none" onchange="onPhotoUpload(\''+key+'\',this)">';
+  html+='<div class="pu-preview" id="preview_'+key+'"></div>';
+  html+='</div>';
+  html+='</div>';
+  return html;
+}
+
+/* ===== ITEM INTERACTIONS ===== */
+function setResult(key,result){
+  var rk=myResultKey(key);
+  checkResults[rk]=result;
+  var passBtn=document.getElementById('pass_'+key);
+  var failBtn=document.getElementById('fail_'+key);
+  var partialBtn=document.getElementById('partialbtn_'+key);
+  var photo=document.getElementById('photo_'+key);
+  var partialBox=document.getElementById('partialbox_'+key);
+  if(passBtn)passBtn.classList.toggle('active',result==='pass');
+  if(failBtn)failBtn.classList.toggle('active',result==='fail');
+  if(partialBtn)partialBtn.classList.toggle('active',result==='partial');
+  if(photo)photo.classList.toggle('show',result==='fail');
+  if(partialBox)partialBox.classList.toggle('show',result==='partial');
+  // Sync bottom bar score on inspection view
+  if(currentModuleId){
+    var pageInsp=document.getElementById('page-inspection');
+    if(pageInsp&&pageInsp.classList.contains('active')){
+      updateBottomBarScore(currentModuleId);
+      updateSidebarDots();
+    }
+  }
+}
+
+function restoreItemState(key){
+  var rk=myResultKey(key);
+  var r=checkResults[rk];
+  if(currentRole==='pm'&&!r&&!isDeductionItem(key)){r='pass';checkResults[rk]='pass';}
+  var passBtn=document.getElementById('pass_'+key);
+  var failBtn=document.getElementById('fail_'+key);
+  var partialBtn=document.getElementById('partialbtn_'+key);
+  var photo=document.getElementById('photo_'+key);
+  var partialBox=document.getElementById('partialbox_'+key);
+  if(passBtn)passBtn.classList.toggle('active',r==='pass');
+  if(failBtn)failBtn.classList.toggle('active',r==='fail');
+  if(partialBtn)partialBtn.classList.toggle('active',r==='partial');
+  if(photo)photo.classList.toggle('show',r==='fail');
+  if(partialBox)partialBox.classList.toggle('show',r==='partial');
+  if(checkPhotos[rk]&&checkPhotos[rk].length){
+    var pv=document.getElementById('preview_'+key);
+    if(pv){
+      var ph='';
+      checkPhotos[rk].forEach(function(d){ph+='<img src="'+d+'">';});
+      pv.innerHTML=ph;
+    }
+  }
+}
+
+function onValueInput(key,val){
+  var vk=myResultKey(key);
+  checkValues[vk]=val;
+}
+
+function onPartialInput(key,pMin,pMax,val){
+  var rk=myResultKey(key);
+  var num=parseFloat(val);
+  if(isNaN(num))num=pMin;
+  if(num<pMin)num=pMin;
+  if(num>pMax)num=pMax;
+  checkPartialScores[rk]=num;
+  var cur=document.getElementById('pscur_'+key);
+  if(cur)cur.textContent=num;
+  var inp=document.getElementById('psinput_'+key);
+  if(inp&&parseFloat(inp.value)!==num)inp.value=num;
+  // Sync bottom bar score on inspection view
+  if(currentModuleId){
+    var pageInsp=document.getElementById('page-inspection');
+    if(pageInsp&&pageInsp.classList.contains('active')){
+      updateBottomBarScore(currentModuleId);
+      updateSidebarDots();
+    }
+  }
+}
+
+function onPhotoUpload(key,input){
+  var file=input.files[0];if(!file)return;
+  var reader=new FileReader();
+  reader.onload=function(e){
+    var pk=myResultKey(key);
+    if(!checkPhotos[pk])checkPhotos[pk]=[];
+    checkPhotos[pk].push(e.target.result);
+    var pv=document.getElementById('preview_'+key);
+    if(pv){
+      var img=document.createElement('img');
+      img.src=e.target.result;
+      pv.appendChild(img);
+    }
+    showToast('照片已上传');
+  };
+  reader.readAsDataURL(file);
+}
+
+/* ===== NAVIGATION ===== */
+function showPage(id){
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
+  document.getElementById(id).classList.add('active');
+  document.getElementById(id).scrollTop=0;
+  var bb=document.getElementById('bottomBar');
+  var showBB=(id==='page-detail'||id==='page-room'||id==='page-inspection');
+  bb.classList.toggle('show',showBB);
+  if(showBB){
+    if(id==='page-inspection'&&currentModuleId){updateBottomBarScore(currentModuleId);}
+    else if(id==='page-room'&&currentRoomIdx!==null){updateRoomBottomBar(currentRoomIdx);}
+    else if(id==='page-detail'&&currentModuleId){
+      var mod=getModule(currentModuleId);
+      if(mod){
+        var _total=countAllItems(mod),_done=countCompleted(mod),_pct=_total>0?Math.round(_done/_total*100):0;
+        var _c=_done===_total&&_total>0?'#02C2C2':(_pct>0?'#FFA64C':'#86909C');
+        var _sc=moduleScore(mod);
+        var _fill=document.getElementById('bbProgFill');
+        document.getElementById('bbProgLabel').textContent=_done+'/'+_total+' 项已检';
+        document.getElementById('bbProgPct').textContent=_pct+'%';
+        document.getElementById('bbProgPct').style.color=_c;
+        document.getElementById('bbProgScore').textContent=_sc.total+'/'+_sc.max+'分';
+        document.getElementById('bbProgScore').style.color=_c;
+        document.getElementById('bbProgScore').style.background=hexToRgba(_c,.08);
+        if(_fill){_fill.style.width=_pct+'%';_fill.style.background=_c;}
+        var _lbl=document.getElementById('bbPrimaryLabel');
+        if(_lbl)_lbl.textContent='保存'+mod.name+'质检';
+      }
+    }
+  }
+  // Show/hide legacy header - home page has its own hero, others use the header
+  var header=document.querySelector('.header');
+  if(id==='page-modules'){
+    header.style.display='none';
+  }else{
+    header.style.display='flex';
+  }
+  // Adjust role-menu position when shown
+  var roleMenu=document.getElementById('roleMenu');
+  if(id==='page-modules'){
+    roleMenu.style.top='56px';
+    roleMenu.style.right='14px';
+  }else{
+    roleMenu.style.top='52px';
+    roleMenu.style.right='12px';
+  }
+  // Hide role-btn on inspection view (role switch unavailable there)
+  var roleBtn=document.querySelector('.header .role-btn');
+  if(roleBtn)roleBtn.style.display=(id==='page-inspection')?'none':'flex';
+}
+
+function goBack(){
+  var pageRoom=document.getElementById('page-room');
+  var pageRooms=document.getElementById('page-rooms');
+  var pageSub=document.getElementById('page-submodules');
+  var pageDet=document.getElementById('page-detail');
+  var pageInsp=document.getElementById('page-inspection');
+  // From room detail -> room list
+  if(pageRoom.classList.contains('active')){
+    currentRoomIdx=null;
+    renderRoomsView();
+    showPage('page-rooms');
+    document.getElementById('headerTitle').textContent='客房抽检';
+    return;
+  }
+  // From room list -> module list
+  if(pageRooms.classList.contains('active')){
+    renderModuleList();
+    showPage('page-modules');
+    document.getElementById('headerTitle').textContent='AI质检';
+    document.getElementById('backBtn').style.visibility='hidden';
+    return;
+  }
+  // From inspection view -> module list
+  if(pageInsp.classList.contains('active')){
+    currentModuleId=null;currentSubModuleId=null;
+    renderModuleList();
+    showPage('page-modules');
+    document.getElementById('headerTitle').textContent='AI质检';
+    document.getElementById('backBtn').style.visibility='hidden';
+    return;
+  }
+  // From detail -> inspection view (single module filter)
+  if(pageDet.classList.contains('active')){
+    currentSubModuleId=null;
+    if(currentModuleId){
+      var mod=getModule(currentModuleId);
+      document.getElementById('headerTitle').textContent=mod?mod.name:'检查视图';
+      renderInspectionView(currentModuleId);
+      showPage('page-inspection');
+      highlightSidebar(currentModuleId);
+    }else{
+      renderModuleList();
+      showPage('page-modules');
+      document.getElementById('headerTitle').textContent='AI质检';
+      document.getElementById('backBtn').style.visibility='hidden';
+    }
+    return;
+  }
+  if(pageSub.classList.contains('active')){
+    currentModuleId=null;
+    renderModuleList();
+    showPage('page-modules');
+    document.getElementById('headerTitle').textContent='AI质检';
+    document.getElementById('backBtn').style.visibility='hidden';
+    return;
+  }
+}
+
+/* ===== ROLE ===== */
+function toggleRoleMenu(e){
+  if(e)e.stopPropagation();
+  document.getElementById('roleMenu').classList.toggle('show');
+}
+document.addEventListener('click',function(){document.getElementById('roleMenu').classList.remove('show');});
+function switchRole(role){
+  currentRole=role;
+  applyRole();
+  document.getElementById('roleMenu').classList.remove('show');
+  document.getElementById('roleItemPm').classList.toggle('active',role==='pm');
+  document.getElementById('roleItemQc').classList.toggle('active',role==='qc');
+  var roleLabel=document.getElementById('heroRoleLabel');
+  if(roleLabel)roleLabel.textContent=role==='pm'?'项目经理':'质检经理';
+  refreshCurrentPage();
+  showToast('已切换为'+(role==='pm'?'项目经理':'质检经理'));
+}
+
+function refreshCurrentPage(){
+  var sub=document.getElementById('page-submodules');
+  var det=document.getElementById('page-detail');
+  var rooms=document.getElementById('page-rooms');
+  var room=document.getElementById('page-room');
+  var insp=document.getElementById('page-inspection');
+  if(room.classList.contains('active')&&currentRoomIdx!==null){
+    renderRoomDetail(currentRoomIdx);
+    updateRoomBottomBar(currentRoomIdx);
+  }else if(rooms.classList.contains('active')){
+    renderRoomsView();
+  }else if(insp.classList.contains('active')){
+    renderInspectionView(currentModuleId);
+  }else if(det.classList.contains('active')&&currentModuleId){
+    renderDetail(currentModuleId,currentSubModuleId);
+    updateBottomBarScore(currentModuleId);
+  }else if(sub.classList.contains('active')&&currentModuleId){
+    renderSubModuleList(currentModuleId);
+  }else{
+    renderModuleList();
+  }
+}
+
+/* ===== ROOM SAMPLING ===== */
+function generateRoomNumbers(){
+  var sampleCount=Math.ceil(TOTAL_ROOMS*SAMPLE_RATIO);
+  var pool=[];
+  for(var i=1;i<=TOTAL_ROOMS;i++)pool.push(i);
+  // Fisher-Yates shuffle
+  for(var j=pool.length-1;j>0;j--){
+    var k=Math.floor(Math.random()*(j+1));
+    var tmp=pool[j];pool[j]=pool[k];pool[k]=tmp;
+  }
+  roomNumbers=pool.slice(0,sampleCount).sort(function(a,b){return a-b;});
+}
+function roomItemKey(roomIdx,ci){return 'room_'+roomIdx+'_'+ci;}
+function roomDoneCount(idx){
+  var c=0;
+  for(var i=0;i<roomCheckItems.length;i++){
+    if(roomCheckResults[roomItemKey(idx,i)])c++;
+  }
+  return c;
+}
+function calcRoomScore(idx){
+  var earned=0,max=0;
+  roomCheckItems.forEach(function(it,ci){
+    var s=it.score||0;max+=s;
+    var k=roomItemKey(idx,ci);
+    var r=roomCheckResults[k];
+    if(!r)return;
+    if(r==='pass'){earned+=s;}
+    else if(r==='partial'){earned+=(roomCheckPartialScores[k]||0);}
+  });
+  return{earned:Math.round(earned*10)/10,max:Math.round(max*10)/10};
+}
+function enterRoomSampling(){
+  if(roomNumbers.length===0)generateRoomNumbers();
+  document.getElementById('headerTitle').textContent='客房抽检';
+  document.getElementById('backBtn').style.visibility='visible';
+  renderRoomsView();
+  showPage('page-rooms');
+}
+function renderRoomsView(){
+  var sampleCount=Math.ceil(TOTAL_ROOMS*SAMPLE_RATIO);
+  var doneTotal=0;
+  roomNumbers.forEach(function(rn,idx){if(roomDoneCount(idx)===roomCheckItems.length)doneTotal++;});
+  var html='';
+  html+='<div class="room-info">';
+  html+='<div class="ri-row"><span class="ri-label">总客房数</span><span class="ri-value">'+TOTAL_ROOMS+'间</span></div>';
+  html+='<div class="ri-row"><span class="ri-label">抽检比例</span><span class="ri-value">'+(SAMPLE_RATIO*100)+'%</span></div>';
+  html+='<div class="ri-row"><span class="ri-label">抽检数量</span><span class="ri-value">'+sampleCount+'间</span></div>';
+  html+='<div class="ri-row"><span class="ri-label">已完成</span><span class="ri-value" style="color:var(--green)">'+doneTotal+'/'+sampleCount+'间</span></div>';
+  html+='<div class="ri-tip">系统自动随机抽取，涵盖各房型（标准间/商务大床房/暗房/特殊备案房型）</div>';
+  html+='<button class="ri-regen" onclick="regenerateRooms()">重新生成抽检房号</button>';
+  html+='</div>';
+  html+='<div class="room-grid">';
+  roomNumbers.forEach(function(rn,idx){
+    var done=roomDoneCount(idx);
+    var isDone=done===roomCheckItems.length;
+    html+='<div class="room-card'+(isDone?' done':'')+'" onclick="enterRoom('+idx+')">';
+    html+='<div class="rc-check">✓</div>';
+    html+='<div class="rc-num">'+rn+'</div>';
+    html+='<div class="rc-status">'+(isDone?'已完成':done>0?done+'/'+roomCheckItems.length:'未检查')+'</div>';
+    html+='</div>';
+  });
+  html+='</div>';
+  document.getElementById('roomsBody').innerHTML=html;
+}
+function regenerateRooms(){
+  roomCheckResults={};roomCheckPhotos={};roomCheckPartialScores={};
+  generateRoomNumbers();
+  renderRoomsView();
+  showToast('已重新生成'+roomNumbers.length+'个抽检房号');
+}
+function enterRoom(idx){
+  currentRoomIdx=idx;
+  renderRoomDetail(idx);
+  document.getElementById('headerTitle').textContent=roomNumbers[idx]+'号房 抽检';
+  document.getElementById('backBtn').style.visibility='visible';
+  showPage('page-room');
+  updateRoomBottomBar(idx);
+}
+function renderRoomDetail(idx){
+  var body=document.getElementById('roomDetailBody');
+  var done=roomDoneCount(idx);
+  var html='';
+  html+='<div class="detail-header"><span class="dh-icon">🛏️</span><span class="dh-name">'+roomNumbers[idx]+'号房</span><span class="dh-count">'+done+'/'+roomCheckItems.length+'</span></div>';
+  html+='<div class="loc-image"><img src="assets/guestroom_feishu.jpg" alt="客房效果图" onerror="this.parentElement.style.display=\'none\'"><div class="loc-img-label">客房效果图参考</div></div>';
+  html+=sectionHeaderHTML({type:'subjective',label:'客房检查',desc:'客房专项检查',items:roomCheckItems});
+  roomCheckItems.forEach(function(it,ci){
+    var key=roomItemKey(idx,ci);
+    var r=roomCheckResults[key]||'pass';
+    var isPartial=it.scoreType==='partial';
+    html+='<div class="check-item" id="roomitem_'+key+'">';
+    html+='<div class="ci-name">'+it.name+'<span class="ci-score">'+(it.score>0?'满分:'+it.score+'分':'不计分')+'</span></div>';
+    html+='<div class="ci-standard">'+it.standard+'</div>';
+    html+='<div class="ci-actions'+(isPartial?' ci-actions-partial':'')+'">';
+    html+='<button class="ci-btn pass'+(r==='pass'?' active':'')+'" onclick="setRoomResult(\''+key+'\',\'pass\')">✓ 符合</button>';
+    if(isPartial){
+      html+='<button class="ci-btn partial'+(r==='partial'?' active':'')+'" onclick="setRoomResult(\''+key+'\',\'partial\')">◐ 比较符合</button>';
+    }
+    html+='<button class="ci-btn fail'+(r==='fail'?' active':'')+'" onclick="setRoomResult(\''+key+'\',\'fail\')">✗ 不符合</button>';
+    html+='</div>';
+    if(isPartial){
+      var pMin=it.partialMin||0;
+      var pMax=it.partialMax||0;
+      var defVal=roomCheckPartialScores[key];
+      if(defVal===undefined||defVal===null||isNaN(defVal))defVal=pMax;
+      html+='<div class="partial-score'+(r==='partial'?' show':'')+'" id="roompartialbox_'+key+'">';
+      html+='<div class="ps-label">分值范围：'+pMin+' ~ '+pMax+' 分</div>';
+      html+='<div class="ps-row">';
+      html+='<input type="number" class="ps-input" id="roompsinput_'+key+'" min="'+pMin+'" max="'+pMax+'" step="0.5" value="'+defVal+'" oninput="onRoomPartialInput(\''+key+'\','+pMin+','+pMax+',this.value)">';
+      html+='<div class="ps-cur">当前得分：<span id="roompscur_'+key+'">'+defVal+'</span> 分</div>';
+      html+='</div></div>';
+    }
+    html+='<div class="photo-upload'+(r==='fail'?' show':'')+'" id="roomphoto_'+key+'">';
+    html+='<div class="pu-label">不符合照片（必传）</div>';
+    html+='<div class="pu-area" onclick="document.getElementById(\'roomfile_'+key+'\').click()">';
+    html+='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>';
+    html+='<div class="pu-text">点击上传照片</div></div>';
+    html+='<input type="file" accept="image/*" capture="environment" id="roomfile_'+key+'" style="display:none" onchange="onRoomPhotoUpload(\''+key+'\',this)">';
+    html+='<div class="pu-preview" id="roompreview_'+key+'">';
+    if(roomCheckPhotos[key]&&roomCheckPhotos[key].length){
+      roomCheckPhotos[key].forEach(function(d){html+='<img src="'+d+'">';});
+    }
+    html+='</div></div></div>';
+  });
+  // Room score summary
+  var roomTotal=0,roomMax=0;
+  roomCheckItems.forEach(function(it,ci){
+    var key=roomItemKey(idx,ci);
+    roomMax+=it.score||0;
+    if(roomCheckResults[key]==='pass')roomTotal+=it.score||0;
+    else if(roomCheckResults[key]==='partial')roomTotal+=(roomCheckPartialScores[key]||0);
+  });
+  html+='<div class="score-detail">';
+  html+='<div class="sd-title">📊 本房得分情况</div>';
+  html+='<div class="sd-row"><span class="sd-label">质检经理</span><span class="sd-val qc">'+roomTotal+'/'+roomMax+'分</span></div>';
+  html+='</div>';
+  body.innerHTML=html;
+}
+function setRoomResult(key,result){
+  roomCheckResults[key]=result;
+  var passBtn=document.querySelector('#roomitem_'+key+' .ci-btn.pass');
+  var failBtn=document.querySelector('#roomitem_'+key+' .ci-btn.fail');
+  var partialBtn=document.querySelector('#roomitem_'+key+' .ci-btn.partial');
+  var photo=document.getElementById('roomphoto_'+key);
+  var partialBox=document.getElementById('roompartialbox_'+key);
+  if(passBtn)passBtn.classList.toggle('active',result==='pass');
+  if(failBtn)failBtn.classList.toggle('active',result==='fail');
+  if(partialBtn)partialBtn.classList.toggle('active',result==='partial');
+  if(photo)photo.classList.toggle('show',result==='fail');
+  if(partialBox)partialBox.classList.toggle('show',result==='partial');
+  if(currentRoomIdx!==null)updateRoomBottomBar(currentRoomIdx);
+}
+function onRoomPhotoUpload(key,input){
+  var file=input.files[0];if(!file)return;
+  var reader=new FileReader();
+  reader.onload=function(e){
+    if(!roomCheckPhotos[key])roomCheckPhotos[key]=[];
+    roomCheckPhotos[key].push(e.target.result);
+    var pv=document.getElementById('roompreview_'+key);
+    if(pv){var img=document.createElement('img');img.src=e.target.result;pv.appendChild(img);}
+    showToast('照片已上传');
+  };
+  reader.readAsDataURL(file);
+}
+
+function onRoomPartialInput(key,pMin,pMax,val){
+  var num=parseFloat(val);
+  if(isNaN(num))num=pMin;
+  if(num<pMin)num=pMin;
+  if(num>pMax)num=pMax;
+  roomCheckPartialScores[key]=num;
+  var cur=document.getElementById('roompscur_'+key);
+  if(cur)cur.textContent=num;
+  var inp=document.getElementById('roompsinput_'+key);
+  if(inp&&parseFloat(inp.value)!==num)inp.value=num;
+  if(currentRoomIdx!==null)updateRoomBottomBar(currentRoomIdx);
+}
+
+/* ===== UTILS ===== */
+function showToast(msg){
+  var t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(function(){t.classList.remove('show');},2000);
+}
+function saveProgress(){
+  showToast('进度已保存');
+  renderModuleList();
+}
+
+/* ===== INIT ===== */
+applyRole();
+renderModuleList();
+document.querySelector('.header').style.display='none';
+</script>
+</body>
+</html>

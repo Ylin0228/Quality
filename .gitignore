@@ -1,0 +1,6 @@
+.iga/
+iga-home/
+.npm/
+.wrangler/
+*.log
+.DS_Store
