@@ -113,6 +113,9 @@ body::after{content:'';position:fixed;bottom:-80px;left:50%;transform:translateX
 .check-item.baseline{border-left:3px solid var(--red);padding-left:17px}
 .check-item .ci-name{font-size:14px;font-weight:600;margin-bottom:6px;display:flex;align-items:center;gap:6px;color:var(--ink);line-height:1.5}
 .check-item .ci-baseline-tag{font-size:10px;color:#fff;background:linear-gradient(135deg,#FF4C4C,#CB0000);padding:2px 8px;border-radius:999px;font-weight:500;flex-shrink:0}
+.check-item .ci-category-tag{font-size:10px;color:#fff;padding:2px 8px;border-radius:999px;font-weight:500;flex-shrink:0}
+.check-item .ci-category-tag.cat-a{background:linear-gradient(135deg,#02C2C2,#0A8C8C)}
+.check-item .ci-category-tag.cat-b{background:linear-gradient(135deg,#FFA64C,#D48030)}
 .check-item .ci-score{font-size:11px;font-weight:500;color:var(--pm);background:#E6F7FF;padding:2px 10px;border-radius:999px;margin-left:auto;flex-shrink:0;white-space:nowrap}
 .check-item .ci-standard{font-size:12px;color:var(--muted);line-height:1.7}
 .check-item .ci-tags{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
@@ -172,6 +175,35 @@ body::after{content:'';position:fixed;bottom:-80px;left:50%;transform:translateX
 .value-input input{width:100%;height:40px;border:1.5px solid var(--rule);border-radius:4px;padding:0 14px;font-size:14px;color:var(--ink);outline:none;background:#FAFBFD;font-family:inherit;transition:border-color .2s}
 .value-input input:focus{border-color:var(--pm);background:#fff;box-shadow:0 0 0 3px rgba(0,164,241,.08)}
 
+/* Room Area Groups (多房型实测面积) */
+.area-groups{margin-top:12px;display:flex;flex-direction:column;gap:10px}
+.area-group{background:#F7F9FC;border-radius:4px;padding:14px 14px 12px}
+.area-group-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.area-group-badge{width:28px;height:28px;border-radius:50%;background:#4080FF;color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0}
+.area-group-label{font-size:15px;font-weight:600;color:var(--ink)}
+.area-group-row{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.area-group-row .agr-label{font-size:13px;color:var(--muted);white-space:nowrap;writing-mode:vertical-lr;letter-spacing:2px;font-weight:500;line-height:1;height:auto;padding:4px 0}
+.area-group-row .agr-input-wrap{flex:1;position:relative}
+.area-group-row .agr-input{width:100%;height:40px;border:1.5px solid var(--rule);border-radius:4px;padding:0 36px 0 14px;font-size:14px;color:var(--ink);outline:none;background:#fff;font-family:inherit;transition:border-color .2s}
+.area-group-row .agr-input:focus{border-color:var(--pm);box-shadow:0 0 0 3px rgba(0,164,241,.08)}
+.area-group-row .agr-unit{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:14px;color:var(--aux);pointer-events:none}
+.area-group-btns{display:flex;gap:8px}
+.area-group-btns .agb-btn{flex:1;height:38px;border:1.5px solid var(--rule);border-radius:4px;background:#fff;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:4px}
+.area-group-btns .agb-btn:active{transform:scale(.97)}
+.area-group-btns .agb-pass{color:#02C2C2;border-color:#02C2C2}
+.area-group-btns .agb-pass.active{background:#E6FAF6;border-color:#02C2C2;color:#00A8A8;font-weight:600}
+.area-group-btns .agb-fail{color:#FF4C4C;border-color:#FF4C4C}
+.area-group-btns .agb-fail.active{background:#FFECEC;border-color:#FF4C4C;color:#E03636;font-weight:600}
+.area-fail-section{margin-top:12px;display:flex;flex-direction:column;gap:10px}
+.area-fail-field{display:flex;flex-direction:column;gap:6px}
+.area-fail-field .aff-label{font-size:13px;color:var(--muted);font-weight:500}
+.area-fail-field .aff-input{width:100%;height:40px;border:1.5px solid var(--rule);border-radius:4px;padding:0 14px;font-size:14px;color:var(--ink);outline:none;background:#FAFBFD;font-family:inherit;transition:border-color .2s}
+.area-fail-field .aff-input:focus{border-color:var(--pm);background:#fff;box-shadow:0 0 0 3px rgba(0,164,241,.08)}
+.area-fail-upload{border:1.5px dashed var(--rule);border-radius:4px;padding:18px;text-align:center;cursor:pointer;transition:all .15s;background:#FAFBFD}
+.area-fail-upload:active{background:#F0F7FF;border-color:var(--pm)}
+.area-fail-upload .afu-icon{font-size:20px;color:var(--aux);margin-bottom:4px}
+.area-fail-upload .afu-text{font-size:13px;color:var(--aux)}
+
 /* IT Placeholder */
 .it-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;text-align:center}
 .it-placeholder .it-icon{font-size:48px;margin-bottom:12px;opacity:.3}
@@ -215,8 +247,9 @@ body::after{content:'';position:fixed;bottom:-80px;left:50%;transform:translateX
 .room-info .ri-label{font-size:13px;color:var(--muted)}
 .room-info .ri-value{font-size:15px;font-weight:600;color:var(--ink)}
 .room-info .ri-tip{font-size:12px;color:var(--muted);line-height:1.7;margin-top:8px;padding:10px 14px;background:#E6F7FF;border-radius:4px}
-.room-info .ri-regen{margin-top:14px;height:40px;border:1.5px solid var(--pm);background:#fff;color:var(--pm);border-radius:4px;font-size:13px;cursor:pointer;width:100%;font-weight:500;font-family:inherit;transition:all .15s}
-.room-info .ri-regen:active{background:#E6F7FF;transform:scale(.98)}
+.room-info .ri-regen,.room-block .ri-regen{margin-top:14px;height:40px;border:1px solid rgba(0,164,241,.3);background:#F7FAFE;color:var(--pm);border-radius:4px;font-size:13px;cursor:pointer;width:100%;font-weight:500;font-family:inherit;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:6px}
+.room-info .ri-regen:hover,.room-block .ri-regen:hover{background:#E6F7FF;border-color:var(--pm)}
+.room-info .ri-regen:active,.room-block .ri-regen:active{background:#D6EEFF;transform:scale(.98)}
 .room-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:0}
 .room-card{background:#fff;border-radius:4px;padding:16px 8px;text-align:center;cursor:pointer;box-shadow:0 2px 8px rgba(0,164,241,.05);transition:all .15s;position:relative;border:1.5px solid transparent}
 .room-card:active{transform:scale(.95)}
@@ -226,6 +259,52 @@ body::after{content:'';position:fixed;bottom:-80px;left:50%;transform:translateX
 .room-card.done .rc-status{color:var(--green)}
 .room-card .rc-check{position:absolute;top:5px;right:5px;width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,#02C2C2,#007878);color:#fff;font-size:10px;display:none;align-items:center;justify-content:center;font-weight:700}
 .room-card.done .rc-check{display:flex}
+/* Expandable Room List */
+.room-block{background:#fff;border-radius:4px;box-shadow:0 2px 12px rgba(0,164,241,.05);border:1px solid rgba(0,164,241,.03);margin-bottom:10px;overflow:hidden}
+.room-inline-block{margin-bottom:14px}
+.room-block-header{display:flex;align-items:center;gap:8px;padding:14px 16px;border-bottom:1px solid #F5F7FA}
+.room-block-header .rb-bar{width:4px;height:16px;border-radius:2px;background:linear-gradient(180deg,#00A4F1,#0087C7)}
+.room-block-header .rb-title{font-size:15px;font-weight:600;color:var(--ink)}
+.room-block-header .rb-stat{margin-left:auto;font-size:12px;color:var(--muted)}
+.room-block-header .rb-stat b{color:var(--pm);font-weight:600}
+.room-block-body{padding:14px 16px}
+/* Room Grid (Block 1) */
+.room-grid-q{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.room-tile{position:relative;background:#F7F9FC;border:1.5px solid transparent;border-radius:4px;padding:14px 6px 10px;text-align:center;cursor:pointer;transition:all .15s}
+.room-tile:active{transform:scale(.96)}
+.room-tile .rt-num{font-size:17px;font-weight:700;color:var(--ink);line-height:1.2}
+.room-tile .rt-status{font-size:11px;margin-top:4px;color:var(--aux)}
+.room-tile.done{border-color:#02C2C2;background:#E6FAF6}
+.room-tile.done .rt-status{color:#02C2C2}
+.room-tile.progress{border-color:#FFA64C;background:#FFF7E6}
+.room-tile.progress .rt-status{color:#D48806}
+.room-tile.active{border-color:var(--pm);background:#E6F7FF;box-shadow:0 2px 8px rgba(0,164,241,.15)}
+.room-tile.active .rt-num{color:var(--pm)}
+.room-tile .rt-check{position:absolute;top:4px;right:4px;width:16px;height:16px;border-radius:50%;background:#02C2C2;color:#fff;font-size:9px;display:none;align-items:center;justify-content:center;font-weight:700}
+.room-tile.done .rt-check{display:flex}
+/* Room Items (Block 2) */
+.room-items-empty{padding:32px 16px;text-align:center;color:var(--aux);font-size:13px;line-height:1.7}
+.room-items-empty .rie-icon{font-size:36px;margin-bottom:8px;opacity:.5}
+.room-current-tag{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--pm);background:#E6F7FF;padding:5px 12px;border-radius:999px;margin-bottom:12px}
+.room-items-list .check-item{background:#F7F9FC;border-radius:4px;padding:12px 14px;margin-bottom:8px}
+.room-items-list .check-item:last-child{margin-bottom:0}
+/* Manual Score (Block 3) */
+.room-score-block .rsb-locked{padding:22px 18px;background:linear-gradient(135deg,#F7F9FC,#F0F4F8);border-radius:4px;text-align:center}
+.room-score-block .rsb-locked .rsli-icon{width:44px;height:44px;border-radius:50%;background:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:12px;box-shadow:0 2px 8px rgba(134,144,156,.15)}
+.room-score-block .rsb-locked .rsli-text{font-size:13px;color:var(--muted);line-height:1.6;font-weight:500}
+.room-score-block .rsb-locked .rsli-progress-bar{margin:14px auto 8px;width:100%;max-width:200px;height:6px;background:#E5E9EF;border-radius:999px;overflow:hidden}
+.room-score-block .rsb-locked .rsli-progress-fill{height:100%;background:linear-gradient(90deg,#00A4F1,#02C2C2);border-radius:999px;transition:width .4s ease}
+.room-score-block .rsb-locked .rsli-progress{font-size:12px;color:var(--aux);font-weight:500}
+.room-score-block .rsb-locked .rsli-progress b{color:var(--pm);font-weight:600}
+.room-score-card{background:linear-gradient(135deg,#E6F7FF,#F0FAFF);border:1px solid #B8E3F7;border-radius:4px;padding:18px 16px}
+.room-score-card .rsc-label{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:14px;display:flex;align-items:center;gap:6px}
+.room-score-card .rsc-label .rsc-max-tag{margin-left:auto;font-size:11px;color:var(--pm);background:rgba(0,164,241,.1);padding:2px 8px;border-radius:999px;font-weight:600}
+.room-score-card .rsc-row{display:flex;align-items:center;justify-content:center;gap:8px}
+.room-score-card .rsc-input{width:110px;height:56px;border:2px solid var(--pm);border-radius:4px;text-align:center;font-size:32px;font-weight:800;color:var(--pm);outline:none;background:#fff;-webkit-appearance:none;-moz-appearance:textfield;font-family:inherit;transition:border-color .15s}
+.room-score-card .rsc-input:focus{border-color:#0087C7;box-shadow:0 0 0 3px rgba(0,164,241,.12)}
+.room-score-card .rsc-input::-webkit-outer-spin-button,.room-score-card .rsc-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.room-score-card .rsc-max{font-size:18px;color:var(--muted);font-weight:600}
+.room-score-card .rsc-hint{font-size:11px;color:var(--aux);margin-top:10px;text-align:center}
 
 /* ===== Inspection View (sidebar + full expand) ===== */
 #page-inspection{overflow:hidden;display:flex;flex-direction:row}
@@ -269,7 +348,7 @@ body::after{content:'';position:fixed;bottom:-80px;left:50%;transform:translateX
 .insp-sub-img{display:block;width:100%;height:auto;max-height:120px;object-fit:cover;border-radius:4px;margin-bottom:10px}
 
 /* ===== HOME PAGE (New Design) ===== */
-.home-hero{background:linear-gradient(160deg,#0087C7 0%,#00A4F1 35%,#0087C7 70%,#A9E4FF 100%);padding:52px 18px 60px;position:relative;overflow:hidden;flex-shrink:0;height:285px}
+.home-hero{background:linear-gradient(160deg,#0087C7 0%,#00A4F1 35%,#0087C7 70%,#A9E4FF 100%);padding:52px 18px 60px;position:relative;overflow:visible;flex-shrink:0;height:300px}
 .home-hero::before{content:'';position:absolute;top:-60px;right:-60px;width:240px;height:240px;background:radial-gradient(circle,rgba(255,255,255,.12) 0%,transparent 70%);border-radius:50%}
 .home-hero::after{content:'';position:absolute;bottom:-80px;left:-40px;width:200px;height:200px;background:radial-gradient(circle,rgba(169,228,255,.25) 0%,transparent 70%);border-radius:50%}
 .hero-top{display:flex;align-items:flex-start;justify-content:space-between;position:relative;z-index:1;margin-bottom:20px}
@@ -284,22 +363,23 @@ body::after{content:'';position:fixed;bottom:-80px;left:50%;transform:translateX
 .hero-icon-btn:active{background:rgba(255,255,255,.28);transform:scale(.95)}
 .hero-icon-btn svg{width:20px;height:20px}
 .badge-dot{position:absolute;top:8px;right:8px;width:8px;height:8px;background:#FF4C4C;border-radius:50%;border:1.5px solid #00A4F1}
-.hero-progress-card{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.2);border-radius:4px;padding:18px 20px;display:flex;align-items:center;gap:18px;position:relative;z-index:1;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:0 8px 32px rgba(0,135,199,.15)}
-.hpc-ring{position:relative;width:60px;height:60px;flex-shrink:0}
-.hpc-ring .ring-svg{width:60px;height:60px}
-.ring-text{position:absolute;top:0;left:0;width:60px;height:60px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff}
-.hpc-info{flex:1;min-width:0}
-.hpc-title-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
-.hpc-title{font-size:16px;font-weight:600;color:#fff}
-.hpc-score{font-size:14px;font-weight:600;color:#fff;background:rgba(255,255,255,.2);padding:3px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.18)}
-.hpc-sub{font-size:12px;color:rgba(255,255,255,.8);margin-bottom:10px}
-.hpc-bar{width:100%;height:5px;background:rgba(255,255,255,.2);border-radius:3px;overflow:hidden}
-.hpc-bar-fill{height:100%;background:#fff;border-radius:3px;transition:width .5s ease}
+.hero-progress-card{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.2);border-radius:4px;padding:12px 14px;position:relative;z-index:1;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:0 8px 32px rgba(0,135,199,.15)}
+.hpc-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px 4px}
+.hpc-stat-block{text-align:center;min-width:0}
+.hpc-stat-label{font-size:10px;color:rgba(255,255,255,.75);margin-bottom:4px;letter-spacing:.2px;line-height:1.2}
+.hpc-stat-value-wrap{display:flex;align-items:baseline;justify-content:center;gap:1px}
+.hpc-stat-value{font-size:20px;font-weight:800;color:#fff;line-height:1;letter-spacing:-.5px}
+.hpc-stat-unit{font-size:11px;font-weight:500;color:rgba(255,255,255,.7)}
+.hpc-stat-block.has-fail .hpc-stat-value{color:#FFD2D2}
+.hpc-dot{display:inline-block;width:5px;height:5px;border-radius:50%;margin-right:3px;vertical-align:middle}
+.hpc-dot-a{background:#02C2C2}
+.hpc-dot-b{background:#FFA64C}
+.hpc-stat-divider{grid-column:1/-1;height:1px;background:rgba(255,255,255,.12);margin:2px 0}
 
 /* Home Content Area */
-.home-content{padding:10px 10px 30px;background:var(--bg);border-radius:4px 4px 0 0;margin-top:-24px;position:relative;z-index:2;min-height:calc(100vh - 280px)}
+.home-content{padding:10px 10px 30px;background:var(--bg);border-radius:4px 4px 0 0;margin-top:-20px;position:relative;z-index:2}
 .module-list{display:flex;flex-direction:column;gap:10px}
-.mod-card{background:#fff;border-radius:var(--radius);padding:18px 18px 28px;display:flex;align-items:center;gap:16px;cursor:pointer;box-shadow:0 2px 12px rgba(0,164,241,.05);transition:all .2s;border:1px solid rgba(0,164,241,.03);position:relative;overflow:hidden}
+.mod-card{background:#fff;border-radius:var(--radius);padding:14px 16px;display:flex;align-items:center;gap:14px;cursor:pointer;box-shadow:0 2px 12px rgba(0,164,241,.05);transition:all .2s;border:1px solid rgba(0,164,241,.03);position:relative}
 .mod-card:active{transform:scale(.98);box-shadow:0 1px 6px rgba(0,164,241,.08)}
 .mod-card .mc-icon-box{width:52px;height:52px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;box-shadow:0 4px 12px rgba(0,164,241,.12);position:relative;overflow:hidden}
 .mod-card .mc-icon-box::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.25) 0%,transparent 50%)}
@@ -350,20 +430,43 @@ body::after{content:'';position:fixed;bottom:-80px;left:50%;transform:translateX
       </div>
     </div>
     <div class="hero-progress-card" id="heroProgressCard">
-      <div class="hpc-ring">
-        <svg viewBox="0 0 60 60" class="ring-svg">
-          <circle cx="30" cy="30" r="25" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="5"/>
-          <circle cx="30" cy="30" r="25" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-dasharray="157" stroke-dashoffset="157" class="ring-fill" id="heroRingFill" transform="rotate(-90 30 30)"/>
-        </svg>
-        <div class="ring-text" id="heroRingText">0%</div>
-      </div>
-      <div class="hpc-info">
-        <div class="hpc-title-row">
-          <span class="hpc-title">整体质检进度</span>
-          <span class="hpc-score" id="heroScore">0/0分</span>
+      <div class="hpc-stats">
+        <div class="hpc-stat-block" id="heroFailABlock">
+          <div class="hpc-stat-label"><span class="hpc-dot hpc-dot-a"></span>A类不符合</div>
+          <div class="hpc-stat-value-wrap">
+            <span class="hpc-stat-value" id="heroFailACount">0</span>
+            <span class="hpc-stat-unit">项</span>
+          </div>
         </div>
-        <div class="hpc-sub" id="heroSub">0/0 项已检 · 8大模块</div>
-        <div class="hpc-bar"><div class="hpc-bar-fill" id="heroBarFill" style="width:0%"></div></div>
+        <div class="hpc-stat-block" id="heroFailBBlock">
+          <div class="hpc-stat-label"><span class="hpc-dot hpc-dot-b"></span>B类不符合</div>
+          <div class="hpc-stat-value-wrap">
+            <span class="hpc-stat-value" id="heroFailBCount">0</span>
+            <span class="hpc-stat-unit">项</span>
+          </div>
+        </div>
+        <div class="hpc-stat-block" id="heroFailBlock">
+          <div class="hpc-stat-label">不符合/总项</div>
+          <div class="hpc-stat-value-wrap">
+            <span class="hpc-stat-value" id="heroFailCount">0</span>
+            <span class="hpc-stat-unit" id="heroTotalCount">/0项</span>
+          </div>
+        </div>
+        <div class="hpc-stat-divider"></div>
+        <div class="hpc-stat-block" id="heroPmBlock">
+          <div class="hpc-stat-label">项目经理打分</div>
+          <div class="hpc-stat-value-wrap">
+            <span class="hpc-stat-value" id="heroPmScore">0</span>
+            <span class="hpc-stat-unit" id="heroPmMax">/0分</span>
+          </div>
+        </div>
+        <div class="hpc-stat-block" id="heroQcBlock">
+          <div class="hpc-stat-label">质检经理打分</div>
+          <div class="hpc-stat-value-wrap">
+            <span class="hpc-stat-value" id="heroQcScore">0</span>
+            <span class="hpc-stat-unit" id="heroQcMax">/0分</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -433,35 +536,33 @@ var modules=[
   {id:'guestroom',name:'客房',icon:'🛏️',type:'direct',img:'guestroom_feishu.jpg',
     groups:[
       {type:'objective',label:'客观项',scoreText:'符合：1分/项',items:[
-        {name:'客房总数',standard:'106间，与设计图纸一致',inputType:'value',score:1},
-        {name:'房型配比',standard:'单床64间(60%)、双床42间(40%)、亲子房3间，与设计图纸一致',inputType:'value',score:1},
-        {name:'客房层高',standard:'净高 2400mm',inputType:'value',score:1},
-        {name:'单床房面积',standard:'≥15m²',inputType:'value',score:1},
-        {name:'双床房面积',standard:'≥17m²',inputType:'value',score:1},
-        {name:'卫生间面积',standard:'≥3.5m²',inputType:'value',score:1},
-        {name:'暗房房号',standard:'&lt;10% · 共5间占4.7%',inputType:'value',score:1},
-        {name:'备案房号',standard:'备案房号列表',inputType:'value',score:0,tags:['101','102','201','202','301','302','401','501','601']}
+        {name:'客房总数',standard:'106间，与设计图纸一致',inputType:'value',score:1,category:'A'},
+        {name:'房型配比',standard:'单床64间(60%)、双床42间(40%)、亲子房3间，与设计图纸一致',inputType:'value',score:1,category:'A'},
+        {name:'客房层高',standard:'净高 2400mm',inputType:'value',score:1,category:'B'},
+        {name:'单床房面积',standard:'≥15m²',inputType:'value',score:1,category:'A',areaGroups:[{letter:'A',label:'A房型'},{letter:'B',label:'B房型'}]},
+        {name:'双床房面积',standard:'≥17m²',inputType:'value',score:1,category:'A',areaGroups:[{letter:'A',label:'A房型'},{letter:'B',label:'B房型'}],failSection:true},
+        {name:'卫生间面积',standard:'≥3.5m²',inputType:'value',score:1,category:'A'}
       ]},
       {type:'subjective',label:'主观项',scoreText:'',items:[
-        {name:'装饰面观感天花',standard:'天花符合设计要求，顶面平整度及细节处理细致',score:2,scoreType:'partial',partialMin:0,partialMax:2,scoreTag:'符合：0.5分'},
-        {name:'装饰面观感墙面',standard:'材料、尺寸、色调符合公司标准',score:1,scoreType:'partial',partialMin:0,partialMax:1,scoreTag:'符合：1分'},
-        {name:'装饰面观感地面（瓷砖）',standard:'客房瓷砖地面无大面质量缺陷（超过30%以上客房地砖出现1㎡以上连续性整砖破损、空鼓松动、色差）',score:0.5,scoreTag:'符合：0.5分'},
-        {name:'装饰面观感地面（木地板）',standard:'客房木地板地面无大面质量缺陷（2m平整度>5mm、1㎡以上色差、0.5㎡以上连续性起鼓、起皮、划痕等）',score:0.5,scoreTag:'符合：1.5分'},
-        {name:'装饰面观感地面（材质）',standard:'地砖、地毯、地板材质符合公司标准',score:1.5,scoreType:'partial',partialMin:0,partialMax:1.5,scoreTag:'符合：1.5分'},
-        {name:'客房门：材料、式样、色调',standard:'材料、式样、色调符合标准',score:0.5,scoreTag:'符合：0.5分'},
-        {name:'洗手台：型号、式样',standard:'型号正确，符合公司设计要求',score:0.5,scoreTag:'符合：0.5分'},
-        {name:'淋浴间完好性',standard:'淋浴房符合施工所属品牌图纸（型材颜色、玻璃厚度、玻璃有明显3C标志、门扇开启角度、玻璃膜颜色）',score:1,scoreTag:'符合：1分'},
-        {name:'淋浴间花洒',standard:'型号正确，花洒底座安装高度、手持淋浴龙头花洒阀体安装高度符合设计要求',score:0.5,scoreTag:'符合：0.5分'},
-        {name:'淋浴间地漏',standard:'地漏型号、位置正确、坡度合理、无明显积水',score:0.5,scoreTag:'符合：0.5分'},
-        {name:'灯光照明型号',standard:'灯控系统完成，灯具型号、色温符合公司设计标准',score:1,scoreTag:'符合：1分'},
-        {name:'噪音测试',standard:'木门隔音降噪≥35分贝；隔墙：装配式≥45分贝，砌块≥40分贝（测试不少于三间）',score:0},
-        {name:'热水测试',standard:'测试不少于三间，热水供应正常',score:0},
-        {name:'电话测试',standard:'测试不少于三间，电话通话正常',score:0},
-        {name:'漏电保护测试',standard:'测试不少于三间，漏电保护功能正常',score:0},
-        {name:'淋浴房试水测试',standard:'测试不少于三间，排水顺畅无积水',score:0},
-        {name:'新风测试',standard:'测试不少于三间，新风系统运行正常',score:0},
-        {name:'空调测试',standard:'测试不少于三间，空调制冷制热正常',score:0},
-        {name:'排风扇风量',standard:'测试不少于三间，排风扇风量符合要求',score:0}
+        {name:'装饰面观感天花',standard:'天花符合设计要求，顶面平整度及细节处理细致',score:2,scoreType:'partial',partialMin:0,partialMax:2,scoreTag:'符合：0.5分',category:'B'},
+        {name:'装饰面观感墙面',standard:'材料、尺寸、色调符合公司标准',score:1,scoreType:'partial',partialMin:0,partialMax:1,scoreTag:'符合：1分',category:'B'},
+        {name:'装饰面观感地面瓷砖',standard:'客房瓷砖地面无大面质量缺陷（超过30%以上客房地砖出现1㎡以上连续性整砖破损、空鼓松动、色差）',score:0.5,scoreTag:'符合：0.5分',category:'B'},
+        {name:'装饰面观感地面（木地板）',standard:'客房木地板地面无大面质量缺陷（2m平整度>5mm、1㎡以上色差、0.5㎡以上连续性起鼓、起皮、划痕等）',score:0.5,scoreTag:'符合：1.5分',category:'B'},
+        {name:'装饰面观感地面（材质）',standard:'地砖、地毯、地板材质符合公司标准',score:1.5,scoreType:'partial',partialMin:0,partialMax:1.5,scoreTag:'符合：1.5分',category:'B'},
+        {name:'客房门：材料、式样、色调',standard:'材料、式样、色调符合标准',score:0.5,scoreTag:'符合：0.5分',category:'B'},
+        {name:'洗手台：型号、式样',standard:'型号正确，符合公司设计要求',score:0.5,scoreTag:'符合：0.5分',category:'B'},
+        {name:'淋浴间完好性',standard:'淋浴房符合施工所属品牌图纸（型材颜色、玻璃厚度、玻璃有明显3C标志、门扇开启角度、玻璃膜颜色）',score:1,scoreTag:'符合：1分',category:'A'},
+        {name:'淋浴间花洒',standard:'型号正确，花洒底座安装高度、手持淋浴龙头花洒阀体安装高度符合设计要求',score:0.5,scoreTag:'符合：0.5分',category:'B'},
+        {name:'淋浴间地漏',standard:'地漏型号、位置正确、坡度合理、无明显积水',score:0.5,scoreTag:'符合：0.5分',category:'B'},
+        {name:'灯光照明型号',standard:'灯控系统完成，灯具型号、色温符合公司设计标准',score:1,scoreTag:'符合：1分',category:'B'},
+        {name:'噪音测试',standard:'木门隔音降噪≥35分贝；隔墙：装配式≥45分贝，砌块≥40分贝（测试不少于三间）',score:0,category:'A'},
+        {name:'热水测试',standard:'测试不少于三间，热水供应正常',score:0,category:'A'},
+        {name:'电话测试',standard:'测试不少于三间，电话通话正常',score:0,category:'A'},
+        {name:'漏电保护测试',standard:'测试不少于三间，漏电保护功能正常',score:0,category:'A'},
+        {name:'淋浴房试水测试',standard:'测试不少于三间，排水顺畅无积水',score:0,category:'A'},
+        {name:'新风测试',standard:'测试不少于三间，新风系统运行正常',score:0,category:'A'},
+        {name:'空调测试',standard:'测试不少于三间，空调制冷制热正常',score:0,category:'A'},
+        {name:'排风扇风量',standard:'测试不少于三间，排风扇风量符合要求',score:0,category:'A'}
       ]}
     ]
   },
@@ -469,24 +570,24 @@ var modules=[
     subModules:[
       {id:'disinfection',name:'消毒间/布草间/总仓',icon:'🧴',img:null,
         groups:[{type:'subjective',label:'主观项',scoreText:'',items:[
-          {name:'烟感、喷淋、灭火器',standard:'消防烟感联动报警器、喷淋头安装牢固、装饰圈与顶板结合严密。至少有烟感并进行联动测试。暗房需设置排风扇',score:0}
+          {name:'烟感、喷淋、灭火器',standard:'消防烟感联动报警器、喷淋头安装牢固、装饰圈与顶板结合严密。至少有烟感并进行联动测试。暗房需设置排风扇',score:0,category:'A'}
         ]}]
       },
       {id:'equipment',name:'设备间与强弱电系统',icon:'⚙️',img:null,
         groups:[{type:'subjective',label:'主观项',scoreText:'',items:[
-          {name:'总配电间电力供应',standard:'电力供应满足酒店需要、配电间设备运行正常、电压稳定。须有绝缘地垫、绝缘手套等',score:0},
-          {name:'配电系统、设备安装',standard:'酒店供电系统需满足三级配电要求，配电箱等设备安装完毕。须有绝缘地垫、绝缘手套等',score:0},
-          {name:'配电系统、设备安装',standard:'各楼层配电箱安装有消防强切模块，接线无松动，布线规范，线径符合设计要求，无裸线，有漏电保护。配电间内不得有水管，穿管孔洞封闭严密。',score:0}
+          {name:'总配电间电力供应',standard:'电力供应满足酒店需要、配电间设备运行正常、电压稳定。须有绝缘地垫、绝缘手套等',score:0,category:'A'},
+          {name:'配电系统、设备安装',standard:'酒店供电系统需满足三级配电要求，配电箱等设备安装完毕。须有绝缘地垫、绝缘手套等',score:0,category:'A'},
+          {name:'配电系统、设备安装',standard:'各楼层配电箱安装有消防强切模块，接线无松动，布线规范，线径符合设计要求，无裸线，有漏电保护。配电间内不得有水管，穿管孔洞封闭严密。',score:0,category:'A'}
         ]}]
       },
       {id:'staff',name:'员工更衣室/员工宿舍',icon:'👷',img:null,
         groups:[
           {type:'objective',label:'客观项',scoreText:'',items:[
-            {name:'更衣室、淋浴房、宿舍',standard:'更衣间、宿舍、淋浴间装潢结束，配置齐全；消防、空调、网络到位；宿舍位置符合安全要求',score:0}
+            {name:'更衣室、淋浴房、宿舍',standard:'更衣间、宿舍、淋浴间装潢结束，配置齐全；消防、空调、网络到位；宿舍位置符合安全要求',score:0,category:'A'}
           ]},
           {type:'subjective',label:'主观项',scoreText:'',items:[
-            {name:'配置：床、衣柜、卫生间',standard:'员工宿舍和更衣室以平面设计方案为准，布局、通风等符合设计标准（暗房须有新风系统，符合要求）',score:0},
-            {name:'烟感、喷淋、灭火器',standard:'酒店范围内员工宿舍需要安装喷淋、烟感火灾探测器且联动有效',score:0}
+            {name:'配置：床、衣柜、卫生间',standard:'员工宿舍和更衣室以平面设计方案为准，布局、通风等符合设计标准（暗房须有新风系统，符合要求）',score:0,category:'A'},
+            {name:'烟感、喷淋、灭火器',standard:'酒店范围内员工宿舍需要安装喷淋、烟感火灾探测器且联动有效',score:0,category:'A'}
           ]}
         ]
       }
@@ -496,103 +597,103 @@ var modules=[
     subModules:[
       {id:'elevator',name:'电梯厅',icon:'🛗',img:'elevator_feishu.jpg',
         groups:[{type:'objective',label:'客观项',scoreText:'',items:[
-          {name:'电梯厅面积',standard:'电梯厅面积25m²，与设计图纸一致',inputType:'value',score:1,scoreTag:'符合：1分'},
-          {name:'电梯厅层高',standard:'电梯厅层高2800mm',inputType:'value',score:1,scoreTag:'符合：1分'},
-          {name:'轿厢品牌装饰',standard:'各品牌定制轿厢装饰符合设计',score:1,scoreTag:'符合：1分'},
-          {name:'轿厢配置',standard:'应急呼叫系统安装完成、监控系统安装完成、楼层梯控安装到位',score:0}
+          {name:'电梯厅面积',standard:'电梯厅面积25m²，与设计图纸一致',inputType:'value',score:1,scoreTag:'符合：1分',category:'B'},
+          {name:'电梯厅层高',standard:'电梯厅层高2800mm',inputType:'value',score:1,scoreTag:'符合：1分',category:'B'},
+          {name:'轿厢品牌装饰',standard:'各品牌定制轿厢装饰符合设计',score:1,scoreTag:'符合：1分',category:'A'},
+          {name:'轿厢配置',standard:'应急呼叫系统安装完成、监控系统安装完成、楼层梯控安装到位',score:0,category:'B'}
         ]}]
       },
       {id:'corridor',name:'走廊',icon:'🚪',img:'corridor_feishu.jpg',
         groups:[
           {type:'objective',label:'客观项',scoreText:'符合：1分/项',items:[
-            {name:'走廊宽度',standard:'1600mm，与设计图纸一致',inputType:'value',score:1},
-            {name:'走廊净高',standard:'2400mm，与设计图纸一致',inputType:'value',score:1},
-            {name:'走廊装饰元素',standard:'地毯、各品牌门牌壁灯、墙面定制墙板符合设计',score:1}
+            {name:'走廊宽度',standard:'1600mm，与设计图纸一致',inputType:'value',score:1,category:'A'},
+            {name:'走廊净高',standard:'2400mm，与设计图纸一致',inputType:'value',score:1,category:'B'},
+            {name:'走廊装饰元素',standard:'地毯、各品牌门牌壁灯、墙面定制墙板符合设计',score:1,category:'A'}
           ]},
           {type:'subjective',label:'主观项',scoreText:'',items:[
-            {name:'装饰面观感天花',standard:'发现2处以下问题：墙壁角落、管道接缝等处阴湿、渗漏水现象为不合格',score:1,scoreTag:'符合：1分'},
-            {name:'装饰面观感墙面（渗漏）',standard:'发现2处以下问题：墙壁角落、管道接缝等处阴湿、渗漏水现象为不合格',score:1,scoreTag:'符合：1分'},
-            {name:'装饰面观感墙面（材料）',standard:'材料、尺寸、色调符合公司标准。踢脚线色调材质符合品牌标准',score:1.5,scoreType:'partial',partialMin:0,partialMax:1,scoreTag:'符合：1.5分'},
-            {name:'装饰面观感地面',standard:'地砖（石材）、地毯材料、色调符合标准',score:1.5,scoreType:'partial',partialMin:0,partialMax:1,scoreTag:'符合：1.5分'},
-            {name:'灯光照明型号',standard:'灯具型号、色温、照度符合公司设计标准',score:0.5,scoreTag:'符合：0.5分'},
-            {name:'窗户',standard:'窗户下沿高度低于900mm需安装护栏或具有防护作用的措施。有开启窗户加护栏，无开启窗户参照设计图纸',score:0}
+            {name:'装饰面观感天花',standard:'发现2处以下问题：墙壁角落、管道接缝等处阴湿、渗漏水现象为不合格',score:1,scoreTag:'符合：1分',category:'A'},
+            {name:'装饰面观感墙面（渗漏）',standard:'发现2处以下问题：墙壁角落、管道接缝等处阴湿、渗漏水现象为不合格',score:1,scoreTag:'符合：1分',category:'A'},
+            {name:'装饰面观感墙面（材料）',standard:'材料、尺寸、色调符合公司标准。踢脚线色调材质符合品牌标准',score:1.5,scoreType:'partial',partialMin:0,partialMax:1,scoreTag:'符合：1.5分',category:'A'},
+            {name:'装饰面观感地面',standard:'地砖（石材）、地毯材料、色调符合标准',score:1.5,scoreType:'partial',partialMin:0,partialMax:1,scoreTag:'符合：1.5分',category:'A'},
+            {name:'灯光照明型号',standard:'灯具型号、色温、照度符合公司设计标准',score:0.5,scoreTag:'符合：0.5分',category:'A'},
+            {name:'窗户',standard:'窗户下沿高度低于900mm需安装护栏或具有防护作用的措施。有开启窗户加护栏，无开启窗户参照设计图纸',score:0,category:'B'}
           ]}
         ]
       },
       {id:'restaurant',name:'餐厅',icon:'🍽️',img:'restaurant_feishu.jpg',
         groups:[
           {type:'objective',label:'客观项',scoreText:'符合：1分/项',items:[
-            {name:'餐厅面积',standard:'116m²',inputType:'value',score:1},
-            {name:'餐厅层高',standard:'净高 2800mm',inputType:'value',score:1},
-            {name:'餐位数',standard:'41位',inputType:'value',score:1},
-            {name:'明档区设置',standard:'如家这碗面 明档区',score:1},
-            {name:'餐台长度',standard:'15000mm',inputType:'value',score:1},
-            {name:'餐厅核心墙面装饰',standard:'核心墙面装饰符合设计标准',score:1}
+            {name:'餐厅面积',standard:'116m²',inputType:'value',score:1,category:'A'},
+            {name:'餐厅层高',standard:'净高 2800mm',inputType:'value',score:1,category:'B'},
+            {name:'餐位数',standard:'41位',inputType:'value',score:1,category:'A'},
+            {name:'明档区设置',standard:'如家这碗面 明档区',score:1,category:'A'},
+            {name:'餐台长度',standard:'15000mm',inputType:'value',score:1,category:'A'},
+            {name:'餐厅核心墙面装饰',standard:'核心墙面装饰符合设计标准',score:1,category:'A'}
           ]},
           {type:'subjective',label:'主观项',scoreText:'',items:[
-            {name:'装饰面观感天花',standard:'天花材料、色调符合标准，平整度及细节收口处理细致，无渗漏水',score:2,scoreType:'partial',partialMin:0,partialMax:1,scoreTag:'符合：3分'},
-            {name:'装饰面观感墙面',standard:'墙面饰面材料、色调符合公司标准，踢脚线色调符合标准',score:1.5,scoreType:'partial',partialMin:0,partialMax:1.5,scoreTag:'符合：1.5分'},
-            {name:'装饰面观感地面',standard:'地面材料、尺寸、色调符合公司标准、美缝施工完成',score:1,scoreType:'partial',partialMin:0,partialMax:1,scoreTag:'符合：1.5分'},
-            {name:'灯光照明型号',standard:'灯具型号、色温、照度符合公司设计标准',score:0.5,scoreTag:'符合：0.5分'}
+            {name:'装饰面观感天花',standard:'天花材料、色调符合标准，平整度及细节收口处理细致，无渗漏水',score:2,scoreType:'partial',partialMin:0,partialMax:1,scoreTag:'符合：3分',category:'A'},
+            {name:'装饰面观感墙面',standard:'墙面饰面材料、色调符合公司标准，踢脚线色调符合标准',score:1.5,scoreType:'partial',partialMin:0,partialMax:1.5,scoreTag:'符合：1.5分',category:'B'},
+            {name:'装饰面观感地面',standard:'地面材料、尺寸、色调符合公司标准、美缝施工完成',score:1,scoreType:'partial',partialMin:0,partialMax:1,scoreTag:'符合：1.5分',category:'A'},
+            {name:'灯光照明型号',standard:'灯具型号、色温、照度符合公司设计标准',score:0.5,scoreTag:'符合：0.5分',category:'B'}
           ]}
         ]
       },
       {id:'kitchen',name:'厨房',icon:'🍳',img:null,
         groups:[
           {type:'objective',label:'客观项',scoreText:'',items:[
-            {name:'厨房面积',standard:'满足公司底线标准面积要求',inputType:'value',score:0}
+            {name:'厨房面积',standard:'满足公司底线标准面积要求',inputType:'value',score:0,category:'A'}
           ]},
           {type:'subjective',label:'主观项',scoreText:'',items:[
-            {name:'厨房设备配置位置',standard:'厨房设备配置位置正确、符合设计图纸（或专业厂商深化图纸）',score:0},
-            {name:'厨房设备（排烟设备）',standard:'设备安装应设置减震措施；正常运行，无异响；管路布置合理，噪音不得影响客房',score:0},
-            {name:'消防配置',standard:'厨房消防系统中烟感为温感。喷淋为高温喷淋头',score:0}
+            {name:'厨房设备配置位置',standard:'厨房设备配置位置正确、符合设计图纸（或专业厂商深化图纸）',score:0,category:'A'},
+            {name:'厨房设备（排烟设备）',standard:'设备安装应设置减震措施；正常运行，无异响；管路布置合理，噪音不得影响客房',score:0,category:'A'},
+            {name:'消防配置',standard:'厨房消防系统中烟感为温感。喷淋为高温喷淋头',score:0,category:'A'}
           ]}
         ]
       },
       {id:'laundry_gym',name:'洗衣房/健身房',icon:'🧺',img:'laundry_gym_feishu.jpg',
         groups:[
           {type:'objective',label:'客观项',scoreText:'符合：1分/项',items:[
-            {name:'面积',standard:'36m²',inputType:'value',score:1},
-            {name:'完成面层高',standard:'2700mm',inputType:'value',score:1}
+            {name:'面积',standard:'36m²',inputType:'value',score:1,category:'A'},
+            {name:'完成面层高',standard:'2700mm',inputType:'value',score:1,category:'B'}
           ]},
           {type:'subjective',label:'主观项',scoreText:'',items:[
-            {name:'洗衣房-装饰面观感天花',standard:'吊顶符合公司设计要求',score:1,scoreTag:'符合：1分'},
-            {name:'洗衣房-装饰面观感墙面、地砖',standard:'墙面材料、铺设符合公司标准、地砖材料符合公司要求，美缝完成',score:0.5,scoreTag:'符合：0.5分'},
-            {name:'洗衣房-灯光照明型号',standard:'灯具型号、色温、照度符合公司设计标准',score:0.5,scoreTag:'符合：0.5分'},
-            {name:'洗衣房-洗衣烘干机',standard:'按图纸采购，摆放正确，安装牢固',score:0.5,scoreTag:'符合：0.5分'},
-            {name:'健身房-装饰面观感天花',standard:'吊顶符合公司设计要求',score:0.5,scoreTag:'符合：0.5分'},
-            {name:'健身房-装饰面观感墙面、地砖',standard:'墙面材料、铺设符合公司标准、地砖材料符合公司要求',score:0.5,scoreTag:'符合：0.5分'}
+            {name:'洗衣房-装饰面观感天花',standard:'吊顶符合公司设计要求',score:1,scoreTag:'符合：1分',category:'A'},
+            {name:'洗衣房-装饰面观感墙面、地砖',standard:'墙面材料、铺设符合公司标准、地砖材料符合公司要求，美缝完成',score:0.5,scoreTag:'符合：0.5分',category:'A'},
+            {name:'洗衣房-灯光照明型号',standard:'灯具型号、色温、照度符合公司设计标准',score:0.5,scoreTag:'符合：0.5分',category:'A'},
+            {name:'洗衣房-洗衣烘干机',standard:'按图纸采购，摆放正确，安装牢固',score:0.5,scoreTag:'符合：0.5分',category:'A'},
+            {name:'健身房-装饰面观感天花',standard:'吊顶符合公司设计要求',score:0.5,scoreTag:'符合：0.5分',category:'B'},
+            {name:'健身房-装饰面观感墙面、地砖',standard:'墙面材料、铺设符合公司标准、地砖材料符合公司要求',score:0.5,scoreTag:'符合：0.5分',category:'B'}
           ]}
         ]
       },
       {id:'meeting',name:'会议室',icon:'📋',img:null  /* 无效果图 */,
         groups:[
           {type:'objective',label:'客观项',scoreText:'',items:[
-            {name:'会议室配置',standard:'按设计方案完成装潢，设备安装到位',score:0}
+            {name:'会议室配置',standard:'按设计方案完成装潢，设备安装到位',score:0,category:'B'}
           ]},
           {type:'subjective',label:'主观项',scoreText:'',items:[
-            {name:'装饰面观感天花',standard:'吊顶符合公司设计要求',score:0},
-            {name:'装饰面观感墙面、地砖',standard:'已施工完成，墙面材料、铺设符合公司标准、地面材料符合公司要求',score:0},
-            {name:'灯光照明型号',standard:'灯具型号、色温、照度符合公司设计标准',score:0}
+            {name:'装饰面观感天花',standard:'吊顶符合公司设计要求',score:0,category:'B'},
+            {name:'装饰面观感墙面、地砖',standard:'已施工完成，墙面材料、铺设符合公司标准、地面材料符合公司要求',score:0,category:'B'},
+            {name:'灯光照明型号',standard:'灯具型号、色温、照度符合公司设计标准',score:0,category:'B'}
           ]}
         ]
       },
       {id:'lobby',name:'大堂',icon:'🏨',img:'lobby_feishu.jpg',
         groups:[
           {type:'objective',label:'客观项',scoreText:'',items:[
-            {name:'大堂面积',standard:'215m²（长16655mm×宽9650mm）',inputType:'value',score:1,scoreTag:'符合：1分'},
-            {name:'大堂层高',standard:'净高 2800mm',inputType:'value',score:1,scoreTag:'符合：1分'},
-            {name:'品牌元素完整性',standard:'RUMI组合陈列完整',score:1,scoreTag:'符合：1分'},
-            {name:'自助机配置',standard:'自助机数量符合要求',score:1,scoreTag:'符合：1分'},
-            {name:'智能设备配置',standard:'智能送物机器人配置',score:1,scoreTag:'符合：1分'},
-            {name:'前台背景墙面装饰',standard:'前台背景墙面装饰符合设计标准',score:1,scoreTag:'符合：1分'},
-            {name:'大堂硬件标准',standard:'墙面装饰、家具、天花吊顶造型符合设计标准',score:5,scoreType:'partial',partialMin:0,partialMax:3,scoreTag:'符合：5分'},
-            {name:'大堂门电动感应门',standard:'电动感应门需能正常使用。旋转感应门需有防夹功能及急停按钮',score:0,scoreTag:'符合：1分'}
+            {name:'大堂面积',standard:'215m²（长16655mm×宽9650mm）',inputType:'value',score:1,scoreTag:'符合：1分',category:'A'},
+            {name:'大堂层高',standard:'净高 2800mm',inputType:'value',score:1,scoreTag:'符合：1分',category:'B'},
+            {name:'品牌元素完整性',standard:'RUMI组合陈列完整',score:1,scoreTag:'符合：1分',category:'A'},
+            {name:'自助机配置',standard:'自助机数量符合要求',score:1,scoreTag:'符合：1分',category:'B'},
+            {name:'智能设备配置',standard:'智能送物机器人配置',score:1,scoreTag:'符合：1分',category:'A'},
+            {name:'前台背景墙面装饰',standard:'前台背景墙面装饰符合设计标准',score:1,scoreTag:'符合：1分',category:'A'},
+            {name:'大堂硬件标准',standard:'墙面装饰、家具、天花吊顶造型符合设计标准',score:5,scoreType:'partial',partialMin:0,partialMax:3,scoreTag:'符合：5分',category:'A'},
+            {name:'大堂门电动感应门',standard:'电动感应门需能正常使用。旋转感应门需有防夹功能及急停按钮',score:0,scoreTag:'符合：1分',category:'A'}
           ]},
           {type:'subjective',label:'主观项',scoreText:'',items:[
-            {name:'装饰面观感墙面',standard:'墙板存在大面积色差，踢脚线符合要求',score:1,scoreTag:'符合：1分'},
-            {name:'装饰面观感地面',standard:'地面材料、尺寸、色调符合公司标准、美缝施工完成',score:1,scoreTag:'符合：1.5分'},
-            {name:'公共卫生间装饰及功能',standard:'装饰已按图纸完成，功能使用正常',score:0}
+            {name:'装饰面观感墙面',standard:'墙板存在大面积色差，踢脚线符合要求',score:1,scoreTag:'符合：1分',category:'A'},
+            {name:'装饰面观感地面',standard:'地面材料、尺寸、色调符合公司标准、美缝施工完成',score:1,scoreTag:'符合：1.5分',category:'A'},
+            {name:'公共卫生间装饰及功能',standard:'装饰已按图纸完成，功能使用正常',score:0,category:'B'}
           ]}
         ]
       }
@@ -601,11 +702,11 @@ var modules=[
   {id:'facade',name:'外立面',icon:'🏢',type:'direct',imgs:['facade_feishu1.jpg','facade_feishu2.jpg'],
     groups:[
       {type:'objective',label:'客观项',scoreText:'',items:[
-        {name:'门头店招数量',standard:'门头店招 1个，顶部店招 1个',score:0.5,scoreTag:'符合：0.5分'},
-        {name:'门头尺寸',standard:'宽度 7500mm，高度 6500mm',inputType:'value',score:1,scoreTag:'符合：1分'},
-        {name:'门头店招字体高度',standard:'字体高度 1000mm',inputType:'value',score:1,scoreTag:'符合：1分'},
-        {name:'门头顶部店招字体高度',standard:'字体高度 1200mm',inputType:'value',score:1,scoreTag:'符合：1分'},
-        {name:'品牌元素符合性',standard:'外饰、品牌元素符合如家4.0设计标准',score:1,scoreTag:'符合：1分'}
+        {name:'门头店招数量',standard:'门头店招 1个，顶部店招 1个',score:0.5,scoreTag:'符合：0.5分',category:'A'},
+        {name:'门头尺寸',standard:'宽度 7500mm，高度 6500mm',inputType:'value',score:1,scoreTag:'符合：1分',category:'A'},
+        {name:'门头店招字体高度',standard:'字体高度 1000mm',inputType:'value',score:1,scoreTag:'符合：1分',category:'A'},
+        {name:'门头顶部店招字体高度',standard:'字体高度 1200mm',inputType:'value',score:1,scoreTag:'符合：1分',category:'B'},
+        {name:'品牌元素符合性',standard:'外饰、品牌元素符合如家4.0设计标准',score:1,scoreTag:'符合：1分',category:'A'}
       ]}
     ]
   },
@@ -613,49 +714,44 @@ var modules=[
     subModules:[
       {id:'fire',name:'消防系统',icon:'🧯',img:null  /* 无效果图 */,
         groups:[
-          {type:'objective',label:'客观项',scoreText:'',items:[
-            {name:'消防图纸审批',standard:'消防设计图审通过，已取得消防部门同意文件',score:0},
-            {name:'消防设施配备清单',standard:'烟感、喷淋、消火栓、灭火器等按规范配齐',score:0}
-          ]},
           {type:'subjective',label:'主观项',scoreText:'',items:[
-            {name:'所有设备间及机房',standard:'烟感、应急照明、灭火器符合规范要求，且无渗水现象',score:0},
-            {name:'防火门',standard:'防火门符合设计要求，有合格证。消防楼道常闭式安全门向外开启，安全门完好无明显破损、闭门器完好，保持常闭状态',score:0},
-            {name:'消防联动',standard:'电梯迫降、强电强切、消防广播、声光报警、应急照明、疏散指示、强排烟风机、防火分区卷帘功能正常使用',score:0},
-            {name:'消防手动测试、烟感系统',standard:'1、消防手动测试：\n消防报警信号必须引至前台区域（覆盖酒店管理区域消防报警点位的消防主机、消防分机、层显）。消防报警主机正常报警 ，并能获知火警位置，消防报警主机面板菜单不得有故障信息（如在测试中因故障信息未处理或喇叭线拔掉，或各种系统瘫痪等原因导致测试不报警）。报警显示地址与实际地址相符合，不得大于2个及以上测试报警显示地址错误或无法显示，如显示编码须主机旁附编码和位置对照表。\n2、烟感感应器安装到位(室内所有区域、独立空间都有烟感），报警装置在前台（或信号接到前台），测试烟感及手报,报警显示房号及位置,水泵等联动测试正常.控制为自动状态，厨房设置温感\n未达以上要求的须设立专人24小时不间断值守消控室，且保证所有消控室设备正常运转，发生情况时应第一时间规范开展处置：\n1、消控室由酒店管理，设立专人24小时不间断值守的，验收当日消控室需完成装修在使用状态，管理人员在岗。所有消防控制室设备正常运转，安装机械门锁。\n2、若消控室由第三方管理，设立专人24小时不间断值守的。',score:0},
-            {name:'消防手动报警',standard:'消防报警信号引至前台区域，消防报警主机正常报警并能获知火警位置，面板无故障信息，报警显示地址与实际地址相符',score:0},
-            {name:'消防广播/声光',standard:'有消防广播（或声光报警装置），工作正常',score:0},
-            {name:'疏散指示、消防通道',standard:'消防通道畅通，向外防火门开启正常。疏散指示正常使用、位置和配备数量合理',score:0},
-            {name:'喷淋',standard:'消防喷淋符合当地消防法规要求，按消防标准施工。消防栓水最不利点静压满足0.1Mpa；末端喷淋最不利点压力≥0.05Mpa',score:0},
-            {name:'消火栓及灭火器',standard:'消防栓箱体内水枪头、水带配置齐全，栓口正向朝外或使用可旋转式，水压正常',score:0},
-            {name:'走廊应急照明',standard:'2次2处应急照明不符合要求则项目整体不合格',score:0},
-            {name:'消防泵房水箱、水池',standard:'1、泵房水泵数量符合设计要求，安装规范，压力正常，控制为自动状态,照明、应急照明、防火门安装到位，湿式报警阀、水力警铃试验和水泵点动正常。\n2、水箱不得直接安放在地面。水箱容积符合设计要求，如与生活共用水箱，出水口位置高差正确，根据地区特点，正确设置保温层，安装无渗漏。\n3、消防水池正常蓄水，浮球阀完好,水位不低于水箱容量的2/3。',score:0},
-            {name:'消防楼梯',standard:'消防楼梯畅通，搭建的钢梯质量、尺寸、造型、栏杆高度符合规范要求',score:0},
-            {name:'强排烟、正压送风系统',standard:'强排烟和正压送风口百叶风口完好，安装平整，位置符合要求，排烟风机、正压风机安装规范，有防火阀，风机点动试验正常。与消防报警主机联动。',score:0}
+            {name:'所有设备间及机房',standard:'烟感、应急照明、灭火器符合规范要求，且无渗水现象',score:0,category:'A'},
+            {name:'防火门',standard:'防火门符合设计要求，有合格证。消防楼道常闭式安全门向外开启，安全门完好无明显破损、闭门器完好，保持常闭状态',score:0,category:'A'},
+            {name:'消防联动',standard:'电梯迫降、强电强切、消防广播、声光报警、应急照明、疏散指示、强排烟风机、防火分区卷帘功能正常使用',score:0,category:'A'},
+            {name:'消防手动测试、烟感系统',standard:'1、消防手动测试：\n消防报警信号必须引至前台区域（覆盖酒店管理区域消防报警点位的消防主机、消防分机、层显）。消防报警主机正常报警 ，并能获知火警位置，消防报警主机面板菜单不得有故障信息（如在测试中因故障信息未处理或喇叭线拔掉，或各种系统瘫痪等原因导致测试不报警）。报警显示地址与实际地址相符合，不得大于2个及以上测试报警显示地址错误或无法显示，如显示编码须主机旁附编码和位置对照表。\n2、烟感感应器安装到位(室内所有区域、独立空间都有烟感），报警装置在前台（或信号接到前台），测试烟感及手报,报警显示房号及位置,水泵等联动测试正常.控制为自动状态，厨房设置温感\n未达以上要求的须设立专人24小时不间断值守消控室，且保证所有消控室设备正常运转，发生情况时应第一时间规范开展处置：\n1、消控室由酒店管理，设立专人24小时不间断值守的，验收当日消控室需完成装修在使用状态，管理人员在岗。所有消防控制室设备正常运转，安装机械门锁。\n2、若消控室由第三方管理，设立专人24小时不间断值守的。',score:0,category:'A'},
+            {name:'消防广播/声光',standard:'有消防广播（或声光报警装置），工作正常',score:0,category:'A'},
+            {name:'疏散指示、消防通道',standard:'消防通道畅通，向外防火门开启正常。疏散指示正常使用、位置和配备数量合理',score:0,category:'A'},
+            {name:'喷淋',standard:'消防喷淋符合当地消防法规要求，按消防标准施工。消防栓水最不利点静压满足0.1Mpa；末端喷淋最不利点压力≥0.05Mpa',score:0,category:'A'},
+            {name:'消火栓及灭火器',standard:'消防栓箱体内水枪头、水带配置齐全，栓口正向朝外或使用可旋转式，水压正常',score:0,category:'A'},
+            {name:'走廊应急照明',standard:'2次2处应急照明不符合要求则项目整体不合格',score:0,category:'A'},
+            {name:'消防泵房水箱、水池',standard:'1、泵房水泵数量符合设计要求，安装规范，压力正常，控制为自动状态,照明、应急照明、防火门安装到位，湿式报警阀、水力警铃试验和水泵点动正常。\n2、水箱不得直接安放在地面。水箱容积符合设计要求，如与生活共用水箱，出水口位置高差正确，根据地区特点，正确设置保温层，安装无渗漏。\n3、消防水池正常蓄水，浮球阀完好,水位不低于水箱容量的2/3。',score:0,category:'A'},
+            {name:'消防楼梯',standard:'消防楼梯畅通，搭建的钢梯质量、尺寸、造型、栏杆高度符合规范要求',score:0,category:'A'},
+            {name:'强排烟、正压送风系统',standard:'强排烟和正压送风口百叶风口完好，安装平整，位置符合要求，排烟风机、正压风机安装规范，有防火阀，风机点动试验正常。与消防报警主机联动。',score:0,category:'A'}
           ]}
         ]
       },
       {id:'water',name:'给排水系统',icon:'💧',img:null  /* 无效果图 */,
         groups:[{type:'subjective',label:'主观项',scoreText:'',items:[
-          {name:'设计图纸核对',standard:'设备表查看是否有设备缺失以及设备参数是否满足设计要求（水箱有效容积、消毒装置、过滤器、水泵参数、供回水管管径）',score:0},
-          {name:'基础稳定安全',standard:'屋面水箱必须设置基础（混凝土或钢结构），且受力于原建筑结构柱（或承重墙）上',score:0},
-          {name:'水箱无渗漏',standard:'水箱无渗漏水；北方城市水箱间须有防冻设施；水箱配置容量与设计图纸一致',score:0},
-          {name:'水泵有无异响',standard:'水泵就位在槽钢基础上，装上地脚螺栓，水泵有效固定且基础应设减震器。噪声不影响酒店正常运行',score:0},
-          {name:'设备主机安装',standard:'室外机与机座之间应加有阻尼减震器。系统运转平稳，无异常振动与声响，外机噪音不影响酒店正常运营',score:0}
+          {name:'设计图纸核对',standard:'设备表查看是否有设备缺失以及设备参数是否满足设计要求（水箱有效容积、消毒装置、过滤器、水泵参数、供回水管管径）',score:0,category:'A'},
+          {name:'基础稳定安全',standard:'屋面水箱必须设置基础（混凝土或钢结构），且受力于原建筑结构柱（或承重墙）上',score:0,category:'A'},
+          {name:'水箱无渗漏',standard:'水箱无渗漏水；北方城市水箱间须有防冻设施；水箱配置容量与设计图纸一致',score:0,category:'A'},
+          {name:'水泵有无异响',standard:'水泵就位在槽钢基础上，装上地脚螺栓，水泵有效固定且基础应设减震器。噪声不影响酒店正常运行',score:0,category:'B'},
+          {name:'设备主机安装',standard:'室外机与机座之间应加有阻尼减震器。系统运转平稳，无异常振动与声响，外机噪音不影响酒店正常运营',score:0,category:'B'}
         ]}]
       },
       {id:'monitor',name:'监控系统',icon:'📹',img:null  /* 无效果图 */,
         groups:[{type:'subjective',label:'主观项',scoreText:'',items:[
-          {name:'监控录像',standard:'监控录像保存90天以上，检查内存容量',score:0}
+          {name:'监控录像',standard:'监控录像保存90天以上，检查内存容量',score:0,category:'B'}
         ]}]
       },
-      {id:'audio',name:'背景音乐',icon:'🔊',img:null  /* 无效果图 */,
+      {id:'audio',name:'广播系统',icon:'🔊',img:null  /* 无效果图 */,
         groups:[{type:'subjective',label:'主观项',scoreText:'',items:[
           {name:'背景广播',standard:'背景广播正常使用',score:0}
         ]}]
       },
       {id:'ac',name:'空调系统',icon:'❄️',img:null  /* 无效果图 */,
         groups:[{type:'subjective',label:'主观项',scoreText:'',items:[
-          {name:'水泵异响、设备主机减震',standard:'水泵就位在槽钢基础上，装上地脚螺栓，水泵有效固定且基础应设减震器。室外机与机座之间应加有阻尼减震器。系统运转平稳，无异常振动与声响',score:0}
+          {name:'水泵异响、设备主机减震',standard:'水泵就位在槽钢基础上，装上地脚螺栓，水泵有效固定且基础应设减震器。室外机与机座之间应加有阻尼减震器。系统运转平稳，无异常振动与声响',score:0,category:'B'}
         ]}]
       }
     ]
@@ -663,12 +759,12 @@ var modules=[
   {id:'safety',name:'安全及其它',icon:'🛡️',type:'direct',img:null  /* 无效果图 */,
     groups:[
       {type:'objective',label:'客观项',scoreText:'',items:[
-        {name:'保险',standard:'已按规定缴纳相关险种（公众责任险、现金险、财产一切险、机损险等）',score:0},
-        {name:'央采率',standard:'一类央采符合要求',score:5}
+        {name:'保险',standard:'已按规定缴纳相关险种（公众责任险、现金险、财产一切险、机损险等）',score:0,category:'A'},
+        {name:'央采率',standard:'一类央采符合要求',score:5,category:'A'}
       ]},
       {type:'subjective',label:'主观项',scoreText:'',items:[
-        {name:'结构安全',standard:'酒店整体建筑物没有倾斜或没有明显墙体结构性开裂（不包括墙体粉刷层开裂）',score:0},
-        {name:'材料、安全',standard:'搭建辅房不可用作经营和住人，用作辅房需配齐消防设施和设备。厨房不准违规使用钢瓶液化石油气。，材料符合防火要求，不得使用夹层为聚苯板的彩钢夹芯板，符合承重要求。对于彩钢夹芯板的补救措施：采取阻燃措施（外包铁皮或内衬防火材料）或在同一栋楼物业管理方出具不适用酒店区域的证明和加盟商相对应的安全承诺书。',score:0},
+        {name:'结构安全',standard:'酒店整体建筑物没有倾斜或没有明显墙体结构性开裂（不包括墙体粉刷层开裂）',score:0,category:'A'},
+        {name:'材料、安全',standard:'搭建辅房不可用作经营和住人，用作辅房需配齐消防设施和设备。厨房不准违规使用钢瓶液化石油气。，材料符合防火要求，不得使用夹层为聚苯板的彩钢夹芯板，符合承重要求。对于彩钢夹芯板的补救措施：采取阻燃措施（外包铁皮或内衬防火材料）或在同一栋楼物业管理方出具不适用酒店区域的证明和加盟商相对应的安全承诺书。',score:0,category:'A'},
         {name:'央采质量',standard:'现场央采产品抽样检查（抽任何两类工程央采物品）',score:10,scoreType:'partial',partialMin:0,partialMax:5,scoreTag:'符合：10分'}
       ]}
     ]
@@ -722,6 +818,9 @@ var currentRoomIdx=null;
 var roomCheckResults={}; // roomKey -> 'pass'|'fail'|'partial'
 var roomCheckPhotos={};  // roomKey -> [dataURL,...]
 var roomCheckPartialScores={}; // roomKey -> number (比较符合得分)
+var roomManualScores={}; // roomIdx -> number (0-15 手动打分)
+var expandedRoomIdx=null;
+var roomSamplingFromInspection=false;
 var roomCheckItems=[
   {name:'装饰面观感天花',standard:'天花符合设计要求，顶面平整度及细节处理细致',score:2,scoreType:'partial',partialMin:0,partialMax:2},
   {name:'装饰面观感墙面',standard:'材料、尺寸、色调符合公司标准',score:1,scoreType:'partial',partialMin:0,partialMax:1},
@@ -906,35 +1005,33 @@ var moduleTagAbbr={filing:'BA',guestroom:'KF',functional:['XD','SB','YG'],public
 function renderModuleList(filtered){
   var grid=document.getElementById('moduleGrid');
   var html='';
-  var totalAll=0,doneAll=0;
+  var totalAll=0;
   var modsToRender=modules;
   modsToRender.forEach(function(mod){
     var total=countAllItems(mod);
     var done=countCompleted(mod);
-    totalAll+=total;doneAll+=done;
+    totalAll+=total;
     var pct=total>0?Math.round(done/total*100):0;
     var sc=moduleScore(mod);
     var isAllDone=(done===total&&total>0);
     var color=isAllDone?'#02C2C2':(pct>0?'#FFA64C':'#86909C');
 
-    // Stats text
+    // Stats text: 不符合项/符合项
     var statsText='';
-    var subCount=mod.subModules?mod.subModules.length:0;
-    var subDone=0;
-    if(mod.type==='sub'&&mod.subModules){
-      mod.subModules.forEach(function(sm){
-        var smDone=true;
-        sm.groups.forEach(function(g,gi){
-          g.items.forEach(function(it,ii){
-            var k=myResultKey(itemKey(mod.id,sm.id,gi,ii));
-            if(!checkResults[k]||checkResults[k]==='none')smDone=false;
-          });
-        });
-        if(smDone)subDone++;
+    var failCnt=0,passCnt=0;
+    var countIt=function(g,gi,subId){
+      g.items.forEach(function(it,ii){
+        var k=myResultKey(itemKey(mod.id,subId,gi,ii));
+        if(checkResults[k]==='fail')failCnt++;
+        else if(checkResults[k]==='pass')passCnt++;
       });
-      statsText=subCount+'个子模块 · '+total+'项 · '+subDone+'/'+subCount+'完成';
+    };
+    if(mod.type==='sub'&&mod.subModules){
+      mod.subModules.forEach(function(sm){sm.groups.forEach(function(g,gi){countIt(g,gi,sm.id);});});
+      statsText=mod.subModules.length+'个子模块 · 不符合'+failCnt+'项 · 符合'+passCnt+'项';
     }else{
-      statsText=total+'项 · '+done+'/'+total+'完成';
+      mod.groups.forEach(function(g,gi){countIt(g,gi,null);});
+      statsText='不符合'+failCnt+'项 · 符合'+passCnt+'项';
     }
 
     html+='<div class="mod-card" onclick="enterModule(\''+mod.id+'\')">';
@@ -956,17 +1053,69 @@ function renderModuleList(filtered){
   }
   grid.innerHTML=html;
 
-  // Update hero progress
-  var pctAll=totalAll>0?Math.round(doneAll/totalAll*100):0;
-  var pmScore=calculatePMScore();
-  var heroRingFill=document.getElementById('heroRingFill');
-  var circ=2*Math.PI*25;
-  var off=circ*(1-pctAll/100);
-  heroRingFill.style.strokeDashoffset=off;
-  document.getElementById('heroRingText').textContent=pctAll+'%';
-  document.getElementById('heroScore').textContent=pmScore.total+'/'+pmScore.maxTotal+'分';
-  document.getElementById('heroSub').textContent=doneAll+'/'+totalAll+' 项已检 · 8大模块';
-  document.getElementById('heroBarFill').style.width=pctAll+'%';
+  // Update hero: A类不符合 / B类不符合 / 不符合/总项 / PM打分 / QC打分
+  var failA=0,failB=0,failAll=0,totalAll=0;
+  var pmScoreTotal=0,pmScoreMax=0,qcScoreTotal=0,qcScoreMax=0;
+  var calcRoleScore=function(mod,isQc){
+    var total=0,max=0,filingDeduct=0,filingMax=20,filingCount=0;
+    var iter=function(g,gi,subId){
+      g.items.forEach(function(it,ii){
+        var key=itemKey(mod.id,subId,gi,ii);
+        var rk=isQc?'qc_'+key:key;
+        var res=checkResults[rk];
+        if(it.scoreType==='deduction'){
+          filingCount++;
+          if(res!=='pass')filingDeduct+=it.score;
+        }else{
+          max+=it.score;
+          if(res==='pass')total+=it.score;
+          else if(res==='partial')total+=(checkPartialScores[rk]||0);
+        }
+      });
+    };
+    if(mod.type==='sub'){
+      mod.subModules.forEach(function(sm){sm.groups.forEach(function(g,gi){iter(g,gi,sm.id);});});
+    }else{
+      mod.groups.forEach(function(g,gi){iter(g,gi,null);});
+    }
+    return filingCount>0?{total:filingMax-filingDeduct,max:filingMax}:{total:total,max:max};
+  };
+  modules.forEach(function(mod){
+    totalAll+=countAllItems(mod);
+    var fiter=function(g,gi,subId){
+      g.items.forEach(function(it,ii){
+        var key=itemKey(mod.id,subId,gi,ii);
+        if(checkResults[myResultKey(key)]==='fail'){
+          failAll++;
+          if(it.category==='A')failA++;
+          else if(it.category==='B')failB++;
+        }
+      });
+    };
+    if(mod.type==='sub'){
+      mod.subModules.forEach(function(sm){sm.groups.forEach(function(g,gi){fiter(g,gi,sm.id);});});
+    }else{
+      mod.groups.forEach(function(g,gi){fiter(g,gi,null);});
+    }
+    var pms=calcRoleScore(mod,false);
+    pmScoreTotal+=pms.total;pmScoreMax+=pms.max;
+    var qcs=calcRoleScore(mod,true);
+    qcScoreTotal+=qcs.total;qcScoreMax+=qcs.max;
+  });
+  document.getElementById('heroFailACount').textContent=failA;
+  document.getElementById('heroFailBCount').textContent=failB;
+  document.getElementById('heroFailCount').textContent=failAll;
+  document.getElementById('heroTotalCount').textContent='/'+totalAll+'项';
+  document.getElementById('heroPmScore').textContent=pmScoreTotal;
+  document.getElementById('heroPmMax').textContent='/'+pmScoreMax+'分';
+  document.getElementById('heroQcScore').textContent=qcScoreTotal;
+  document.getElementById('heroQcMax').textContent='/'+qcScoreMax+'分';
+  var heroFailABlock=document.getElementById('heroFailABlock');
+  if(heroFailABlock)heroFailABlock.classList.toggle('has-fail',failA>0);
+  var heroFailBBlock=document.getElementById('heroFailBBlock');
+  if(heroFailBBlock)heroFailBBlock.classList.toggle('has-fail',failB>0);
+  var heroFailBlock=document.getElementById('heroFailBlock');
+  if(heroFailBlock)heroFailBlock.classList.toggle('has-fail',failAll>0);
 }
 
 function lightenColor(hex,pct){
@@ -1320,6 +1469,10 @@ function renderInspectionView(filterModId){
         html+='</div>';
       });
     }else{
+      // QC role + guestroom: insert room sampling block before check items
+      if(currentRole==='qc'&&mod.id==='guestroom'){
+        html+=renderRoomSamplingBlock();
+      }
       mod.groups.forEach(function(g,gi){
         html+=sectionHeaderHTML(g);
         g.items.forEach(function(it,ii){
@@ -1359,11 +1512,6 @@ function renderInspectionView(filterModId){
 function enterModule(id){
   var mod=getModule(id);if(!mod)return;
   currentModuleId=id;currentSubModuleId=null;
-  // QC role: guestroom -> room sampling flow first
-  if(currentRole==='qc'&&id==='guestroom'){
-    enterRoomSampling();
-    return;
-  }
   document.getElementById('headerTitle').textContent=mod.name;
   document.getElementById('backBtn').style.visibility='visible';
   renderInspectionView(id);
@@ -1461,7 +1609,7 @@ function scoreBadge(it){
 
 function renderCheckItem(key,it){
   var html='<div class="check-item'+(it.isBaseline?' baseline':'')+'" id="item_'+key+'">';
-  html+='<div class="ci-name">'+(it.isBaseline?'<span class="ci-baseline-tag">底线</span>':'')+it.name+scoreBadge(it)+'</div>';
+  html+='<div class="ci-name">'+(it.isBaseline?'<span class="ci-baseline-tag">底线</span>':'')+(it.category?'<span class="ci-category-tag cat-'+it.category.toLowerCase()+'">'+it.category+'类</span>':'')+'<span class="ci-name-text">'+it.name+'</span>'+scoreBadge(it)+'</div>';
   html+='<div class="ci-standard">'+(it.standard||'')+'</div>';
   if(it.tags&&it.tags.length){
     html+='<div class="ci-tags">';
@@ -1470,7 +1618,34 @@ function renderCheckItem(key,it){
   }
   if(it.inputType==='value'){
     var vk=myResultKey(key);
-    html+='<div class="value-input"><input type="text" placeholder="请输入实测值" oninput="onValueInput(\''+key+'\',this.value)" value="'+(checkValues[vk]||'')+'"></div>';
+    if(it.areaGroups&&it.areaGroups.length){
+      html+='<div class="area-groups">';
+      it.areaGroups.forEach(function(ag,ai){
+        var agk=key+'_ag_'+ai;
+        var agv=checkValues[agk]||'';
+        var agr=checkResults[agk];
+        html+='<div class="area-group">';
+        html+='<div class="area-group-header"><span class="area-group-label">'+ag.label+'</span></div>';
+        html+='<div class="area-group-row"><div class="agr-input-wrap"><input type="text" class="agr-input" placeholder="请输入实测面积" value="'+agv+'" oninput="checkValues[\''+agk+'\']=this.value"><span class="agr-unit">m²</span></div></div>';
+        html+='<div class="area-group-btns">';
+        html+='<button class="agb-btn agb-pass'+(agr==='pass'?' active':'')+'" onclick="setAreaGroupResult(\''+agk+'\',\'pass\')">符合</button>';
+        html+='<button class="agb-btn agb-fail'+(agr==='fail'?' active':'')+'" onclick="setAreaGroupResult(\''+agk+'\',\'fail\')">不符合</button>';
+        html+='</div></div>';
+      });
+      html+='</div>';
+      if(it.failSection){
+        var failShow=(checkResults[myResultKey(key)]==='fail');
+        var failRoomKey=key+'_failrooms';
+        html+='<div class="area-fail-section" id="areafail_'+key+'" style="display:'+(failShow?'flex':'none')+'">';
+        html+='<div class="area-fail-field"><span class="aff-label">不符合房号</span><input type="text" class="aff-input" placeholder="多个房号用逗号分隔，如101,102" value="'+(checkValues[failRoomKey]||'')+'" oninput="checkValues[\''+failRoomKey+'\']=this.value"></div>';
+        html+='<div class="area-fail-field"><span class="aff-label">不符合照片</span><div class="area-fail-upload" onclick="document.getElementById(\'areafailfile_'+key+'\').click()"><div class="afu-icon">+</div><div class="afu-text">上传照片</div></div>';
+        html+='<input type="file" accept="image/*" capture="environment" id="areafailfile_'+key+'" style="display:none" onchange="onAreaFailPhoto(\''+key+'\',this)">';
+        html+='<div class="pu-preview" id="areafailprev_'+key+'"></div></div>';
+        html+='</div>';
+      }
+    }else{
+      html+='<div class="value-input"><input type="text" placeholder="请输入实测值" oninput="onValueInput(\''+key+'\',this.value)" value="'+(checkValues[vk]||'')+'"></div>';
+    }
   }
   // QC mode: show PM result read-only
   if(currentRole==='qc'){
@@ -1548,11 +1723,13 @@ function setResult(key,result){
   var partialBtn=document.getElementById('partialbtn_'+key);
   var photo=document.getElementById('photo_'+key);
   var partialBox=document.getElementById('partialbox_'+key);
+  var areaFail=document.getElementById('areafail_'+key);
   if(passBtn)passBtn.classList.toggle('active',result==='pass');
   if(failBtn)failBtn.classList.toggle('active',result==='fail');
   if(partialBtn)partialBtn.classList.toggle('active',result==='partial');
   if(photo)photo.classList.toggle('show',result==='fail');
   if(partialBox)partialBox.classList.toggle('show',result==='partial');
+  if(areaFail)areaFail.style.display=(result==='fail'?'flex':'none');
   // Sync bottom bar score on inspection view
   if(currentModuleId){
     var pageInsp=document.getElementById('page-inspection');
@@ -1561,6 +1738,54 @@ function setResult(key,result){
       updateSidebarDots();
     }
   }
+}
+
+function setAreaGroupResult(agk,result){
+  checkResults[agk]=result;
+  var parentKey=agk.replace(/_ag_\d+$/,'');
+  var mod=getModule(currentModuleId);
+  if(mod&&mod.groups){
+    mod.groups.forEach(function(g){
+      if(g.items){
+        g.items.forEach(function(it){
+          if(it.areaGroups){
+            var testKey=itemKey(mod.id,null,mod.groups.indexOf(g),g.items.indexOf(it));
+            if(testKey===parentKey){
+              var allPass=true;var anyFail=false;
+              it.areaGroups.forEach(function(_,ai){
+                var subR=checkResults[parentKey+'_ag_'+ai];
+                if(subR==='fail'){anyFail=true;}
+                if(subR!=='pass'){allPass=false;}
+              });
+              if(anyFail)checkResults[myResultKey(parentKey)]='fail';
+              else if(allPass)checkResults[myResultKey(parentKey)]='pass';
+              else delete checkResults[myResultKey(parentKey)];
+            }
+          }
+        });
+      }
+    });
+  }
+  if(currentModuleId){
+    renderInspectionView(currentModuleId);
+    highlightSidebar(currentModuleId);
+    updateBottomBarScore(currentModuleId);
+    updateSidebarDots();
+  }
+}
+
+function onAreaFailPhoto(key,input){
+  if(!input.files||!input.files.length)return;
+  var file=input.files[0];
+  var reader=new FileReader();
+  reader.onload=function(e){
+    var imgKey=key+'_areafailphoto';
+    if(!checkPhotos[imgKey])checkPhotos[imgKey]=[];
+    checkPhotos[imgKey].push(e.target.result);
+    var pv=document.getElementById('areafailprev_'+key);
+    if(pv){pv.innerHTML+='<img src="'+e.target.result+'">';}
+  };
+  reader.readAsDataURL(file);
 }
 
 function restoreItemState(key){
@@ -1637,10 +1862,11 @@ function showPage(id){
   document.getElementById(id).classList.add('active');
   document.getElementById(id).scrollTop=0;
   var bb=document.getElementById('bottomBar');
-  var showBB=(id==='page-detail'||id==='page-room'||id==='page-inspection');
+  var showBB=(id==='page-detail'||id==='page-room'||id==='page-inspection'||id==='page-rooms');
   bb.classList.toggle('show',showBB);
   if(showBB){
     if(id==='page-inspection'&&currentModuleId){updateBottomBarScore(currentModuleId);}
+    else if(id==='page-rooms'){updateRoomsBottomBar();}
     else if(id==='page-room'&&currentRoomIdx!==null){updateRoomBottomBar(currentRoomIdx);}
     else if(id==='page-detail'&&currentModuleId){
       var mod=getModule(currentModuleId);
@@ -1698,6 +1924,7 @@ function goBack(){
   }
   // From room list -> module list
   if(pageRooms.classList.contains('active')){
+    expandedRoomIdx=null;
     renderModuleList();
     showPage('page-modules');
     document.getElementById('headerTitle').textContent='AI质检';
@@ -1765,8 +1992,8 @@ function refreshCurrentPage(){
   var room=document.getElementById('page-room');
   var insp=document.getElementById('page-inspection');
   if(room.classList.contains('active')&&currentRoomIdx!==null){
-    renderRoomDetail(currentRoomIdx);
-    updateRoomBottomBar(currentRoomIdx);
+    renderRoomsView();
+    showPage('page-rooms');
   }else if(rooms.classList.contains('active')){
     renderRoomsView();
   }else if(insp.classList.contains('active')){
@@ -1813,6 +2040,74 @@ function calcRoomScore(idx){
   });
   return{earned:Math.round(earned*10)/10,max:Math.round(max*10)/10};
 }
+function renderRoomSamplingBlock(){
+  if(roomNumbers.length===0)generateRoomNumbers();
+  var sampleCount=Math.ceil(TOTAL_ROOMS*SAMPLE_RATIO);
+  var doneTotal=0;
+  roomNumbers.forEach(function(rn,idx){if(roomDoneCount(idx)===roomCheckItems.length)doneTotal++;});
+  var allDone=(doneTotal===sampleCount&&sampleCount>0);
+  var html='';
+  // 抽检房号 + 客房打分 整合卡片
+  html+='<div class="room-block room-inline-block">';
+  html+='<div class="room-block-header"><span class="rb-bar"></span><span class="rb-title">抽检房号</span><span class="rb-stat">已完成 <b>'+doneTotal+'</b> / '+sampleCount+' 间</span></div>';
+  html+='<div class="room-block-body">';
+  html+='<div class="room-grid-q">';
+  roomNumbers.forEach(function(rn,idx){
+    var done=roomDoneCount(idx);
+    var isDone=done===roomCheckItems.length;
+    var isActive=(expandedRoomIdx===idx);
+    var tileClass=isDone?'done':(done>0?'progress':'');
+    if(isActive)tileClass='active';
+    var statusText=isDone?'已检查':done>0?'检查中':'未检查';
+    html+='<div class="room-tile '+tileClass+'" onclick="selectRoomInline('+idx+')" id="roomtile_'+idx+'">';
+    html+='<div class="rt-check">✓</div>';
+    html+='<div class="rt-num">'+rn+'号</div>';
+    html+='<div class="rt-status" id="roomstatus_'+idx+'">'+statusText+'</div>';
+    html+='</div>';
+  });
+  html+='</div>';
+  html+='<button class="ri-regen" style="margin-top:14px" onclick="regenerateRoomsInline()">重新生成抽检房号</button>';
+  // 当前房号提示
+  if(expandedRoomIdx!==null){
+    html+='<div class="room-current-tag" style="margin-top:14px">🛏️ '+roomNumbers[expandedRoomIdx]+'号房 · 正在检查</div>';
+  }
+  html+='</div>';
+  // 客房打分（内嵌）
+  html+='<div class="room-block-body" style="border-top:1px solid #F5F7FA">';
+  if(allDone){
+    var manualScore=roomManualScores[0];
+    if(manualScore===undefined||manualScore===null||isNaN(manualScore))manualScore='';
+    html+='<div class="room-score-card">';
+    html+='<div class="rsc-label">📝 客房综合打分<span class="rsc-max-tag">满分 15 分</span></div>';
+    html+='<div class="rsc-row">';
+    html+='<input type="number" class="rsc-input" id="roommanualscore" min="0" max="15" step="0.5" value="'+manualScore+'" placeholder="0" oninput="onRoomManualScoreInput(0,this.value)">';
+    html+='<span class="rsc-max">/ 15</span>';
+    html+='</div>';
+    html+='<div class="rsc-hint">所有房号已检查完成，请根据整体检查情况综合打分（支持0.5分步进）</div>';
+    html+='</div>';
+  }else{
+    html+='<div class="rsb-locked"><div class="rsli-icon">🔒</div><div class="rsli-text">完成所有房号检查后解锁打分</div><div class="rsli-progress-bar"><div class="rsli-progress-fill" style="width:'+(sampleCount>0?Math.round(doneTotal/sampleCount*100):0)+'%"></div></div><div class="rsli-progress">当前进度：<b>'+doneTotal+'</b> / '+sampleCount+' 间</div></div>';
+  }
+  html+='</div></div>';
+  return html;
+}
+function selectRoomInline(idx){
+  expandedRoomIdx=(expandedRoomIdx===idx)?null:idx;
+  if(currentModuleId){renderInspectionView(currentModuleId);highlightSidebar(currentModuleId);}
+  if(expandedRoomIdx===idx){
+    setTimeout(function(){
+      var tile=document.getElementById('roomtile_'+idx);
+      if(tile)tile.scrollIntoView({behavior:'smooth',block:'center'});
+    },80);
+  }
+}
+function regenerateRoomsInline(){
+  roomCheckResults={};roomCheckPhotos={};roomCheckPartialScores={};
+  roomManualScores={};expandedRoomIdx=null;
+  generateRoomNumbers();
+  if(currentModuleId){renderInspectionView(currentModuleId);highlightSidebar(currentModuleId);}
+  showToast('已重新生成'+roomNumbers.length+'个抽检房号');
+}
 function enterRoomSampling(){
   if(roomNumbers.length===0)generateRoomNumbers();
   document.getElementById('headerTitle').textContent='客房抽检';
@@ -1824,55 +2119,86 @@ function renderRoomsView(){
   var sampleCount=Math.ceil(TOTAL_ROOMS*SAMPLE_RATIO);
   var doneTotal=0;
   roomNumbers.forEach(function(rn,idx){if(roomDoneCount(idx)===roomCheckItems.length)doneTotal++;});
+  var allDone=(doneTotal===sampleCount&&sampleCount>0);
   var html='';
-  html+='<div class="room-info">';
-  html+='<div class="ri-row"><span class="ri-label">总客房数</span><span class="ri-value">'+TOTAL_ROOMS+'间</span></div>';
-  html+='<div class="ri-row"><span class="ri-label">抽检比例</span><span class="ri-value">'+(SAMPLE_RATIO*100)+'%</span></div>';
-  html+='<div class="ri-row"><span class="ri-label">抽检数量</span><span class="ri-value">'+sampleCount+'间</span></div>';
-  html+='<div class="ri-row"><span class="ri-label">已完成</span><span class="ri-value" style="color:var(--green)">'+doneTotal+'/'+sampleCount+'间</span></div>';
-  html+='<div class="ri-tip">系统自动随机抽取，涵盖各房型（标准间/商务大床房/暗房/特殊备案房型）</div>';
-  html+='<button class="ri-regen" onclick="regenerateRooms()">重新生成抽检房号</button>';
-  html+='</div>';
-  html+='<div class="room-grid">';
+  // ===== Block 1: 抽检房号 =====
+  html+='<div class="room-block">';
+  html+='<div class="room-block-header"><span class="rb-bar"></span><span class="rb-title">抽检房号</span><span class="rb-stat">已完成 <b>'+doneTotal+'</b> / '+sampleCount+' 间</span></div>';
+  html+='<div class="room-block-body">';
+  html+='<div class="room-grid-q">';
   roomNumbers.forEach(function(rn,idx){
     var done=roomDoneCount(idx);
     var isDone=done===roomCheckItems.length;
-    html+='<div class="room-card'+(isDone?' done':'')+'" onclick="enterRoom('+idx+')">';
-    html+='<div class="rc-check">✓</div>';
-    html+='<div class="rc-num">'+rn+'</div>';
-    html+='<div class="rc-status">'+(isDone?'已完成':done>0?done+'/'+roomCheckItems.length:'未检查')+'</div>';
+    var isActive=(expandedRoomIdx===idx);
+    var tileClass=isDone?'done':(done>0?'progress':'');
+    if(isActive)tileClass='active';
+    var statusText=isDone?'已检查':done>0?'检查中':'未检查';
+    html+='<div class="room-tile '+tileClass+'" onclick="selectRoom('+idx+')" id="roomtile_'+idx+'">';
+    html+='<div class="rt-check">✓</div>';
+    html+='<div class="rt-num">'+rn+'号</div>';
+    html+='<div class="rt-status" id="roomstatus_'+idx+'">'+statusText+'</div>';
     html+='</div>';
   });
   html+='</div>';
+  html+='<button class="ri-regen" style="margin-top:14px" onclick="regenerateRooms()">重新生成抽检房号</button>';
+  html+='</div></div>';
+  // ===== Block 2: 检查项 =====
+  html+='<div class="room-block">';
+  html+='<div class="room-block-header"><span class="rb-bar"></span><span class="rb-title">检查项</span><span class="rb-stat">'+roomCheckItems.length+' 项 / 房</span></div>';
+  html+='<div class="room-block-body" id="roomItemsContainer">';
+  if(expandedRoomIdx!==null){
+    html+=renderRoomItemsHtml(expandedRoomIdx);
+  }else{
+    html+='<div class="room-items-empty"><div class="rie-icon">👆</div><div>点击上方房号开始检查</div><div style="margin-top:4px;font-size:12px">选择一间房后，检查项将在此显示</div></div>';
+  }
+  html+='</div></div>';
+  // ===== Block 3: 客房打分 =====
+  html+='<div class="room-block room-score-block">';
+  html+='<div class="room-block-header"><span class="rb-bar"></span><span class="rb-title">客房打分</span><span class="rb-stat">满分 15 分</span></div>';
+  html+='<div class="room-block-body">';
+  if(allDone){
+    var manualScore=roomManualScores[0];
+    if(manualScore===undefined||manualScore===null||isNaN(manualScore))manualScore='';
+    html+='<div class="room-score-card">';
+    html+='<div class="rsc-label">📝 客房综合打分<span class="rsc-max-tag">满分 15 分</span></div>';
+    html+='<div class="rsc-row">';
+    html+='<input type="number" class="rsc-input" id="roommanualscore" min="0" max="15" step="0.5" value="'+manualScore+'" placeholder="0" oninput="onRoomManualScoreInput(0,this.value)">';
+    html+='<span class="rsc-max">/ 15</span>';
+    html+='</div>';
+    html+='<div class="rsc-hint">所有房号已检查完成，请根据整体检查情况综合打分（支持0.5分步进）</div>';
+    html+='</div>';
+  }else{
+    html+='<div class="rsb-locked"><div class="rsli-icon">🔒</div><div class="rsli-text">完成所有房号检查后解锁打分</div><div class="rsli-progress-bar"><div class="rsli-progress-fill" style="width:'+(sampleCount>0?Math.round(doneTotal/sampleCount*100):0)+'%"></div></div><div class="rsli-progress">当前进度：<b>'+doneTotal+'</b> / '+sampleCount+' 间</div></div>';
+  }
+  html+='</div></div>';
   document.getElementById('roomsBody').innerHTML=html;
+  updateRoomsBottomBar();
 }
-function regenerateRooms(){
-  roomCheckResults={};roomCheckPhotos={};roomCheckPartialScores={};
-  generateRoomNumbers();
+function selectRoom(idx){
+  expandedRoomIdx=(expandedRoomIdx===idx)?null:idx;
   renderRoomsView();
-  showToast('已重新生成'+roomNumbers.length+'个抽检房号');
+  if(expandedRoomIdx===idx){
+    setTimeout(function(){
+      var itemsBox=document.getElementById('roomItemsContainer');
+      if(itemsBox){
+        var rect=itemsBox.getBoundingClientRect();
+        if(rect.top<80||rect.top>window.innerHeight*0.5){
+          itemsBox.scrollIntoView({behavior:'smooth',block:'start'});
+        }
+      }
+    },60);
+  }
 }
-function enterRoom(idx){
-  currentRoomIdx=idx;
-  renderRoomDetail(idx);
-  document.getElementById('headerTitle').textContent=roomNumbers[idx]+'号房 抽检';
-  document.getElementById('backBtn').style.visibility='visible';
-  showPage('page-room');
-  updateRoomBottomBar(idx);
-}
-function renderRoomDetail(idx){
-  var body=document.getElementById('roomDetailBody');
-  var done=roomDoneCount(idx);
+function renderRoomItemsHtml(idx){
   var html='';
-  html+='<div class="detail-header"><span class="dh-icon">🛏️</span><span class="dh-name">'+roomNumbers[idx]+'号房</span><span class="dh-count">'+done+'/'+roomCheckItems.length+'</span></div>';
-  html+='<div class="loc-image"><img src="assets/guestroom_feishu.jpg" alt="客房效果图" onerror="this.parentElement.style.display=\'none\'"><div class="loc-img-label">客房效果图参考</div></div>';
-  html+=sectionHeaderHTML({type:'subjective',label:'客房检查',desc:'客房专项检查',items:roomCheckItems});
+  html+='<div class="room-current-tag">🛏️ '+roomNumbers[idx]+'号房 · 检查项</div>';
+  html+='<div class="room-items-list">';
   roomCheckItems.forEach(function(it,ci){
     var key=roomItemKey(idx,ci);
     var r=roomCheckResults[key]||'pass';
     var isPartial=it.scoreType==='partial';
     html+='<div class="check-item" id="roomitem_'+key+'">';
-    html+='<div class="ci-name">'+it.name+'<span class="ci-score">'+(it.score>0?'满分:'+it.score+'分':'不计分')+'</span></div>';
+    html+='<div class="ci-name">'+it.name+'</div>';
     html+='<div class="ci-standard">'+it.standard+'</div>';
     html+='<div class="ci-actions'+(isPartial?' ci-actions-partial':'')+'">';
     html+='<button class="ci-btn pass'+(r==='pass'?' active':'')+'" onclick="setRoomResult(\''+key+'\',\'pass\')">✓ 符合</button>';
@@ -1905,22 +2231,50 @@ function renderRoomDetail(idx){
     }
     html+='</div></div></div>';
   });
-  // Room score summary
-  var roomTotal=0,roomMax=0;
-  roomCheckItems.forEach(function(it,ci){
-    var key=roomItemKey(idx,ci);
-    roomMax+=it.score||0;
-    if(roomCheckResults[key]==='pass')roomTotal+=it.score||0;
-    else if(roomCheckResults[key]==='partial')roomTotal+=(roomCheckPartialScores[key]||0);
-  });
-  html+='<div class="score-detail">';
-  html+='<div class="sd-title">📊 本房得分情况</div>';
-  html+='<div class="sd-row"><span class="sd-label">质检经理</span><span class="sd-val qc">'+roomTotal+'/'+roomMax+'分</span></div>';
   html+='</div>';
-  body.innerHTML=html;
+  return html;
+}
+function onRoomManualScoreInput(idx,val){
+  var num=parseFloat(val);
+  if(isNaN(num))num=0;
+  if(num<0)num=0;
+  if(num>15)num=15;
+  roomManualScores[idx]=num;
+}
+function updateRoomsBottomBar(){
+  var label=document.getElementById('bbProgLabel');
+  if(!label)return;
+  var sampleCount=Math.ceil(TOTAL_ROOMS*SAMPLE_RATIO);
+  var doneTotal=0;
+  roomNumbers.forEach(function(rn,idx){if(roomDoneCount(idx)===roomCheckItems.length)doneTotal++;});
+  updateRoomsBottomBar._lastAllDone=(doneTotal===sampleCount&&sampleCount>0);
+  var pct=sampleCount>0?Math.round(doneTotal/sampleCount*100):0;
+  var statusColor=doneTotal===sampleCount&&sampleCount>0?'#02C2C2':(doneTotal>0?'#FFA64C':'#86909C');
+  label.textContent=doneTotal+'/'+sampleCount+' 间已检';
+  document.getElementById('bbProgPct').textContent=pct+'%';
+  document.getElementById('bbProgPct').style.color=statusColor;
+  document.getElementById('bbProgScore').textContent=doneTotal+'/'+sampleCount+'间';
+  document.getElementById('bbProgScore').style.color=statusColor;
+  document.getElementById('bbProgScore').style.background=hexToRgba(statusColor,.08);
+  var fill=document.getElementById('bbProgFill');
+  if(fill){fill.style.width=pct+'%';fill.style.background=statusColor;}
+  var primaryLabel=document.getElementById('bbPrimaryLabel');
+  if(primaryLabel)primaryLabel.textContent='保存客房质检';
+}
+function regenerateRooms(){
+  roomCheckResults={};roomCheckPhotos={};roomCheckPartialScores={};
+  roomManualScores={};expandedRoomIdx=null;
+  generateRoomNumbers();
+  renderRoomsView();
+  showToast('已重新生成'+roomNumbers.length+'个抽检房号');
 }
 function setRoomResult(key,result){
+  var prevDone=false;
+  var match=key.match(/^room_(\d+)_/);
+  var ridx=match?parseInt(match[1]):null;
+  if(ridx!==null){prevDone=(roomDoneCount(ridx)===roomCheckItems.length);}
   roomCheckResults[key]=result;
+  // Update buttons live
   var passBtn=document.querySelector('#roomitem_'+key+' .ci-btn.pass');
   var failBtn=document.querySelector('#roomitem_'+key+' .ci-btn.fail');
   var partialBtn=document.querySelector('#roomitem_'+key+' .ci-btn.partial');
@@ -1931,7 +2285,32 @@ function setRoomResult(key,result){
   if(partialBtn)partialBtn.classList.toggle('active',result==='partial');
   if(photo)photo.classList.toggle('show',result==='fail');
   if(partialBox)partialBox.classList.toggle('show',result==='partial');
-  if(currentRoomIdx!==null)updateRoomBottomBar(currentRoomIdx);
+  // Update room tile + check if overall completion changed
+  if(ridx!==null){
+    var done=roomDoneCount(ridx);
+    var isDone=done===roomCheckItems.length;
+    var tile=document.getElementById('roomtile_'+ridx);
+    if(tile){
+      var baseClass='room-tile '+(expandedRoomIdx===ridx?'active':(isDone?'done':(done>0?'progress':'')));
+      tile.className=baseClass;
+    }
+    var statusEl=document.getElementById('roomstatus_'+ridx);
+    if(statusEl){
+      statusEl.textContent=isDone?'已检查':done>0?'检查中':'未检查';
+    }
+    // Re-render whole view only when overall completion state changes (to unlock score block)
+    var sampleCount=Math.ceil(TOTAL_ROOMS*SAMPLE_RATIO);
+    var doneTotal=0;
+    roomNumbers.forEach(function(rn,idx){if(roomDoneCount(idx)===roomCheckItems.length)doneTotal++;});
+    var allDone=(doneTotal===sampleCount&&sampleCount>0);
+    var wasAllDone=updateRoomsBottomBar._lastAllDone;
+    if(allDone!==wasAllDone){
+      updateRoomsBottomBar._lastAllDone=allDone;
+      renderRoomsView();
+      return;
+    }
+  }
+  updateRoomsBottomBar();
 }
 function onRoomPhotoUpload(key,input){
   var file=input.files[0];if(!file)return;
@@ -1956,7 +2335,6 @@ function onRoomPartialInput(key,pMin,pMax,val){
   if(cur)cur.textContent=num;
   var inp=document.getElementById('roompsinput_'+key);
   if(inp&&parseFloat(inp.value)!==num)inp.value=num;
-  if(currentRoomIdx!==null)updateRoomBottomBar(currentRoomIdx);
 }
 
 /* ===== UTILS ===== */
