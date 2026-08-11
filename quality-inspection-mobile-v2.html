@@ -250,6 +250,9 @@ body::after{content:'';position:fixed;bottom:-80px;left:50%;transform:translateX
 .room-info .ri-regen,.room-block .ri-regen{margin-top:14px;height:40px;border:1px solid rgba(0,164,241,.3);background:#F7FAFE;color:var(--pm);border-radius:4px;font-size:13px;cursor:pointer;width:100%;font-weight:500;font-family:inherit;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:6px}
 .room-info .ri-regen:hover,.room-block .ri-regen:hover{background:#E6F7FF;border-color:var(--pm)}
 .room-info .ri-regen:active,.room-block .ri-regen:active{background:#D6EEFF;transform:scale(.98)}
+.room-info .ri-regen:disabled,.room-block .ri-regen:disabled{background:#F5F7FA;border-color:#E5E6EB;color:#C9CDD4;cursor:not-allowed}
+.room-info .ri-regen:disabled:hover,.room-block .ri-regen:disabled:hover{background:#F5F7FA;border-color:#E5E6EB}
+.room-info .ri-regen:disabled:active,.room-block .ri-regen:disabled:active{background:#F5F7FA;transform:none}
 .room-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:0}
 .room-card{background:#fff;border-radius:4px;padding:16px 8px;text-align:center;cursor:pointer;box-shadow:0 2px 8px rgba(0,164,241,.05);transition:all .15s;position:relative;border:1.5px solid transparent}
 .room-card:active{transform:scale(.95)}
@@ -1469,18 +1472,32 @@ function renderInspectionView(filterModId){
         html+='</div>';
       });
     }else{
-      // QC role + guestroom: insert room sampling block before check items
+      // QC role + guestroom: insert room sampling block; only show check items after a room is selected
       if(currentRole==='qc'&&mod.id==='guestroom'){
         html+=renderRoomSamplingBlock();
-      }
-      mod.groups.forEach(function(g,gi){
-        html+=sectionHeaderHTML(g);
-        g.items.forEach(function(it,ii){
-          var key=itemKey(mod.id,null,gi,ii);
-          if(g.type==='filing')html+=renderFilingItem(key,it);
-          else html+=renderCheckItem(key,it);
+        if(expandedRoomIdx===null||roomNumbers.length===0){
+          // 未点击具体房号前，不显示检查项
+        }else{
+          html+='<div class="room-current-tag" style="margin:12px 0">🛏️ '+roomNumbers[expandedRoomIdx]+'号房 · 检查项</div>';
+          mod.groups.forEach(function(g,gi){
+            html+=sectionHeaderHTML(g);
+            g.items.forEach(function(it,ii){
+              var key=itemKey(mod.id,null,gi,ii);
+              if(g.type==='filing')html+=renderFilingItem(key,it);
+              else html+=renderCheckItem(key,it);
+            });
+          });
+        }
+      }else{
+        mod.groups.forEach(function(g,gi){
+          html+=sectionHeaderHTML(g);
+          g.items.forEach(function(it,ii){
+            var key=itemKey(mod.id,null,gi,ii);
+            if(g.type==='filing')html+=renderFilingItem(key,it);
+            else html+=renderCheckItem(key,it);
+          });
         });
-      });
+      }
     }
     html+='</div>';
     html+='</div>';
@@ -2041,7 +2058,18 @@ function calcRoomScore(idx){
   return{earned:Math.round(earned*10)/10,max:Math.round(max*10)/10};
 }
 function renderRoomSamplingBlock(){
-  if(roomNumbers.length===0)generateRoomNumbers();
+  var isGenerated=roomNumbers.length>0;
+  if(!isGenerated){
+    // 未生成：只显示生成按钮
+    var html='';
+    html+='<div class="room-block room-inline-block">';
+    html+='<div class="room-block-header"><span class="rb-bar"></span><span class="rb-title">抽检房号</span></div>';
+    html+='<div class="room-block-body" style="padding:30px 16px;text-align:center">';
+    html+='<div style="color:var(--aux);font-size:13px;margin-bottom:16px">点击下方按钮生成抽检房号</div>';
+    html+='<button class="ri-regen" onclick="generateRoomsInline()">生成抽检房号</button>';
+    html+='</div></div>';
+    return html;
+  }
   var sampleCount=Math.ceil(TOTAL_ROOMS*SAMPLE_RATIO);
   var doneTotal=0;
   roomNumbers.forEach(function(rn,idx){if(roomDoneCount(idx)===roomCheckItems.length)doneTotal++;});
@@ -2066,7 +2094,7 @@ function renderRoomSamplingBlock(){
     html+='</div>';
   });
   html+='</div>';
-  html+='<button class="ri-regen" style="margin-top:14px" onclick="regenerateRoomsInline()">重新生成抽检房号</button>';
+  html+='<button class="ri-regen" style="margin-top:14px" disabled>生成抽检房号</button>';
   // 当前房号提示
   if(expandedRoomIdx!==null){
     html+='<div class="room-current-tag" style="margin-top:14px">🛏️ '+roomNumbers[expandedRoomIdx]+'号房 · 正在检查</div>';
@@ -2091,6 +2119,12 @@ function renderRoomSamplingBlock(){
   html+='</div></div>';
   return html;
 }
+function generateRoomsInline(){
+  if(roomNumbers.length>0)return;
+  generateRoomNumbers();
+  if(currentModuleId){renderInspectionView(currentModuleId);highlightSidebar(currentModuleId);}
+  showToast('已生成'+roomNumbers.length+'个抽检房号');
+}
 function selectRoomInline(idx){
   expandedRoomIdx=(expandedRoomIdx===idx)?null:idx;
   if(currentModuleId){renderInspectionView(currentModuleId);highlightSidebar(currentModuleId);}
@@ -2109,18 +2143,33 @@ function regenerateRoomsInline(){
   showToast('已重新生成'+roomNumbers.length+'个抽检房号');
 }
 function enterRoomSampling(){
-  if(roomNumbers.length===0)generateRoomNumbers();
   document.getElementById('headerTitle').textContent='客房抽检';
   document.getElementById('backBtn').style.visibility='visible';
   renderRoomsView();
   showPage('page-rooms');
 }
+function generateRooms(){
+  if(roomNumbers.length>0)return;
+  generateRoomNumbers();
+  renderRoomsView();
+  showToast('已生成'+roomNumbers.length+'个抽检房号');
+}
 function renderRoomsView(){
   var sampleCount=Math.ceil(TOTAL_ROOMS*SAMPLE_RATIO);
+  var isGenerated=roomNumbers.length>0;
   var doneTotal=0;
   roomNumbers.forEach(function(rn,idx){if(roomDoneCount(idx)===roomCheckItems.length)doneTotal++;});
   var allDone=(doneTotal===sampleCount&&sampleCount>0);
   var html='';
+  if(!isGenerated){
+    // ===== 未生成：只显示生成按钮 =====
+    html+='<div class="room-block">';
+    html+='<div class="room-block-header"><span class="rb-bar"></span><span class="rb-title">抽检房号</span></div>';
+    html+='<div class="room-block-body" style="padding:30px 16px;text-align:center">';
+    html+='<div style="color:var(--aux);font-size:13px;margin-bottom:16px">点击下方按钮生成抽检房号</div>';
+    html+='<button class="ri-regen" onclick="generateRooms()">生成抽检房号</button>';
+    html+='</div></div>';
+  }else{
   // ===== Block 1: 抽检房号 =====
   html+='<div class="room-block">';
   html+='<div class="room-block-header"><span class="rb-bar"></span><span class="rb-title">抽检房号</span><span class="rb-stat">已完成 <b>'+doneTotal+'</b> / '+sampleCount+' 间</span></div>';
@@ -2140,7 +2189,7 @@ function renderRoomsView(){
     html+='</div>';
   });
   html+='</div>';
-  html+='<button class="ri-regen" style="margin-top:14px" onclick="regenerateRooms()">重新生成抽检房号</button>';
+  html+='<button class="ri-regen" style="margin-top:14px" disabled>生成抽检房号</button>';
   html+='</div></div>';
   // ===== Block 2: 检查项 =====
   html+='<div class="room-block">';
@@ -2171,6 +2220,7 @@ function renderRoomsView(){
     html+='<div class="rsb-locked"><div class="rsli-icon">🔒</div><div class="rsli-text">完成所有房号检查后解锁打分</div><div class="rsli-progress-bar"><div class="rsli-progress-fill" style="width:'+(sampleCount>0?Math.round(doneTotal/sampleCount*100):0)+'%"></div></div><div class="rsli-progress">当前进度：<b>'+doneTotal+'</b> / '+sampleCount+' 间</div></div>';
   }
   html+='</div></div>';
+  }
   document.getElementById('roomsBody').innerHTML=html;
   updateRoomsBottomBar();
 }
