@@ -309,6 +309,13 @@ body::after{content:'';position:fixed;bottom:-80px;left:50%;transform:translateX
 .room-score-card .rsc-max{font-size:18px;color:var(--muted);font-weight:600}
 .room-score-card .rsc-hint{font-size:11px;color:var(--aux);margin-top:10px;text-align:center}
 
+/* PM Guestroom entry (QC view) */
+.pm-guestroom-entry{display:flex;align-items:center;gap:12px;padding:14px 16px;margin:14px 0 4px;background:#fff;border:1px solid #E5E9EF;border-radius:4px;cursor:pointer;transition:all .15s}
+.pm-guestroom-entry:active{background:#F5F7FA;transform:scale(.99)}
+.pm-guestroom-entry .pmge-icon{width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,#E6F7FF,#F0FAFF);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.pm-guestroom-entry .pmge-text{flex:1;font-size:14px;font-weight:600;color:var(--ink)}
+.pm-guestroom-entry .pmge-arrow{font-size:18px;color:var(--aux);flex-shrink:0}
+
 /* ===== Inspection View (sidebar + full expand) ===== */
 #page-inspection{overflow:hidden;display:flex;flex-direction:row}
 /* Inspection Sidebar - 参考药箱宝风格 */
@@ -504,6 +511,11 @@ body::after{content:'';position:fixed;bottom:-80px;left:50%;transform:translateX
 <!-- Page 5: Room Detail -->
 <div class="page" id="page-room">
   <div class="page-inner" id="roomDetailBody"></div>
+</div>
+
+<!-- Page: PM Guestroom Detail (QC view) -->
+<div class="page" id="page-pm-guestroom">
+  <div class="page-inner" id="pmGuestroomBody"></div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -1252,9 +1264,9 @@ var sectionDescMap={
   'subjective':'观感与功能检查',
   'filing':'证照文件核查'
 };
-function sectionHeaderHTML(g){
+function sectionHeaderHTML(g,hideScore){
   var desc=g.desc||sectionDescMap[g.type]||'';
-  var scoreText=g.scoreText===undefined?'扣分项：2分/项':g.scoreText;
+  var scoreText=hideScore?'':(g.scoreText===undefined?'扣分项：2分/项':g.scoreText);
   var countHTML=scoreText?'<span class="sh-count'+(g.type==='filing'?' deduction':'')+'">'+scoreText+'</span>':'';
   return '<div class="section-header"><span class="sh-bar"></span><span class="sh-tag '+g.type+'">'+g.label+'</span><div class="sh-text"><span class="sh-title">'+g.label+'</span>'+(desc?'<span class="sh-desc">'+desc+'</span>':'')+'</div>'+countHTML+'</div>';
 }
@@ -1474,13 +1486,14 @@ function renderInspectionView(filterModId){
     }else{
       // QC role + guestroom: insert room sampling block; only show check items after a room is selected
       if(currentRole==='qc'&&mod.id==='guestroom'){
+        html+='<div class="pm-guestroom-entry" onclick="showPmGuestroom()"><span class="pmge-icon">📋</span><span class="pmge-text">查看项目经理客房质检详情</span><span class="pmge-arrow">›</span></div>';
         html+=renderRoomSamplingBlock();
         if(expandedRoomIdx===null||roomNumbers.length===0){
           // 未点击具体房号前，不显示检查项
         }else{
           html+='<div class="room-current-tag" style="margin:12px 0">🛏️ '+roomNumbers[expandedRoomIdx]+'号房 · 检查项</div>';
           mod.groups.forEach(function(g,gi){
-            html+=sectionHeaderHTML(g);
+            html+=sectionHeaderHTML(g,true);
             g.items.forEach(function(it,ii){
               var key=itemKey(mod.id,null,gi,ii);
               if(g.type==='filing')html+=renderFilingItem(key,it);
@@ -1626,7 +1639,8 @@ function scoreBadge(it){
 
 function renderCheckItem(key,it){
   var html='<div class="check-item'+(it.isBaseline?' baseline':'')+'" id="item_'+key+'">';
-  html+='<div class="ci-name">'+(it.isBaseline?'<span class="ci-baseline-tag">底线</span>':'')+(it.category?'<span class="ci-category-tag cat-'+it.category.toLowerCase()+'">'+it.category+'类</span>':'')+'<span class="ci-name-text">'+it.name+'</span>'+scoreBadge(it)+'</div>';
+  var hideScore=(currentRole==='qc'&&key.indexOf('guestroom')===0);
+  html+='<div class="ci-name">'+(it.isBaseline?'<span class="ci-baseline-tag">底线</span>':'')+(it.category?'<span class="ci-category-tag cat-'+it.category.toLowerCase()+'">'+it.category+'类</span>':'')+'<span class="ci-name-text">'+it.name+'</span>'+(hideScore?'':scoreBadge(it))+'</div>';
   html+='<div class="ci-standard">'+(it.standard||'')+'</div>';
   if(it.tags&&it.tags.length){
     html+='<div class="ci-tags">';
@@ -1922,7 +1936,7 @@ function showPage(id){
   }
   // Hide role-btn on inspection view (role switch unavailable there)
   var roleBtn=document.querySelector('.header .role-btn');
-  if(roleBtn)roleBtn.style.display=(id==='page-inspection')?'none':'flex';
+  if(roleBtn)roleBtn.style.display=(id==='page-inspection'||id==='page-pm-guestroom')?'none':'flex';
 }
 
 function goBack(){
@@ -1931,6 +1945,23 @@ function goBack(){
   var pageSub=document.getElementById('page-submodules');
   var pageDet=document.getElementById('page-detail');
   var pageInsp=document.getElementById('page-inspection');
+  var pagePmGr=document.getElementById('page-pm-guestroom');
+  // From PM guestroom detail -> back to inspection view
+  if(pagePmGr.classList.contains('active')){
+    if(currentModuleId){
+      renderInspectionView(currentModuleId);
+      highlightSidebar(currentModuleId);
+      showPage('page-inspection');
+      var mod=getModule(currentModuleId);
+      document.getElementById('headerTitle').textContent=mod?mod.name:'检查视图';
+    }else{
+      renderModuleList();
+      showPage('page-modules');
+      document.getElementById('headerTitle').textContent='AI质检';
+      document.getElementById('backBtn').style.visibility='hidden';
+    }
+    return;
+  }
   // From room detail -> room list
   if(pageRoom.classList.contains('active')){
     currentRoomIdx=null;
@@ -1982,6 +2013,50 @@ function goBack(){
     document.getElementById('backBtn').style.visibility='hidden';
     return;
   }
+}
+
+/* Show PM-role guestroom detail inside QC view */
+function showPmGuestroom(){
+  var mod=modules.find(function(m){return m.id==='guestroom';});
+  if(!mod)return;
+  var savedRole=currentRole;
+  currentRole='pm';
+  var total=countAllItems(mod);
+  var done=countCompleted(mod);
+  var pct=total>0?Math.round(done/total*100):0;
+  var sc=moduleScore(mod);
+  var isAllDone=(done===total&&total>0);
+  var modColor=isAllDone?'#02C2C2':(pct>0?'#FFA64C':'#86909C');
+  var scoreBg=pct>0?hexToRgba(modColor,.08):'#F5F7FA';
+  var scoreColor=pct>0?modColor:'#86909C';
+  var html='';
+  html+='<div class="insp-module" data-mod="'+mod.id+'">';
+  html+='<div class="insp-module-header">';
+  html+='<div class="imh-name">'+mod.icon+' '+mod.name+'</div>';
+  html+='<div class="imh-progress">'+done+'/'+total+'项</div>';
+  html+='<div class="imh-score" style="background:'+scoreBg+';color:'+scoreColor+'">'+sc.total+'/'+sc.max+'分</div>';
+  html+='</div>';
+  html+='<div class="insp-module-body">';
+  mod.groups.forEach(function(g,gi){
+    html+=sectionHeaderHTML(g);
+    g.items.forEach(function(it,ii){
+      var key=itemKey(mod.id,null,gi,ii);
+      if(g.type==='filing')html+=renderFilingItem(key,it);
+      else html+=renderCheckItem(key,it);
+    });
+  });
+  html+='</div></div>';
+  var body=document.getElementById('pmGuestroomBody');
+  body.innerHTML=html;
+  mod.groups.forEach(function(g,gi){
+    g.items.forEach(function(it,ii){
+      restoreItemState(itemKey(mod.id,null,gi,ii));
+    });
+  });
+  currentRole=savedRole;
+  showPage('page-pm-guestroom');
+  document.getElementById('headerTitle').textContent='项目经理客房质检详情';
+  document.getElementById('backBtn').style.visibility='visible';
 }
 
 /* ===== ROLE ===== */
@@ -2094,28 +2169,19 @@ function renderRoomSamplingBlock(){
     html+='</div>';
   });
   html+='</div>';
-  html+='<button class="ri-regen" style="margin-top:14px" disabled>生成抽检房号</button>';
-  // 当前房号提示
-  if(expandedRoomIdx!==null){
-    html+='<div class="room-current-tag" style="margin-top:14px">🛏️ '+roomNumbers[expandedRoomIdx]+'号房 · 正在检查</div>';
-  }
   html+='</div>';
   // 客房打分（内嵌）
   html+='<div class="room-block-body" style="border-top:1px solid #F5F7FA">';
-  if(allDone){
-    var manualScore=roomManualScores[0];
-    if(manualScore===undefined||manualScore===null||isNaN(manualScore))manualScore='';
-    html+='<div class="room-score-card">';
-    html+='<div class="rsc-label">📝 客房综合打分<span class="rsc-max-tag">满分 15 分</span></div>';
-    html+='<div class="rsc-row">';
-    html+='<input type="number" class="rsc-input" id="roommanualscore" min="0" max="15" step="0.5" value="'+manualScore+'" placeholder="0" oninput="onRoomManualScoreInput(0,this.value)">';
-    html+='<span class="rsc-max">/ 15</span>';
-    html+='</div>';
-    html+='<div class="rsc-hint">所有房号已检查完成，请根据整体检查情况综合打分（支持0.5分步进）</div>';
-    html+='</div>';
-  }else{
-    html+='<div class="rsb-locked"><div class="rsli-icon">🔒</div><div class="rsli-text">完成所有房号检查后解锁打分</div><div class="rsli-progress-bar"><div class="rsli-progress-fill" style="width:'+(sampleCount>0?Math.round(doneTotal/sampleCount*100):0)+'%"></div></div><div class="rsli-progress">当前进度：<b>'+doneTotal+'</b> / '+sampleCount+' 间</div></div>';
-  }
+  var manualScore=roomManualScores[0];
+  if(manualScore===undefined||manualScore===null||isNaN(manualScore))manualScore='';
+  html+='<div class="room-score-card">';
+  html+='<div class="rsc-label">📝 客房综合打分<span class="rsc-max-tag">满分 15 分</span></div>';
+  html+='<div class="rsc-row">';
+  html+='<input type="number" class="rsc-input" id="roommanualscore" min="0" max="15" step="0.5" value="'+manualScore+'" placeholder="0" oninput="onRoomManualScoreInput(0,this.value)">';
+  html+='<span class="rsc-max">/ 15</span>';
+  html+='</div>';
+  html+='<div class="rsc-hint">请根据整体检查情况综合打分（支持0.5分步进）</div>';
+  html+='</div>';
   html+='</div></div>';
   return html;
 }
