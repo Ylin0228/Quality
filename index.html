@@ -107,6 +107,15 @@ body::after{content:'';position:fixed;bottom:-80px;left:50%;transform:translateX
 .section-header .sh-count{font-size:12px;font-weight:600;color:var(--pm);background:rgba(0,164,241,.1);padding:4px 12px;border-radius:999px;flex-shrink:0;letter-spacing:.2px}
 .section-header .sh-count.deduction{color:#FF4C4C;background:rgba(255,76,76,.1)}
 .section-header .sh-tag{display:none}
+/* Groups Tabs (客观项/主观项切换) */
+.groups-tabs{display:flex;margin:14px 0 0;border-bottom:1.5px solid rgba(0,164,241,.15);padding:0 4px}
+.gtab{flex:1;background:none;border:none;padding:12px 0;font-size:15px;font-weight:600;color:var(--aux);cursor:pointer;position:relative;transition:color .2s;font-family:inherit;text-align:center}
+.gtab.active{color:var(--pm)}
+.gtab.active::after{content:'';position:absolute;left:50%;transform:translateX(-50%);bottom:-1.5px;width:32px;height:2.5px;background:var(--pm);border-radius:2px}
+.groups-panel{padding-top:10px}
+.gp-meta{display:flex;align-items:center;justify-content:space-between;margin:6px 0 10px;padding:0 4px}
+.gp-desc{font-size:12px;color:var(--aux)}
+.gp-score{font-size:12px;font-weight:600;color:var(--pm);background:rgba(0,164,241,.1);padding:3px 10px;border-radius:999px}
 
 /* Check Item */
 .check-item{background:#fff;border-radius:var(--radius);padding:16px 18px;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,164,241,.05);position:relative;border:1px solid rgba(0,164,241,.03)}
@@ -166,15 +175,29 @@ body::after{content:'';position:fixed;bottom:-80px;left:50%;transform:translateX
 /* Filing Item */
 .filing-item{background:#fff;border-radius:var(--radius);padding:18px 18px 4px;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,164,241,.05);border:1px solid rgba(0,164,241,.03)}
 .filing-item .fi-name{font-size:15px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:6px;color:var(--ink);line-height:1.4}
+.filing-item .fi-name.fi-sub{font-size:13px;font-weight:400;margin-bottom:6px;color:var(--muted)}
 .filing-item .fi-name .ci-score{font-size:11px;font-weight:500;color:var(--pm);background:#E6F7FF;padding:2px 10px;border-radius:999px;margin-left:auto;flex-shrink:0;white-space:nowrap}
 .filing-item .fi-dir{font-size:12px;color:var(--pm);margin-bottom:4px;font-weight:500}
 .filing-item .fi-desc{font-size:13px;color:var(--muted);line-height:1.7}
+.filing-item .fi-label,.filing-item .fi-name .fi-label,.filing-item .fi-desc .fi-label,.filing-item .fi-rooms-title .fi-label{font-size:11px!important;font-weight:500!important;color:#fff!important;background:linear-gradient(135deg,#FFA64C,#D48030);padding:2px 8px;border-radius:999px;margin-right:6px;flex-shrink:0;white-space:nowrap}
+.filing-item .fi-rooms{margin:10px 0}
+.filing-item .fi-rooms-title{margin-bottom:8px}
+.filing-item .fi-rooms-table{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.filing-item .fi-room-row{display:flex;align-items:center;justify-content:space-between;background:#F7FAFE;border:1px solid rgba(0,164,241,.08);border-radius:4px;padding:6px 10px}
+.filing-item .fi-room-no{font-size:13px;font-weight:600;color:var(--ink)}
+.filing-item .fi-room-area{font-size:12px;font-weight:600;color:var(--pm)}
 
 /* Value Input */
 .value-input{margin-top:10px}
 .value-input .vi-label{font-size:12px;color:var(--muted);margin-bottom:6px}
 .value-input input{width:100%;height:40px;border:1.5px solid var(--rule);border-radius:4px;padding:0 14px;font-size:14px;color:var(--ink);outline:none;background:#FAFBFD;font-family:inherit;transition:border-color .2s}
 .value-input input:focus{border-color:var(--pm);background:#fff;box-shadow:0 0 0 3px rgba(0,164,241,.08)}
+.value-input-dual{display:flex;flex-direction:column;gap:10px;margin-top:10px}
+.value-input-dual input{width:100%;height:40px;border:1.5px solid var(--rule);border-radius:4px;padding:0 14px;font-size:14px;color:var(--ink);outline:none;background:#FAFBFD;font-family:inherit;transition:border-color .2s}
+.value-input-dual input:focus{border-color:var(--pm);background:#fff;box-shadow:0 0 0 3px rgba(0,164,241,.08)}
+.value-input-dual .vid-row{display:flex;align-items:center;gap:10px}
+.value-input-dual .vid-std{font-size:13px;color:#0A8C8C;white-space:nowrap;flex-shrink:0;width:92px}
+.value-input-dual .vid-row input{width:152px;flex:none;box-sizing:border-box}
 
 /* Room Area Groups (多房型实测面积) */
 .area-groups{margin-top:12px;display:flex;flex-direction:column;gap:10px}
@@ -359,7 +382,7 @@ body::after{content:'';position:fixed;bottom:-80px;left:50%;transform:translateX
 .insp-sub-img{display:block;width:100%;height:auto;max-height:120px;object-fit:cover;border-radius:4px;margin-bottom:10px}
 
 /* ===== HOME PAGE (New Design) ===== */
-.home-hero{background:linear-gradient(160deg,#0087C7 0%,#00A4F1 35%,#0087C7 70%,#A9E4FF 100%);padding:52px 18px 60px;position:relative;overflow:visible;flex-shrink:0;height:300px}
+.home-hero{background:linear-gradient(160deg,#0087C7 0%,#00A4F1 35%,#0087C7 70%,#A9E4FF 100%);padding:52px 18px 60px;position:relative;overflow:visible;flex-shrink:0;height:319px}
 .home-hero::before{content:'';position:absolute;top:-60px;right:-60px;width:240px;height:240px;background:radial-gradient(circle,rgba(255,255,255,.12) 0%,transparent 70%);border-radius:50%}
 .home-hero::after{content:'';position:absolute;bottom:-80px;left:-40px;width:200px;height:200px;background:radial-gradient(circle,rgba(169,228,255,.25) 0%,transparent 70%);border-radius:50%}
 .hero-top{display:flex;align-items:flex-start;justify-content:space-between;position:relative;z-index:1;margin-bottom:20px}
@@ -374,21 +397,24 @@ body::after{content:'';position:fixed;bottom:-80px;left:50%;transform:translateX
 .hero-icon-btn:active{background:rgba(255,255,255,.28);transform:scale(.95)}
 .hero-icon-btn svg{width:20px;height:20px}
 .badge-dot{position:absolute;top:8px;right:8px;width:8px;height:8px;background:#FF4C4C;border-radius:50%;border:1.5px solid #00A4F1}
-.hero-progress-card{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.2);border-radius:4px;padding:12px 14px;position:relative;z-index:1;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:0 8px 32px rgba(0,135,199,.15)}
-.hpc-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px 4px}
+.hero-progress-card{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.2);border-radius:4px;padding:14px 16px;position:relative;z-index:1;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:0 8px 32px rgba(0,135,199,.15)}
+.hpc-stats{display:grid;grid-template-columns:repeat(6,1fr);gap:12px 4px}
+.hpc-stats>#heroFailABlock,.hpc-stats>#heroFailBBlock,.hpc-stats>#heroFailBlock,.hpc-stats>#heroProgressBlock,.hpc-stats>#heroPmBlock,.hpc-stats>#heroQcBlock{grid-column:span 2}
+body.role-qc .hpc-stats>#heroProgressBlock{display:none}
+body.role-qc .hpc-stats>#heroPmBlock,body.role-qc .hpc-stats>#heroQcBlock{grid-column:span 3}
 .hpc-stat-block{text-align:center;min-width:0}
 .hpc-stat-label{font-size:10px;color:rgba(255,255,255,.75);margin-bottom:4px;letter-spacing:.2px;line-height:1.2}
 .hpc-stat-value-wrap{display:flex;align-items:baseline;justify-content:center;gap:1px}
-.hpc-stat-value{font-size:20px;font-weight:800;color:#fff;line-height:1;letter-spacing:-.5px}
+.hpc-stat-value{font-size:21px;font-weight:800;color:#fff;line-height:1;letter-spacing:-.5px}
 .hpc-stat-unit{font-size:11px;font-weight:500;color:rgba(255,255,255,.7)}
 .hpc-stat-block.has-fail .hpc-stat-value{color:#FFD2D2}
 .hpc-dot{display:inline-block;width:5px;height:5px;border-radius:50%;margin-right:3px;vertical-align:middle}
 .hpc-dot-a{background:#02C2C2}
 .hpc-dot-b{background:#FFA64C}
-.hpc-stat-divider{grid-column:1/-1;height:1px;background:rgba(255,255,255,.12);margin:2px 0}
+.hpc-stat-divider{grid-column:1/-1;height:1px;background:rgba(255,255,255,.12);margin:6px 0}
 
 /* Home Content Area */
-.home-content{padding:10px 10px 30px;background:var(--bg);border-radius:4px 4px 0 0;margin-top:-20px;position:relative;z-index:2}
+.home-content{padding:10px 10px 30px;background:var(--bg);border-radius:4px 4px 0 0;margin-top:-20px;position:relative;z-index:2;height:544px}
 .module-list{display:flex;flex-direction:column;gap:10px}
 .mod-card{background:#fff;border-radius:var(--radius);padding:14px 16px;display:flex;align-items:center;gap:14px;cursor:pointer;box-shadow:0 2px 12px rgba(0,164,241,.05);transition:all .2s;border:1px solid rgba(0,164,241,.03);position:relative}
 .mod-card:active{transform:scale(.98);box-shadow:0 1px 6px rgba(0,164,241,.08)}
@@ -464,6 +490,12 @@ body::after{content:'';position:fixed;bottom:-80px;left:50%;transform:translateX
           </div>
         </div>
         <div class="hpc-stat-divider"></div>
+        <div class="hpc-stat-block" id="heroProgressBlock">
+          <div class="hpc-stat-label">整体检查进度</div>
+          <div class="hpc-stat-value-wrap">
+            <span class="hpc-stat-value" id="heroProgressPct">0%</span>
+          </div>
+        </div>
         <div class="hpc-stat-block" id="heroPmBlock">
           <div class="hpc-stat-label">项目经理打分</div>
           <div class="hpc-stat-value-wrap">
@@ -544,16 +576,16 @@ body::after{content:'';position:fixed;bottom:-80px;left:50%;transform:translateX
 var modules=[
   {id:'filing',name:'备案',icon:'📋',type:'direct',img:null,
     groups:[{type:'filing',label:'备案项',items:[
-      {name:'员工宿舍合规性',direction:'员工宿舍',description:'员工宿舍外租是否有合同，是否具备入住条件',score:2,scoreType:'deduction',tags:['A101','A102','A103','A201','A202']},
-      {name:'暗房数量',direction:'暗房',description:'评审图纸，暗房数量需备案',score:2,scoreType:'deduction',tags:['B101','B203','B305','B407','B509']},
-      {name:'客房面积',direction:'客房面积',description:'评审图纸，客房面积需备案',score:2,scoreType:'deduction',tags:['101','102','201','202','301','302','401','501','601']}
+      {name:'备案一',prefixLine:'备案方向：xxxxx',direction:'员工宿舍',description:'备案说明：xxxxx',score:2,scoreType:'deduction'},
+      {name:'暗房数量',direction:'暗房',description:'评审图纸',score:2,scoreType:'deduction',tags:['B101','B203','B305','B407','B509']},
+      {name:'客房面积',direction:'客房面积',description:'评审图纸',score:2,scoreType:'deduction',rooms:[{no:'101',area:'22'},{no:'102',area:'22'},{no:'201',area:'24'},{no:'202',area:'24'},{no:'301',area:'24'},{no:'302',area:'24'},{no:'401',area:'26'},{no:'501',area:'26'},{no:'601',area:'28'}]}
     ]}]
   },
   {id:'guestroom',name:'客房',icon:'🛏️',type:'direct',img:'guestroom_feishu.jpg',
     groups:[
       {type:'objective',label:'客观项',scoreText:'符合：1分/项',items:[
         {name:'客房总数',standard:'106间，与设计图纸一致',inputType:'value',score:1,category:'A'},
-        {name:'房型配比',standard:'单床64间(60%)、双床42间(40%)、亲子房3间，与设计图纸一致',inputType:'value',score:1,category:'A'},
+        {name:'房型配比',standard:'单床64间(60%)、双床42间(40%)、亲子房3间，与设计图纸一致',inputType:'value',dualInput:[{label:'单床',standard:'64间'},{label:'双床',standard:'42间'},{label:'亲子房',standard:'3间'}],score:1,category:'A'},
         {name:'客房层高',standard:'净高 2400mm',inputType:'value',score:1,category:'B'},
         {name:'单床房面积',standard:'≥15m²',inputType:'value',score:1,category:'A',areaGroups:[{letter:'A',label:'A房型'},{letter:'B',label:'B房型'}]},
         {name:'双床房面积',standard:'≥17m²',inputType:'value',score:1,category:'A',areaGroups:[{letter:'A',label:'A房型'},{letter:'B',label:'B房型'}],failSection:true},
@@ -719,7 +751,7 @@ var modules=[
     groups:[
       {type:'objective',label:'客观项',scoreText:'',items:[
         {name:'门头店招数量',standard:'门头店招 1个，顶部店招 1个',score:0.5,scoreTag:'符合：0.5分',category:'A'},
-        {name:'门头尺寸',standard:'宽度 7500mm，高度 6500mm',inputType:'value',score:1,scoreTag:'符合：1分',category:'A'},
+        {name:'门头尺寸',standard:'宽度 7500mm，高度 6500mm',inputType:'value',dualInput:['宽度','高度'],score:1,scoreTag:'符合：1分',category:'A'},
         {name:'门头店招字体高度',standard:'字体高度 1000mm',inputType:'value',score:1,scoreTag:'符合：1分',category:'A'},
         {name:'门头顶部店招字体高度',standard:'字体高度 1200mm',inputType:'value',score:1,scoreTag:'符合：1分',category:'B'},
         {name:'品牌元素符合性',standard:'外饰、品牌元素符合如家4.0设计标准',score:1,scoreTag:'符合：1分',category:'A'}
@@ -852,7 +884,7 @@ var roomCheckItems=[
 ];
 
 /* ===== KEY HELPERS ===== */
-function applyRole(){var r=document.querySelector(':root');r.style.setProperty('--role',currentRole==='pm'?'#00A4F1':'#FFA64C');}
+function applyRole(){var r=document.querySelector(':root');r.style.setProperty('--role',currentRole==='pm'?'#00A4F1':'#FFA64C');document.body.className=document.body.className.replace(/\brole-\w+\b/g,'').trim();document.body.classList.add('role-'+currentRole);}
 function getModule(id){return modules.find(function(m){return m.id===id;});}
 function getSubModule(modId,subId){var m=getModule(modId);if(!m||!m.subModules)return null;return m.subModules.find(function(s){return s.id===subId;});}
 function itemKey(modId,subId,gi,ii){return modId+'_'+(subId||'0')+'_'+gi+'_'+ii;}
@@ -1070,7 +1102,7 @@ function renderModuleList(filtered){
   grid.innerHTML=html;
 
   // Update hero: A类不符合 / B类不符合 / 不符合/总项 / PM打分 / QC打分
-  var failA=0,failB=0,failAll=0,totalAll=0;
+  var failA=0,failB=0,failAll=0,totalAll=0,doneAll=0;
   var pmScoreTotal=0,pmScoreMax=0,qcScoreTotal=0,qcScoreMax=0;
   var calcRoleScore=function(mod,isQc){
     var total=0,max=0,filingDeduct=0,filingMax=20,filingCount=0;
@@ -1098,6 +1130,7 @@ function renderModuleList(filtered){
   };
   modules.forEach(function(mod){
     totalAll+=countAllItems(mod);
+    doneAll+=countCompleted(mod);
     var fiter=function(g,gi,subId){
       g.items.forEach(function(it,ii){
         var key=itemKey(mod.id,subId,gi,ii);
@@ -1132,6 +1165,9 @@ function renderModuleList(filtered){
   if(heroFailBBlock)heroFailBBlock.classList.toggle('has-fail',failB>0);
   var heroFailBlock=document.getElementById('heroFailBlock');
   if(heroFailBlock)heroFailBlock.classList.toggle('has-fail',failAll>0);
+  var progressPct=totalAll>0?Math.round(doneAll/totalAll*100):0;
+  var heroProgressPct=document.getElementById('heroProgressPct');
+  if(heroProgressPct)heroProgressPct.textContent=progressPct+'%';
 }
 
 function lightenColor(hex,pct){
@@ -1270,6 +1306,41 @@ function sectionHeaderHTML(g,hideScore){
   var scoreText=hideScore?'':(g.scoreText===undefined?'扣分项：2分/项':g.scoreText);
   var countHTML=scoreText?'<span class="sh-count'+(g.type==='filing'?' deduction':'')+'">'+scoreText+'</span>':'';
   return '<div class="section-header"><span class="sh-bar"></span><span class="sh-tag '+g.type+'">'+g.label+'</span><div class="sh-text"><span class="sh-title">'+g.label+'</span>'+(desc?'<span class="sh-desc">'+desc+'</span>':'')+'</div>'+countHTML+'</div>';
+}
+
+function renderGroupsTabs(groups,modId,subId,hideScore){
+  var html='<div class="groups-tabs">';
+  groups.forEach(function(g,gi){
+    html+='<button class="gtab'+(gi===0?' active':'')+'" onclick="switchGroupTab(this,'+gi+')">'+g.label+'</button>';
+  });
+  html+='</div>';
+  groups.forEach(function(g,gi){
+    html+='<div class="groups-panel" data-idx="'+gi+'" style="display:'+(gi===0?'block':'none')+'">';
+    var desc=g.desc||sectionDescMap[g.type]||'';
+    var scoreText=hideScore?'':(g.scoreText===undefined?'':g.scoreText);
+    if(desc||scoreText){
+      html+='<div class="gp-meta">';
+      html+=desc?'<span class="gp-desc">'+desc+'</span>':'<span></span>';
+      html+=scoreText?'<span class="gp-score">'+scoreText+'</span>':'';
+      html+='</div>';
+    }
+    g.items.forEach(function(it,ii){
+      var key=itemKey(modId,subId,gi,ii);
+      if(g.type==='filing')html+=renderFilingItem(key,it);
+      else html+=renderCheckItem(key,it);
+    });
+    html+='</div>';
+  });
+  return html;
+}
+
+function switchGroupTab(btn,idx){
+  var wrap=btn.parentNode;
+  wrap.querySelectorAll('.gtab').forEach(function(t){t.classList.remove('active');});
+  btn.classList.add('active');
+  wrap.parentNode.querySelectorAll('.groups-panel').forEach(function(p){
+    p.style.display=(p.getAttribute('data-idx')==String(idx))?'block':'none';
+  });
 }
 
 function renderSidebar(){
@@ -1474,14 +1545,18 @@ function renderInspectionView(filterModId){
         if(sm.img){
           html+='<img class="insp-sub-img" src="assets/'+sm.img+'" alt="'+sm.name+'效果图" onerror="this.style.display=\'none\'">';
         }
-        sm.groups.forEach(function(g,gi){
-          html+=sectionHeaderHTML(g);
-          g.items.forEach(function(it,ii){
-            var key=itemKey(mod.id,sm.id,gi,ii);
-            if(g.type==='filing')html+=renderFilingItem(key,it);
-            else html+=renderCheckItem(key,it);
+        if(sm.groups.length>1){
+          html+=renderGroupsTabs(sm.groups,mod.id,sm.id,false);
+        }else{
+          sm.groups.forEach(function(g,gi){
+            html+=sectionHeaderHTML(g);
+            g.items.forEach(function(it,ii){
+              var key=itemKey(mod.id,sm.id,gi,ii);
+              if(g.type==='filing')html+=renderFilingItem(key,it);
+              else html+=renderCheckItem(key,it);
+            });
           });
-        });
+        }
         html+='</div>';
       });
     }else{
@@ -1493,8 +1568,25 @@ function renderInspectionView(filterModId){
           // 未点击具体房号前，不显示检查项
         }else{
           html+='<div class="room-current-tag" style="margin:12px 0">🛏️ '+roomNumbers[expandedRoomIdx]+'号房 · 检查项</div>';
+          if(mod.groups.length>1){
+            html+=renderGroupsTabs(mod.groups,mod.id,null,true);
+          }else{
+            mod.groups.forEach(function(g,gi){
+              html+=sectionHeaderHTML(g,true);
+              g.items.forEach(function(it,ii){
+                var key=itemKey(mod.id,null,gi,ii);
+                if(g.type==='filing')html+=renderFilingItem(key,it);
+                else html+=renderCheckItem(key,it);
+              });
+            });
+          }
+        }
+      }else{
+        if(mod.groups.length>1){
+          html+=renderGroupsTabs(mod.groups,mod.id,null,false);
+        }else{
           mod.groups.forEach(function(g,gi){
-            html+=sectionHeaderHTML(g,true);
+            html+=sectionHeaderHTML(g);
             g.items.forEach(function(it,ii){
               var key=itemKey(mod.id,null,gi,ii);
               if(g.type==='filing')html+=renderFilingItem(key,it);
@@ -1502,15 +1594,6 @@ function renderInspectionView(filterModId){
             });
           });
         }
-      }else{
-        mod.groups.forEach(function(g,gi){
-          html+=sectionHeaderHTML(g);
-          g.items.forEach(function(it,ii){
-            var key=itemKey(mod.id,null,gi,ii);
-            if(g.type==='filing')html+=renderFilingItem(key,it);
-            else html+=renderCheckItem(key,it);
-          });
-        });
       }
     }
     html+='</div>';
@@ -1676,17 +1759,26 @@ function renderCheckItem(key,it){
         html+='<div class="pu-preview" id="areafailprev_'+key+'"></div></div>';
         html+='</div>';
       }
+    }else if(it.dualInput&&it.dualInput.length){
+      html+='<div class="value-input-dual">';
+      it.dualInput.forEach(function(item,di){
+        var isObj=typeof item==='object';
+        var lbl=isObj?item.label:item;
+        var std=isObj?item.standard:'';
+        var dk=key+'_'+di;
+        var dvk=myResultKey(dk);
+        if(std){
+          html+='<div class="vid-row"><span class="vid-std">'+lbl+'：'+std+'</span><input type="text" placeholder="实测：" oninput="onValueInput(\''+dk+'\',this.value)" value="'+(checkValues[dvk]||'')+'"></div>';
+        }else{
+          html+='<input type="text" placeholder="'+lbl+'：" oninput="onValueInput(\''+dk+'\',this.value)" value="'+(checkValues[dvk]||'')+'">';
+        }
+      });
+      html+='</div>';
     }else{
       html+='<div class="value-input"><input type="text" placeholder="请输入实测值" oninput="onValueInput(\''+key+'\',this.value)" value="'+(checkValues[vk]||'')+'"></div>';
     }
   }
-  // QC mode: show PM result read-only
-  if(currentRole==='qc'){
-    var pmRes=checkResults[key];
-    var pmText=pmRes==='pass'?'符合':pmRes==='partial'?'比较符合':pmRes==='fail'?'不符合':'未检查';
-    var pmClass=pmRes==='pass'?'pm-pass':pmRes==='fail'?'pm-fail':pmRes==='partial'?'pm-partial':'pm-none';
-    html+='<div class="ci-pm-result '+pmClass+'">项目经理结果：'+pmText+'</div>';
-  }
+  // QC mode: PM result hidden per request
   var isPartial=it.scoreType==='partial';
   html+='<div class="ci-actions'+(isPartial?' ci-actions-partial':'')+'">';
   html+='<button class="ci-btn pass" id="pass_'+key+'" onclick="setResult(\''+key+'\',\'pass\')">✓ 符合</button>';
@@ -1722,18 +1814,21 @@ function renderCheckItem(key,it){
 function renderFilingItem(key,it){
   var html='<div class="filing-item" id="item_'+key+'">';
   html+='<div class="fi-name">'+it.name+scoreBadge(it)+'</div>';
+  if(it.prefixLine){html+='<div class="fi-name fi-sub">'+it.prefixLine+'</div>';}
+  if(it.prefixDesc){html+='<div class="fi-desc">'+it.prefixDesc+'</div>';}
   html+='<div class="fi-desc">'+it.description+'</div>';
+  if(it.rooms&&it.rooms.length){
+    html+='<div class="fi-rooms"><div class="fi-rooms-title">备案房号及面积</div></div>';
+    html+='<div class="fi-rooms-table">';
+    it.rooms.forEach(function(r){
+      html+='<div class="fi-room-row"><span class="fi-room-no">'+r.no+'</span><span class="fi-room-area">'+r.area+'㎡</span></div>';
+    });
+    html+='</div></div>';
+  }
   if(it.tags&&it.tags.length){
     html+='<div class="ci-tags">';
     it.tags.slice(0,4).forEach(function(t){html+='<span class="ci-tag">'+t+'</span>';});
     html+='</div>';
-  }
-  // QC mode: show PM result read-only
-  if(currentRole==='qc'){
-    var pmRes=checkResults[key];
-    var pmText=pmRes==='pass'?'符合':pmRes==='fail'?'不符合':'未检查';
-    var pmClass=pmRes==='pass'?'pm-pass':pmRes==='fail'?'pm-fail':'pm-none';
-    html+='<div class="ci-pm-result '+pmClass+'">项目经理结果：'+pmText+'</div>';
   }
   html+='<div class="photo-upload" id="photo_'+key+'">';
   html+='<div class="pu-label">不符合照片（必传）</div>';
