@@ -1914,10 +1914,12 @@ function onAreaFailPhoto(key,input){
   reader.readAsDataURL(file);
 }
 
+var pmGuestroomView=false;
 function restoreItemState(key){
   var rk=myResultKey(key);
   var r=checkResults[rk];
   if(currentRole==='qc'&&!r&&!isDeductionItem(key)){r='pass';checkResults[rk]='pass';}
+  else if(pmGuestroomView&&!r&&!isDeductionItem(key)){r='pass';}
   var passBtn=document.getElementById('pass_'+key);
   var failBtn=document.getElementById('fail_'+key);
   var partialBtn=document.getElementById('partialbtn_'+key);
@@ -2116,6 +2118,7 @@ function showPmGuestroom(){
   if(!mod)return;
   var savedRole=currentRole;
   currentRole='pm';
+  pmGuestroomView=true;
   var total=countAllItems(mod);
   var done=countCompleted(mod);
   var pct=total>0?Math.round(done/total*100):0;
@@ -2148,6 +2151,7 @@ function showPmGuestroom(){
       restoreItemState(itemKey(mod.id,null,gi,ii));
     });
   });
+  pmGuestroomView=false;
   currentRole=savedRole;
   showPage('page-pm-guestroom');
   document.getElementById('headerTitle').textContent='项目经理客房质检详情';
