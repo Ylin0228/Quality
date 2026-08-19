@@ -1420,7 +1420,7 @@ function setResult(key,result){
 function restoreItemState(key){
   var rk=myResultKey(key);
   var r=checkResults[rk];
-  if(currentRole==='pm'&&!r&&!isDeductionItem(key)){r='pass';checkResults[rk]='pass';}
+  if(currentRole==='qc'&&!r&&!isDeductionItem(key)){r='pass';checkResults[rk]='pass';}
   var passBtn=document.getElementById('pass_'+key);
   var failBtn=document.getElementById('fail_'+key);
   var partialBtn=document.getElementById('partialbtn_'+key);
