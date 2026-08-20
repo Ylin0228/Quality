@@ -258,7 +258,7 @@ body::after{content:'';position:fixed;bottom:-80px;left:50%;transform:translateX
 .bb-prog-fill{height:100%;border-radius:2px;transition:width .3s;background:var(--pm)}
 .bb-btns{display:flex;gap:10px}
 .bb-btn{height:44px;border:none;border-radius:4px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:6px}
-.bb-btn.primary{flex:2;background:linear-gradient(135deg,#0087C7 0%,#00A4F1 100%);color:#fff;box-shadow:0 4px 14px rgba(0,164,241,.3)}
+.bb-btn.primary{flex:1;background:linear-gradient(135deg,#0087C7 0%,#00A4F1 100%);color:#fff;box-shadow:0 4px 14px rgba(0,164,241,.3)}
 .bb-btn.primary:active{transform:scale(.98);box-shadow:0 2px 6px rgba(0,164,241,.2)}
 .bb-btn.secondary{flex:1;background:#fff;border:1.5px solid #D4E8FC;color:var(--ink)}
 .bb-btn.secondary:active{background:#E6F7FF}
@@ -562,10 +562,10 @@ body.role-qc .hpc-stats>#heroPmBlock,body.role-qc .hpc-stats>#heroQcBlock{grid-c
   </div>
   <div class="bb-prog-bar"><div class="bb-prog-fill" id="bbProgFill" style="width:0%"></div></div>
   <div class="bb-btns">
-    <button class="bb-btn secondary" onclick="goBack()">返回列表</button>
+    <button class="bb-btn secondary" onclick="goBack()">保存</button>
     <button class="bb-btn primary" onclick="saveProgress()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
-      <span id="bbPrimaryLabel">保存进度</span>
+      <span id="bbPrimaryLabel">提交</span>
     </button>
   </div>
 </div>
@@ -1267,7 +1267,7 @@ function updateBottomBarScore(modId){
   scoreEl.style.background=scoreBg;
   fill.style.width=pct+'%';
   fill.style.background=statusColor;
-  if(primaryLabel)primaryLabel.textContent='保存'+mod.name+'质检';
+  if(primaryLabel)primaryLabel.textContent=(currentRole==='qc'?'提交并生成AI报告':'提交');
 }
 
 function updateRoomBottomBar(roomIdx){
@@ -1292,7 +1292,7 @@ function updateRoomBottomBar(roomIdx){
   scoreEl.style.background=scoreBg;
   fill.style.width=pct+'%';
   fill.style.background=statusColor;
-  if(primaryLabel)primaryLabel.textContent='保存客房质检';
+  if(primaryLabel)primaryLabel.textContent=(currentRole==='qc'?'提交并生成AI报告':'提交');
 }
 
 var sectionDescMap={
@@ -1346,7 +1346,7 @@ function renderSidebar(){
   var sb=document.getElementById('inspSidebar');
   if(!sb)return;
   var html='';
-  modules.forEach(function(mod){
+  modules.filter(function(m){return m.id!=='it';}).forEach(function(mod){
     var abbr=modulePinyin[mod.id];
     var total=countAllItems(mod);
     var done=countCompleted(mod);
@@ -1478,9 +1478,18 @@ function bindInspectionScroll(){
   inspScrollBound=true;
 }
 
+function applySidebarVisibility(modId){
+  var sb=document.getElementById('inspSidebar');
+  if(sb)sb.style.display=(modId==='it')?'none':'';
+}
+function restoreSidebarForHome(){
+  var sb=document.getElementById('inspSidebar');
+  if(sb)sb.style.display='';
+}
 function selectInspectionModule(modId){
   currentModuleId=modId;
   currentSubModuleId=null;
+  applySidebarVisibility(modId);
   renderInspectionView(modId);
   highlightSidebar(modId);
   var main=document.getElementById('inspMain');
@@ -1493,6 +1502,8 @@ function selectInspectionModule(modId){
 
 function renderInspectionView(filterModId){
   renderSidebar();
+  if(filterModId)applySidebarVisibility(filterModId);
+  else restoreSidebarForHome();
   bindInspectionScroll();
   var main=document.getElementById('inspMain');
   if(!main)return;
@@ -1627,6 +1638,7 @@ function enterModule(id){
   currentModuleId=id;currentSubModuleId=null;
   document.getElementById('headerTitle').textContent=mod.name;
   document.getElementById('backBtn').style.visibility='visible';
+  applySidebarVisibility(id);
   renderInspectionView(id);
   showPage('page-inspection');
   highlightSidebar(id);
@@ -2052,6 +2064,7 @@ function goBack(){
       var mod=getModule(currentModuleId);
       document.getElementById('headerTitle').textContent=mod?mod.name:'检查视图';
     }else{
+      restoreSidebarForHome();
       renderModuleList();
       showPage('page-modules');
       document.getElementById('headerTitle').textContent='AI质检';
@@ -2070,6 +2083,7 @@ function goBack(){
   // From room list -> module list
   if(pageRooms.classList.contains('active')){
     expandedRoomIdx=null;
+    restoreSidebarForHome();
     renderModuleList();
     showPage('page-modules');
     document.getElementById('headerTitle').textContent='AI质检';
@@ -2079,6 +2093,7 @@ function goBack(){
   // From inspection view -> module list
   if(pageInsp.classList.contains('active')){
     currentModuleId=null;currentSubModuleId=null;
+    restoreSidebarForHome();
     renderModuleList();
     showPage('page-modules');
     document.getElementById('headerTitle').textContent='AI质检';
@@ -2095,6 +2110,7 @@ function goBack(){
       showPage('page-inspection');
       highlightSidebar(currentModuleId);
     }else{
+      restoreSidebarForHome();
       renderModuleList();
       showPage('page-modules');
       document.getElementById('headerTitle').textContent='AI质检';
@@ -2104,6 +2120,7 @@ function goBack(){
   }
   if(pageSub.classList.contains('active')){
     currentModuleId=null;
+    restoreSidebarForHome();
     renderModuleList();
     showPage('page-modules');
     document.getElementById('headerTitle').textContent='AI质检';
@@ -2474,7 +2491,7 @@ function updateRoomsBottomBar(){
   var fill=document.getElementById('bbProgFill');
   if(fill){fill.style.width=pct+'%';fill.style.background=statusColor;}
   var primaryLabel=document.getElementById('bbPrimaryLabel');
-  if(primaryLabel)primaryLabel.textContent='保存客房质检';
+  if(primaryLabel)primaryLabel.textContent=(currentRole==='qc'?'提交并生成AI报告':'提交');
 }
 function regenerateRooms(){
   roomCheckResults={};roomCheckPhotos={};roomCheckPartialScores={};
