@@ -381,7 +381,7 @@ body::after{content:'';position:fixed;bottom:-80px;left:50%;transform:translateX
 .insp-sub-img{display:block;width:100%;height:auto;max-height:120px;object-fit:cover;border-radius:4px;margin-bottom:10px}
 
 /* ===== HOME PAGE (New Design) ===== */
-.home-hero{background:linear-gradient(160deg,#0087C7 0%,#00A4F1 35%,#0087C7 70%,#A9E4FF 100%);padding:52px 18px 60px;position:relative;overflow:visible;flex-shrink:0;height:333px}
+.home-hero{background:linear-gradient(160deg,#0087C7 0%,#00A4F1 35%,#0087C7 70%,#A9E4FF 100%);padding:52px 18px 60px;position:relative;overflow:visible;flex-shrink:0;height:310px}
 .home-hero::before{content:'';position:absolute;top:-60px;right:-60px;width:240px;height:240px;background:radial-gradient(circle,rgba(255,255,255,.12) 0%,transparent 70%);border-radius:50%}
 .home-hero::after{content:'';position:absolute;bottom:-80px;left:-40px;width:200px;height:200px;background:radial-gradient(circle,rgba(169,228,255,.25) 0%,transparent 70%);border-radius:50%}
 .hero-top{display:flex;align-items:flex-start;justify-content:space-between;position:relative;z-index:1;margin-bottom:20px}
@@ -398,6 +398,7 @@ body::after{content:'';position:fixed;bottom:-80px;left:50%;transform:translateX
 .badge-dot{position:absolute;top:8px;right:8px;width:8px;height:8px;background:#FF4C4C;border-radius:50%;border:1.5px solid #00A4F1}
 .hero-progress-card{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.2);border-radius:4px;padding:14px 16px;position:relative;z-index:1;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:0 8px 32px rgba(0,135,199,.15)}
 .hpc-stats{display:grid;grid-template-columns:repeat(6,1fr);gap:12px 4px}
+.hpc-fail-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;position:relative;z-index:1}
 .hpc-stats>#heroFailABlock,.hpc-stats>#heroFailBBlock,.hpc-stats>#heroFailBlock,.hpc-stats>#heroProgressBlock,.hpc-stats>#heroPmBlock,.hpc-stats>#heroQcBlock{grid-column:span 2}
 body.role-qc .hpc-stats>#heroProgressBlock{display:none}
 body.role-qc .hpc-stats>#heroPmBlock,body.role-qc .hpc-stats>#heroQcBlock{grid-column:span 3}
@@ -486,30 +487,31 @@ body.role-qc .hpc-stats>#heroPmBlock,body.role-qc .hpc-stats>#heroQcBlock{grid-c
         </button>
       </div>
     </div>
+    <div class="hpc-fail-stats">
+      <div class="hpc-stat-block hpc-stat-clickable" id="heroFailABlock" onclick="showFailItems('A')">
+        <div class="hpc-stat-label"><span class="hpc-dot hpc-dot-a"></span>A类不符合</div>
+        <div class="hpc-stat-value-wrap">
+          <span class="hpc-stat-value" id="heroFailACount">0</span>
+          <span class="hpc-stat-unit">项</span>
+        </div>
+      </div>
+      <div class="hpc-stat-block hpc-stat-clickable" id="heroFailBBlock" onclick="showFailItems('B')">
+        <div class="hpc-stat-label"><span class="hpc-dot hpc-dot-b"></span>B类不符合</div>
+        <div class="hpc-stat-value-wrap">
+          <span class="hpc-stat-value" id="heroFailBCount">0</span>
+          <span class="hpc-stat-unit">项</span>
+        </div>
+      </div>
+      <div class="hpc-stat-block hpc-stat-clickable" id="heroFailBlock" onclick="showFailItems('ALL')">
+        <div class="hpc-stat-label">不符合/总项</div>
+        <div class="hpc-stat-value-wrap">
+          <span class="hpc-stat-value" id="heroFailCount">0</span>
+          <span class="hpc-stat-unit" id="heroTotalCount">/0项</span>
+        </div>
+      </div>
+    </div>
     <div class="hero-progress-card" id="heroProgressCard">
       <div class="hpc-stats">
-        <div class="hpc-stat-block hpc-stat-clickable" id="heroFailABlock" onclick="showFailItems('A')">
-          <div class="hpc-stat-label"><span class="hpc-dot hpc-dot-a"></span>A类不符合</div>
-          <div class="hpc-stat-value-wrap">
-            <span class="hpc-stat-value" id="heroFailACount">0</span>
-            <span class="hpc-stat-unit">项</span>
-          </div>
-        </div>
-        <div class="hpc-stat-block hpc-stat-clickable" id="heroFailBBlock" onclick="showFailItems('B')">
-          <div class="hpc-stat-label"><span class="hpc-dot hpc-dot-b"></span>B类不符合</div>
-          <div class="hpc-stat-value-wrap">
-            <span class="hpc-stat-value" id="heroFailBCount">0</span>
-            <span class="hpc-stat-unit">项</span>
-          </div>
-        </div>
-        <div class="hpc-stat-block hpc-stat-clickable" id="heroFailBlock" onclick="showFailItems('ALL')">
-          <div class="hpc-stat-label">不符合/总项</div>
-          <div class="hpc-stat-value-wrap">
-            <span class="hpc-stat-value" id="heroFailCount">0</span>
-            <span class="hpc-stat-unit" id="heroTotalCount">/0项</span>
-          </div>
-        </div>
-        <div class="hpc-stat-divider"></div>
         <div class="hpc-stat-block" id="heroProgressBlock">
           <div class="hpc-stat-label">整体检查进度</div>
           <div class="hpc-stat-value-wrap">
