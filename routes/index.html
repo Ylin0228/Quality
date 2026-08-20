@@ -401,6 +401,26 @@ body::after{content:'';position:fixed;bottom:-80px;left:50%;transform:translateX
 <script>
 /* ===== DATA ===== */
 var modules=[
+  {id:'it',name:'IT',icon:'💻',type:'direct',img:null,
+    groups:[
+      {type:'objective',label:'底线项（必检）',items:[
+        {name:'公安网监设备',standard:'酒店已采购启用网监设备',isBaseline:true,score:0},
+        {name:'酒店集团门户',standard:'集团门户已完成上线',isBaseline:true,score:0},
+        {name:'酒店合规投屏',standard:'集团统一智能电视系统/可扫码登录的一房一码的投屏。如不满足上述条件，电视机只可播放直播信号',isBaseline:true,score:0},
+        {name:'酒店宽带线路',standard:'酒店带宽标准符合1+1（专线100M+大带宽），带宽满足4:1',isBaseline:true,score:0},
+        {name:'无线设备',standard:'1. 标准酒店一房一面板（华为、锐捷、神州数码等）或带无线漫游的三网；2. 非标加盟酒店可沿用原先三网合同使用',isBaseline:true,score:0}
+      ]},
+      {type:'subjective',label:'常规检查项',items:[
+        {name:'酒店客房电视信号',standard:'使用合规电视信号',score:0},
+        {name:'认证开启情况',standard:'门店认证开启归属方确认（首旅如家门户 / 公安网监认证）',score:0},
+        {name:'公区各类显示屏红外遮挡',standard:'红外遮挡完成，0.5米外手机遥控失效，仅近距离遥控器可用',score:0},
+        {name:'公区房价牌（网络白名单）',standard:'标准门店网络白名单已配置；非标门店按物理遮挡执行',score:0},
+        {name:'网关路由层级',standard:'门店网关是否为一级路由；若酒店网关为二级路由或单供内网，同时未部署网监设备，告知酒店依照集团要求采购并开启网监',score:0},
+        {name:'门锁、发票PMS直连',standard:'酒店需完成门锁与发票对于PMS系统的直连配置',score:0},
+        {name:'前台电脑',standard:'前台PMS专用电脑：CPU要求i5系列以上，处理器代数12代及以上，型号禁止带有H/U/P/K/F等字母后缀，仅允许纯数字结尾标准型号；内存16G及以上；硬盘512G固态硬盘及以上',score:0}
+      ]}
+    ]
+  },
   {id:'filing',name:'备案',icon:'📋',type:'direct',img:null,
     groups:[{type:'filing',label:'备案项',items:[
       {name:'员工宿舍合规性',direction:'员工宿舍',description:'员工宿舍外租是否有合同，是否具备入住条件',score:2,scoreType:'deduction'},
@@ -654,26 +674,6 @@ var modules=[
         {name:'结构安全',standard:'酒店整体建筑物没有倾斜或没有明显墙体结构性开裂（不包括墙体粉刷层开裂）',score:0},
         {name:'材料、安全',standard:'搭建辅房不可用作经营和住人，用作辅房需配齐消防设施和设备。厨房不准违规使用钢瓶液化石油气。，材料符合防火要求，不得使用夹层为聚苯板的彩钢夹芯板，符合承重要求。对于彩钢夹芯板的补救措施：采取阻燃措施（外包铁皮或内衬防火材料）或在同一栋楼物业管理方出具不适用酒店区域的证明和加盟商相对应的安全承诺书。',score:0},
         {name:'央采质量',standard:'现场央采产品抽样检查（抽任何两类工程央采物品）',score:10,scoreType:'partial',partialMin:0,partialMax:5}
-      ]}
-    ]
-  },
-  {id:'it',name:'IT',icon:'💻',type:'direct',img:null,
-    groups:[
-      {type:'objective',label:'底线项（必检）',items:[
-        {name:'公安网监设备',standard:'酒店已采购启用网监设备',isBaseline:true,score:0},
-        {name:'酒店集团门户',standard:'集团门户已完成上线',isBaseline:true,score:0},
-        {name:'酒店合规投屏',standard:'集团统一智能电视系统/可扫码登录的一房一码的投屏。如不满足上述条件，电视机只可播放直播信号',isBaseline:true,score:0},
-        {name:'酒店宽带线路',standard:'酒店带宽标准符合1+1（专线100M+大带宽），带宽满足4:1',isBaseline:true,score:0},
-        {name:'无线设备',standard:'1. 标准酒店一房一面板（华为、锐捷、神州数码等）或带无线漫游的三网；2. 非标加盟酒店可沿用原先三网合同使用',isBaseline:true,score:0}
-      ]},
-      {type:'subjective',label:'常规检查项',items:[
-        {name:'酒店客房电视信号',standard:'使用合规电视信号',score:0},
-        {name:'认证开启情况',standard:'门店认证开启归属方确认（首旅如家门户 / 公安网监认证）',score:0},
-        {name:'公区各类显示屏红外遮挡',standard:'红外遮挡完成，0.5米外手机遥控失效，仅近距离遥控器可用',score:0},
-        {name:'公区房价牌（网络白名单）',standard:'标准门店网络白名单已配置；非标门店按物理遮挡执行',score:0},
-        {name:'网关路由层级',standard:'门店网关是否为一级路由；若酒店网关为二级路由或单供内网，同时未部署网监设备，告知酒店依照集团要求采购并开启网监',score:0},
-        {name:'门锁、发票PMS直连',standard:'酒店需完成门锁与发票对于PMS系统的直连配置',score:0},
-        {name:'前台电脑',standard:'前台PMS专用电脑：CPU要求i5系列以上，处理器代数12代及以上，型号禁止带有H/U/P/K/F等字母后缀，仅允许纯数字结尾标准型号；内存16G及以上；硬盘512G固态硬盘及以上',score:0}
       ]}
     ]
   }
