@@ -381,7 +381,7 @@ body::after{content:'';position:fixed;bottom:-80px;left:50%;transform:translateX
 .insp-sub-img{display:block;width:100%;height:auto;max-height:120px;object-fit:cover;border-radius:4px;margin-bottom:10px}
 
 /* ===== HOME PAGE (New Design) ===== */
-.home-hero{background:linear-gradient(160deg,#0087C7 0%,#00A4F1 35%,#0087C7 70%,#A9E4FF 100%);padding:52px 18px 60px;position:relative;overflow:visible;flex-shrink:0;height:319px}
+.home-hero{background:linear-gradient(160deg,#0087C7 0%,#00A4F1 35%,#0087C7 70%,#A9E4FF 100%);padding:52px 18px 60px;position:relative;overflow:visible;flex-shrink:0;height:333px}
 .home-hero::before{content:'';position:absolute;top:-60px;right:-60px;width:240px;height:240px;background:radial-gradient(circle,rgba(255,255,255,.12) 0%,transparent 70%);border-radius:50%}
 .home-hero::after{content:'';position:absolute;bottom:-80px;left:-40px;width:200px;height:200px;background:radial-gradient(circle,rgba(169,228,255,.25) 0%,transparent 70%);border-radius:50%}
 .hero-top{display:flex;align-items:flex-start;justify-content:space-between;position:relative;z-index:1;margin-bottom:20px}
@@ -402,6 +402,9 @@ body::after{content:'';position:fixed;bottom:-80px;left:50%;transform:translateX
 body.role-qc .hpc-stats>#heroProgressBlock{display:none}
 body.role-qc .hpc-stats>#heroPmBlock,body.role-qc .hpc-stats>#heroQcBlock{grid-column:span 3}
 .hpc-stat-block{text-align:center;min-width:0}
+.hpc-stat-clickable{cursor:pointer;transition:all .15s;border-radius:4px;padding:6px 4px;position:relative;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18)}
+.hpc-stat-clickable:active{background:rgba(255,255,255,.22);transform:scale(.95)}
+.hpc-stat-clickable::after{content:'›';position:absolute;right:2px;top:50%;transform:translateY(-50%);font-size:12px;color:rgba(255,255,255,.5);line-height:1}
 .hpc-stat-label{font-size:10px;color:rgba(255,255,255,.75);margin-bottom:4px;letter-spacing:.2px;line-height:1.2}
 .hpc-stat-value-wrap{display:flex;align-items:baseline;justify-content:center;gap:1px}
 .hpc-stat-value{font-size:21px;font-weight:800;color:#fff;line-height:1;letter-spacing:-.5px}
@@ -411,6 +414,24 @@ body.role-qc .hpc-stats>#heroPmBlock,body.role-qc .hpc-stats>#heroQcBlock{grid-c
 .hpc-dot-a{background:#02C2C2}
 .hpc-dot-b{background:#FFA64C}
 .hpc-stat-divider{grid-column:1/-1;height:1px;background:rgba(255,255,255,.12);margin:6px 0}
+
+/* Fail Items List Page */
+.fi-header{padding:16px 16px 10px;background:#fff;border-radius:0 0 4px 4px;box-shadow:0 2px 8px rgba(0,164,241,.04)}
+.fi-title{font-size:17px;font-weight:700;color:#1D2129}
+.fi-subtitle{font-size:12px;color:#86909C;margin-top:2px}
+.fi-list{padding:10px}
+.fi-group{margin-bottom:12px}
+.fi-group-header{display:flex;align-items:center;gap:8px;padding:8px 12px;background:#F7FAFE;border-radius:4px;margin-bottom:6px}
+.fi-group-name{font-size:14px;font-weight:600;color:#1D2129;flex:1}
+.fi-group-count{font-size:12px;color:#86909C}
+.fi-item{background:#fff;border-radius:4px;padding:12px 14px;margin-bottom:6px;box-shadow:0 1px 6px rgba(0,164,241,.04);border:1px solid rgba(0,164,241,.03)}
+.fi-item-name{font-size:14px;font-weight:600;color:#1D2129;margin-bottom:4px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.fi-item-standard{font-size:12px;color:#6E7681;line-height:1.5}
+.fi-item-mod{font-size:10px;color:#86909C;margin-left:auto;white-space:nowrap}
+.fi-item-cat{display:inline-block;font-size:10px;font-weight:700;padding:1px 6px;border-radius:999px;color:#fff}
+.fi-item-cat.cat-a{background:linear-gradient(135deg,#02C2C2,#0A8C8C)}
+.fi-item-cat.cat-b{background:linear-gradient(135deg,#FFA64C,#D48030)}
+.fi-empty{text-align:center;padding:60px 20px;color:#86909C;font-size:14px}
 
 /* Home Content Area */
 .home-content{padding:10px 10px 30px;background:var(--bg);border-radius:4px 4px 0 0;margin-top:-20px;position:relative;z-index:2;height:544px}
@@ -467,21 +488,21 @@ body.role-qc .hpc-stats>#heroPmBlock,body.role-qc .hpc-stats>#heroQcBlock{grid-c
     </div>
     <div class="hero-progress-card" id="heroProgressCard">
       <div class="hpc-stats">
-        <div class="hpc-stat-block" id="heroFailABlock">
+        <div class="hpc-stat-block hpc-stat-clickable" id="heroFailABlock" onclick="showFailItems('A')">
           <div class="hpc-stat-label"><span class="hpc-dot hpc-dot-a"></span>A类不符合</div>
           <div class="hpc-stat-value-wrap">
             <span class="hpc-stat-value" id="heroFailACount">0</span>
             <span class="hpc-stat-unit">项</span>
           </div>
         </div>
-        <div class="hpc-stat-block" id="heroFailBBlock">
+        <div class="hpc-stat-block hpc-stat-clickable" id="heroFailBBlock" onclick="showFailItems('B')">
           <div class="hpc-stat-label"><span class="hpc-dot hpc-dot-b"></span>B类不符合</div>
           <div class="hpc-stat-value-wrap">
             <span class="hpc-stat-value" id="heroFailBCount">0</span>
             <span class="hpc-stat-unit">项</span>
           </div>
         </div>
-        <div class="hpc-stat-block" id="heroFailBlock">
+        <div class="hpc-stat-block hpc-stat-clickable" id="heroFailBlock" onclick="showFailItems('ALL')">
           <div class="hpc-stat-label">不符合/总项</div>
           <div class="hpc-stat-value-wrap">
             <span class="hpc-stat-value" id="heroFailCount">0</span>
@@ -548,6 +569,11 @@ body.role-qc .hpc-stats>#heroPmBlock,body.role-qc .hpc-stats>#heroQcBlock{grid-c
 <!-- Page: PM Guestroom Detail (QC view) -->
 <div class="page" id="page-pm-guestroom">
   <div class="page-inner" id="pmGuestroomBody"></div>
+</div>
+
+<!-- Page: Fail Items List -->
+<div class="page" id="page-fail-items">
+  <div class="page-inner" id="failItemsBody"></div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -2045,7 +2071,51 @@ function showPage(id){
   }
   // Hide role-btn on inspection view (role switch unavailable there)
   var roleBtn=document.querySelector('.header .role-btn');
-  if(roleBtn)roleBtn.style.display=(id==='page-inspection'||id==='page-pm-guestroom')?'none':'flex';
+  if(roleBtn)roleBtn.style.display=(id==='page-inspection'||id==='page-pm-guestroom'||id==='page-fail-items')?'none':'flex';
+}
+
+function showFailItems(type){
+  var body=document.getElementById('failItemsBody');
+  if(!body)return;
+  var titleText=type==='A'?'A类不符合项':(type==='B'?'B类不符合项':'不符合项');
+  var failItems=[];
+  modules.forEach(function(mod){
+    var fiter=function(g,gi,subId){
+      g.items.forEach(function(it,ii){
+        var key=itemKey(mod.id,subId,gi,ii);
+        if(checkResults[myResultKey(key)]==='fail'){
+          if(type==='ALL'||it.category===type){
+            failItems.push({mod:mod,sm:subId?getSubModule(mod.id,subId):null,item:it,key:key});
+          }
+        }
+      });
+    };
+    if(mod.type==='sub'){
+      mod.subModules.forEach(function(sm){sm.groups.forEach(function(g,gi){fiter(g,gi,sm.id);});});
+    }else{
+      mod.groups.forEach(function(g,gi){fiter(g,gi,null);});
+    }
+  });
+  var html='';
+  html+='<div class="fi-list">';
+  if(failItems.length===0){
+    html+='<div class="fi-empty">暂无不符合项</div>';
+  }else{
+    failItems.forEach(function(fi){
+      var cat=fi.item.category;
+      var catTag=cat?'<span class="fi-item-cat cat-'+cat.toLowerCase()+'">'+cat+'类</span>':'';
+      var modName=fi.mod.name+(fi.sm?' / '+fi.sm.name:'');
+      html+='<div class="fi-item">';
+      html+='<div class="fi-item-name">'+catTag+'<span>'+fi.item.name+'</span><span class="fi-item-mod">'+modName+'</span></div>';
+      html+='<div class="fi-item-standard">'+(fi.item.standard||'')+'</div>';
+      html+='</div>';
+    });
+  }
+  html+='</div>';
+  body.innerHTML=html;
+  document.getElementById('headerTitle').textContent=titleText;
+  document.getElementById('backBtn').style.visibility='visible';
+  showPage('page-fail-items');
 }
 
 function goBack(){
@@ -2120,6 +2190,16 @@ function goBack(){
   }
   if(pageSub.classList.contains('active')){
     currentModuleId=null;
+    restoreSidebarForHome();
+    renderModuleList();
+    showPage('page-modules');
+    document.getElementById('headerTitle').textContent='AI质检';
+    document.getElementById('backBtn').style.visibility='hidden';
+    return;
+  }
+  // From fail items list -> back to home
+  var pageFail=document.getElementById('page-fail-items');
+  if(pageFail&&pageFail.classList.contains('active')){
     restoreSidebarForHome();
     renderModuleList();
     showPage('page-modules');
