@@ -247,6 +247,92 @@ body::after{content:'';position:fixed;bottom:-80px;left:50%;transform:translateX
 .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:rgba(29,33,41,.85);color:#fff;padding:10px 24px;border-radius:4px;font-size:13px;z-index:999;opacity:0;transition:opacity .25s;pointer-events:none;backdrop-filter:blur(8px)}
 .toast.show{opacity:1}
 
+/* Confirm Modal */
+.modal-mask{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;justify-content:center;align-items:center;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.modal-mask.show{display:flex}
+.confirm-modal{background:#fff;border-radius:var(--radius);width:300px;padding:0;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.15);animation:modalIn .2s ease}
+@keyframes modalIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+.cm-header{display:flex;align-items:center;gap:10px;padding:22px 22px 14px}
+.cm-icon{width:28px;height:28px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cm-title{font-size:17px;font-weight:700;color:var(--ink)}
+.cm-body{padding:0 22px 22px;font-size:14px;color:var(--muted);line-height:1.6}
+.cm-footer{display:flex;gap:10px;padding:0 22px 20px;justify-content:flex-end}
+.cm-btn{padding:8px 22px;border-radius:var(--radius);font-size:14px;font-weight:500;border:none;cursor:pointer;transition:all .15s}
+.cm-btn-cancel{background:#F7FAFE;color:var(--pm);border:1px solid rgba(0,164,241,.3)}
+.cm-btn-cancel:active{background:#E6F7FF}
+.cm-btn-confirm{background:linear-gradient(135deg,#0087C7 0%,#00A4F1 100%);color:#fff;box-shadow:0 4px 14px rgba(0,164,241,.3)}
+.cm-btn-confirm:active{transform:scale(.98);box-shadow:0 2px 6px rgba(0,164,241,.2)}
+
+/* AI Report Page */
+.ai-report-page{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:375px;height:100%;background:var(--bg);z-index:300;display:none;flex-direction:column;overflow:hidden}
+.ai-report-page.show{display:flex}
+.ai-report-header{background:linear-gradient(160deg,#0087C7 0%,#00A4F1 35%,#0087C7 70%,#A9E4FF 100%);padding:52px 18px 24px;flex-shrink:0;position:relative;overflow:hidden;height:125px}
+.ai-report-header::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;background:radial-gradient(circle,rgba(255,255,255,.12) 0%,transparent 70%);border-radius:50%}
+.ai-report-header::after{content:'';position:absolute;bottom:-60px;left:-30px;width:160px;height:160px;background:radial-gradient(circle,rgba(169,228,255,.25) 0%,transparent 70%);border-radius:50%}
+.ai-report-close{position:absolute;top:14px;right:16px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.18);font-size:20px;color:#fff;cursor:pointer;border-radius:50%;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);transition:all .15s;z-index:2}
+.ai-report-close:active{background:rgba(255,255,255,.28);transform:scale(.95)}
+.ai-report-content{padding:0 16px 20px;flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.ai-report-title{text-align:center;position:relative;z-index:1}
+.ai-report-title h1{font-size:20px;font-weight:800;color:#fff;margin:0 0 6px;letter-spacing:.3px;line-height:1.3}
+.ai-report-title .sub{font-size:13px;color:rgba(255,255,255,.7)}
+.ai-section{margin-bottom:20px}
+.ai-section-title{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:700;color:var(--ink);margin-bottom:12px}
+.ai-report-content > .ai-section:first-child .ai-section-title{padding-top:12px}
+.ai-section-title::before{content:'';width:4px;height:18px;border-radius:2px;background:linear-gradient(180deg,#00A4F1,#0087C7);flex-shrink:0}
+.ai-info-grid{display:grid;grid-template-columns:1fr;gap:10px;background:#fff;border-radius:var(--radius);padding:16px 18px;box-shadow:0 2px 12px rgba(0,164,241,.05);border:1px solid rgba(0,164,241,.03)}
+.ai-info-item{font-size:13px;color:var(--muted)}
+.ai-info-item .label{color:var(--aux)}
+.ai-info-item .value{color:var(--ink);font-weight:600;margin-left:4px}
+.ai-score-card{background:linear-gradient(135deg,rgba(0,164,241,.08) 0%,rgba(0,135,199,.05) 100%);border-radius:var(--radius);padding:24px;text-align:center;margin-bottom:12px;box-shadow:0 4px 20px rgba(0,164,241,.08);border:1px solid rgba(0,164,241,.06)}
+.ai-score-card .score{font-size:16px;font-weight:500;color:var(--aux);line-height:1}
+.ai-score-card .score span{font-size:48px;color:var(--pm);font-weight:800}
+.ai-score-card .score-label{font-size:13px;color:var(--muted);margin-top:8px}
+.ai-stats-list{background:#fff;border-radius:var(--radius);overflow:hidden;box-shadow:0 2px 12px rgba(0,164,241,.05);border:1px solid rgba(0,164,241,.03)}
+.ai-stats-item{padding:14px 16px;border-bottom:1px solid #EDF0F5}
+.ai-stats-item:last-child{border-bottom:none}
+.ai-stats-item .asi-row{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.ai-stats-item .asi-name{font-size:14px;color:var(--ink);font-weight:500}
+.ai-stats-item .asi-count{font-size:18px;font-weight:700;line-height:1}
+.ai-stats-item .asi-desc{font-size:12px;color:var(--aux);margin-top:4px;line-height:1.5}
+.ai-stats-item .asi-count.count-green{color:var(--green)}
+.ai-stats-item .asi-count.count-red{color:var(--red)}
+.ai-stats-item .asi-count.count-orange{color:#FFA64C}
+.ai-stats-item .asi-count.count-gray{color:#C9CDD4}
+.ai-conclusion-box{width:100%;min-height:120px;border:1px solid rgba(0,164,241,.15);border-radius:var(--radius);padding:14px;font-size:14px;color:var(--ink);background:#fff;resize:none;font-family:inherit;outline:none;box-shadow:0 2px 12px rgba(0,164,241,.05)}
+.ai-conclusion-box:focus{border-color:rgba(0,164,241,.4)}
+.ai-conclusion-box::placeholder{color:#C9CDD4}
+.ai-report-footer{flex-shrink:0;padding:10px 16px 14px;background:rgba(255,255,255,.92);border-top:1px solid rgba(0,164,241,.08);-webkit-backdrop-filter:blur(16px) saturate(180%);backdrop-filter:blur(16px) saturate(180%);box-shadow:0 -4px 20px rgba(0,164,241,.06)}
+.ai-sign-btn{width:100%;height:44px;border:none;border-radius:var(--radius);font-size:15px;font-weight:600;font-family:inherit;cursor:pointer;transition:all .15s;background:linear-gradient(135deg,#0087C7 0%,#00A4F1 100%);color:#fff;box-shadow:0 4px 14px rgba(0,164,241,.3);display:flex;align-items:center;justify-content:center;gap:6px}
+.ai-sign-btn:active{transform:scale(.98);box-shadow:0 2px 6px rgba(0,164,241,.2)}
+
+/* Sign Page */
+.sign-page{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:375px;height:100%;background:var(--bg);z-index:300;display:none;flex-direction:column}
+.sign-page.show{display:flex}
+.sign-header{background:#fff;padding:14px 16px;position:relative;flex-shrink:0;border-bottom:1px solid #EDF0F5}
+.sign-header:before{display:none}
+.sign-header:after{display:none}
+.sign-close{position:absolute;top:10px;left:10px;width:32px;height:32px;border-radius:var(--radius);background:transparent;border:none;color:var(--muted);font-size:22px;display:flex;align-items:center;justify-content:center;cursor:pointer;line-height:1;z-index:1}
+.sign-close:active{background:#F2F3F5}
+.sign-title{font-size:17px;font-weight:700;color:var(--ink);display:flex;align-items:center;justify-content:center;gap:6px;position:relative;z-index:1}
+.sign-content{flex:1;overflow-y:auto;padding:14px 14px 80px;-webkit-overflow-scrolling:touch}
+.sign-grid{display:grid;grid-template-columns:1fr;gap:12px}
+.sign-block{}
+.sign-label{font-size:14px;color:var(--ink);font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.sign-label .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.sign-label .dot.pm{background:var(--pm)}
+.sign-label .dot.shop{background:#FF4C4C}
+.sign-label .dot.maint{background:var(--green)}
+.sign-label .dot.qc{background:#9C6AFF}
+.sign-canvas-box{width:100%;aspect-ratio:4/3;background:#fff;border-radius:var(--radius);border:1px solid #EDF0F5;overflow:hidden;touch-action:none;cursor:crosshair}
+.sign-canvas-box canvas{width:100%;height:100%;display:block}
+.sign-canvas-box.signed{border-color:rgba(2,194,194,.3)}
+.sign-actions{display:flex;align-items:center;justify-content:space-between;margin-top:8px}
+.sign-clear{font-size:13px;color:var(--pm);background:#F7FAFE;border:1px solid rgba(0,164,241,.3);border-radius:var(--radius);padding:5px 12px;cursor:pointer;line-height:1.5}
+.sign-clear:active{background:#E6F7FF}
+.sign-status{font-size:13px;color:var(--green);font-weight:500;display:none;align-items:center;gap:3px}
+.sign-canvas-box.signed ~ .sign-actions .sign-status{display:flex}
+.sign-footer{flex-shrink:0;position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:375px;padding:10px 16px 28px;background:rgba(255,255,255,.95);border-top:1px solid rgba(0,164,241,.08);-webkit-backdrop-filter:blur(16px) saturate(180%);backdrop-filter:blur(16px) saturate(180%);box-shadow:0 -4px 20px rgba(0,164,241,.06);z-index:301}
+
 /* Bottom Bar - 毛玻璃质感，上下两栏 */
 .bottom-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:375px;background:rgba(255,255,255,.92);border-top:1px solid rgba(0,164,241,.08);padding:10px 14px 12px;display:none;flex-direction:column;gap:10px;z-index:90;-webkit-backdrop-filter:blur(16px) saturate(180%);backdrop-filter:blur(16px) saturate(180%);box-shadow:0 -4px 20px rgba(0,164,241,.06)}
 .bottom-bar.show{display:flex}
@@ -580,6 +666,140 @@ body.role-qc .hpc-stats>#heroPmBlock,body.role-qc .hpc-stats>#heroQcBlock{grid-c
 </div>
 
 <div class="toast" id="toast"></div>
+<div class="modal-mask" id="confirmModal">
+  <div class="confirm-modal">
+    <div class="cm-header">
+      <div class="cm-icon">⚠️</div>
+      <div class="cm-title">确认提交</div>
+    </div>
+    <div class="cm-body">确认提交质检结果？提交后将生成AI质检报告。</div>
+    <div class="cm-footer">
+      <button class="cm-btn cm-btn-cancel" onclick="closeConfirmModal()">取消</button>
+      <button class="cm-btn cm-btn-confirm" onclick="doSaveProgress()">确定</button>
+    </div>
+  </div>
+</div>
+
+<!-- AI Report Page -->
+<div class="ai-report-page" id="aiReportPage">
+  <div class="ai-report-header">
+    <button class="ai-report-close" onclick="closeAiReport()">×</button>
+    <div class="ai-report-title">
+      <h1>首旅如今酒店工程竣工预验收表</h1>
+      <div class="sub">(AI质检报告)</div>
+    </div>
+  </div>
+  <div class="ai-report-content">
+
+    <div class="ai-section">
+      <div class="ai-section-title">项目信息</div>
+      <div class="ai-info-grid">
+        <div class="ai-info-item"><span class="label">工程名称：</span><span class="value" id="aiProjectName">如家NEO上海淮海路店</span></div>
+        <div class="ai-info-item"><span class="label">验收日期：</span><span class="value" id="aiDate">2026-0811</span></div>
+        <div class="ai-info-item"><span class="label">验收总客房数：</span><span class="value" id="aiRoomCount">106间</span></div>
+        <div class="ai-info-item"><span class="label">项目经理：</span><span class="value" id="aiPmName">李伟</span></div>
+        <div class="ai-info-item"><span class="label">质检经理：</span><span class="value" id="aiQcName">张明</span></div>
+      </div>
+    </div>
+
+    <div class="ai-section">
+      <div class="ai-section-title">验收情况汇总内容</div>
+      <div class="ai-score-card">
+        <div class="score"><span id="aiScore">85</span>/100</div>
+        <div class="score-label">产品一致性得分</div>
+      </div>
+      <div class="ai-stats-list">
+        <div class="ai-stats-item">
+          <div class="asi-row"><span class="asi-name">总检查项</span><span class="asi-count" id="aiTotal">48</span></div>
+          <div class="asi-desc">含客观项+主观项</div>
+        </div>
+        <div class="ai-stats-item">
+          <div class="asi-row"><span class="asi-name">符合项</span><span class="asi-count count-green" id="aiPass">44</span></div>
+          <div class="asi-desc">现场确认符合</div>
+        </div>
+        <div class="ai-stats-item">
+          <div class="asi-row"><span class="asi-name">基本符合项</span><span class="asi-count" id="aiBasic">1</span></div>
+          <div class="asi-desc">需进行整改完善</div>
+        </div>
+        <div class="ai-stats-item">
+          <div class="asi-row"><span class="asi-name">A类风险项</span><span class="asi-count count-red" id="aiAFail">3</span></div>
+          <div class="asi-desc">A类风险项（不可开业，需整改合格后）</div>
+        </div>
+        <div class="ai-stats-item">
+          <div class="asi-row"><span class="asi-name">B类风险项</span><span class="asi-count count-orange" id="aiBFail">1</span></div>
+          <div class="asi-desc">B类风险项（可开业，限期整改完成）</div>
+        </div>
+        <div class="ai-stats-item">
+          <div class="asi-row"><span class="asi-name">其他</span><span class="asi-count count-gray">无</span></div>
+          <div class="asi-desc" style="color:var(--aux)">无</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ai-section">
+      <div class="ai-section-title">验收结论</div>
+      <textarea class="ai-conclusion-box" placeholder="请输入验收结论..."></textarea>
+    </div>
+  </div>
+  <div class="ai-report-footer">
+    <button class="ai-sign-btn" onclick="showSignPage()">验收人员签名确认</button>
+  </div>
+</div>
+
+<!-- Sign Page -->
+<div class="sign-page" id="signPage">
+  <div class="sign-header">
+    <button class="sign-close" onclick="closeSignPage()">×</button>
+    <div class="sign-title">✍️ 验收人员签名</div>
+  </div>
+  <div class="sign-content">
+    <div class="sign-grid">
+      <div class="sign-block">
+        <div class="sign-label"><span class="dot pm"></span>项目经理签名</div>
+        <div class="sign-canvas-box" data-sign="pm">
+          <canvas></canvas>
+        </div>
+        <div class="sign-actions">
+          <button class="sign-clear" onclick="clearSign('pm')">清除重签</button>
+          <span class="sign-status">已签名✓</span>
+        </div>
+      </div>
+      <div class="sign-block">
+        <div class="sign-label"><span class="dot shop"></span>店长签名</div>
+        <div class="sign-canvas-box" data-sign="shop">
+          <canvas></canvas>
+        </div>
+        <div class="sign-actions">
+          <button class="sign-clear" onclick="clearSign('shop')">清除重签</button>
+          <span class="sign-status">已签名✓</span>
+        </div>
+      </div>
+      <div class="sign-block">
+        <div class="sign-label"><span class="dot maint"></span>维护部签名</div>
+        <div class="sign-canvas-box" data-sign="maint">
+          <canvas></canvas>
+        </div>
+        <div class="sign-actions">
+          <button class="sign-clear" onclick="clearSign('maint')">清除重签</button>
+          <span class="sign-status">已签名✓</span>
+        </div>
+      </div>
+      <div class="sign-block">
+        <div class="sign-label"><span class="dot qc"></span>质检部签名</div>
+        <div class="sign-canvas-box" data-sign="qc">
+          <canvas></canvas>
+        </div>
+        <div class="sign-actions">
+          <button class="sign-clear" onclick="clearSign('qc')">清除重签</button>
+          <span class="sign-status">已签名✓</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="sign-footer">
+    <button class="ai-sign-btn" onclick="confirmSign()">确认提交</button>
+  </div>
+</div>
 
 <div class="bottom-bar" id="bottomBar">
   <div class="bb-progress">
@@ -605,20 +825,20 @@ var modules=[
   {id:'it',name:'IT',icon:'💻',type:'direct',img:null,
     groups:[
       {type:'objective',label:'底线项（必检）',scoreText:'',items:[
-        {name:'公安网监设备',standard:'酒店已采购启用网监设备',isBaseline:true,score:0},
-        {name:'酒店集团门户',standard:'集团门户已完成上线',isBaseline:true,score:0},
-        {name:'酒店合规投屏',standard:'集团统一智能电视系统/可扫码登录的一房一码的投屏。如不满足上述条件，电视机只可播放直播信号',isBaseline:true,score:0},
-        {name:'酒店宽带线路',standard:'酒店带宽标准符合1+1（专线100M+大带宽），带宽满足4:1',isBaseline:true,score:0},
-        {name:'无线设备',standard:'1. 标准酒店一房一面板（华为、锐捷、神州数码等）或带无线漫游的三网；2. 非标加盟酒店可沿用原先三网合同使用',isBaseline:true,score:0}
+        {name:'公安网监设备',standard:'酒店已采购启用网监设备',category:'A',score:0},
+        {name:'酒店集团门户',standard:'集团门户已完成上线',category:'A',score:0},
+        {name:'酒店合规投屏',standard:'集团统一智能电视系统/可扫码登录的一房一码的投屏。如不满足上述条件，电视机只可播放直播信号',category:'A',score:0},
+        {name:'酒店宽带线路',standard:'酒店带宽标准符合1+1（专线100M+大带宽），带宽满足4:1',category:'A',score:0},
+        {name:'无线设备',standard:'1. 标准酒店一房一面板（华为、锐捷、神州数码等）或带无线漫游的三网；2. 非标加盟酒店可沿用原先三网合同使用',category:'A',score:0}
       ]},
       {type:'subjective',label:'常规检查项',scoreText:'',items:[
-        {name:'酒店客房电视信号',standard:'使用合规电视信号',score:0},
-        {name:'认证开启情况',standard:'门店认证开启归属方确认（首旅如家门户 / 公安网监认证）',score:0},
-        {name:'公区各类显示屏红外遮挡',standard:'红外遮挡完成，0.5米外手机遥控失效，仅近距离遥控器可用',score:0},
-        {name:'公区房价牌（网络白名单）',standard:'标准门店网络白名单已配置；非标门店按物理遮挡执行',score:0},
-        {name:'网关路由层级',standard:'门店网关是否为一级路由；若酒店网关为二级路由或单供内网，同时未部署网监设备，告知酒店依照集团要求采购并开启网监',score:0},
-        {name:'门锁、发票PMS直连',standard:'酒店需完成门锁与发票对于PMS系统的直连配置',score:0},
-        {name:'前台电脑',standard:'前台PMS专用电脑：CPU要求i5系列以上，处理器代数12代及以上，型号禁止带有H/U/P/K/F等字母后缀，仅允许纯数字结尾标准型号；内存16G及以上；硬盘512G固态硬盘及以上',score:0}
+        {name:'酒店客房电视信号',standard:'使用合规电视信号',category:'B',score:0},
+        {name:'认证开启情况',standard:'门店认证开启归属方确认（首旅如家门户 / 公安网监认证）',category:'B',score:0},
+        {name:'公区各类显示屏红外遮挡',standard:'红外遮挡完成，0.5米外手机遥控失效，仅近距离遥控器可用',category:'B',score:0},
+        {name:'公区房价牌（网络白名单）',standard:'标准门店网络白名单已配置；非标门店按物理遮挡执行',category:'B',score:0},
+        {name:'网关路由层级',standard:'门店网关是否为一级路由；若酒店网关为二级路由或单供内网，同时未部署网监设备，告知酒店依照集团要求采购并开启网监',category:'B',score:0},
+        {name:'门锁、发票PMS直连',standard:'酒店需完成门锁与发票对于PMS系统的直连配置',category:'B',score:0},
+        {name:'前台电脑',standard:'前台PMS专用电脑：CPU要求i5系列以上，处理器代数12代及以上，型号禁止带有H/U/P/K/F等字母后缀，仅允许纯数字结尾标准型号；内存16G及以上；硬盘512G固态硬盘及以上',category:'B',score:0}
       ]}
     ]
   },
@@ -2663,8 +2883,139 @@ function showToast(msg){
   setTimeout(function(){t.classList.remove('show');},2000);
 }
 function saveProgress(){
-  showToast('进度已保存');
+  if(currentRole==='qc'){
+    document.getElementById('confirmModal').classList.add('show');
+    return;
+  }
+  doSaveProgress();
+}
+function closeConfirmModal(){
+  document.getElementById('confirmModal').classList.remove('show');
+}
+function closeAiReport(){
+  document.getElementById('aiReportPage').classList.remove('show');
+}
+/* Sign Page Logic */
+var signInstances={};
+function showSignPage(){
+  document.getElementById('signPage').classList.add('show');
+  initAllSignCanvases();
+}
+function closeSignPage(){
+  document.getElementById('signPage').classList.remove('show');
+}
+function initAllSignCanvases(){
+  var boxes=document.querySelectorAll('.sign-canvas-box');
+  boxes.forEach(function(box){
+    var key=box.getAttribute('data-sign');
+    if(signInstances[key])return;
+    var canvas=box.querySelector('canvas');
+    var ctx=canvas.getContext('2d');
+    var drawing=false,hasDrawn=false;
+    var dpr=window.devicePixelRatio||1;
+    var rect=box.getBoundingClientRect();
+    canvas.width=rect.width*dpr;
+    canvas.height=rect.height*dpr;
+    ctx.scale(dpr,dpr);
+    ctx.lineWidth=2.5;
+    ctx.lineCap='round';
+    ctx.lineJoin='round';
+    ctx.strokeStyle='#1D2129';
+    function getPos(e){
+      var r=canvas.getBoundingClientRect();
+      var t=e.touches?e.touches[0]:e;
+      return{x:t.clientX-r.left,y:t.clientY-r.top};
+    }
+    function start(e){e.preventDefault();drawing=true;var p=getPos(e);ctx.beginPath();ctx.moveTo(p.x,p.y)}
+    function move(e){if(!drawing)return;e.preventDefault();var p=getPos(e);ctx.lineTo(p.x,p.y);ctx.stroke();hasDrawn=true}
+    function end(e){if(!drawing)return;e.preventDefault();drawing=false;if(hasDrawn)box.classList.add('signed')}
+    canvas.addEventListener('mousedown',start);canvas.addEventListener('mousemove',move);canvas.addEventListener('mouseup',end);canvas.addEventListener('mouseleave',end);
+    canvas.addEventListener('touchstart',start,{passive:false});canvas.addEventListener('touchmove',move,{passive:false});canvas.addEventListener('touchend',end,{passive:false});
+    signInstances[key]={canvas:canvas,ctx:ctx,box:box,hasDrawn:function(){return box.classList.contains('signed')},clear:function(){ctx.clearRect(0,0,canvas.width/dpr,canvas.height/dpr);box.classList.remove('signed');hasDrawn=false}};
+  });
+}
+function clearSign(key){
+  if(signInstances[key])signInstances[key].clear();
+}
+function confirmSign(){
+  closeSignPage();
+  closeAiReport();
+  showToast('验收签名已确认，报告提交成功');
   renderModuleList();
+}
+function generateAiReport(){
+  var failA=0,failB=0,failAll=0,totalAll=0,passAll=0,basicAll=0;
+  var qcScoreTotal=0,qcScoreMax=0;
+  var calcQcScore=function(mod){
+    var total=0,max=0,filingDeduct=0,filingMax=20,filingCount=0;
+    var iter=function(g,gi,subId){
+      g.items.forEach(function(it,ii){
+        var key=itemKey(mod.id,subId,gi,ii);
+        var rk='qc_'+key;
+        var res=checkResults[rk];
+        if(it.scoreType==='deduction'){
+          filingCount++;
+          if(res!=='pass')filingDeduct+=it.score;
+        }else{
+          max+=it.score;
+          if(res==='pass')total+=it.score;
+          else if(res==='partial')total+=(checkPartialScores[rk]||0);
+        }
+      });
+    };
+    if(mod.type==='sub'){
+      mod.subModules.forEach(function(sm){sm.groups.forEach(function(g,gi){iter(g,gi,sm.id);});});
+    }else{
+      mod.groups.forEach(function(g,gi){iter(g,gi,null);});
+    }
+    return filingCount>0?{total:filingMax-filingDeduct,max:filingMax}:{total:total,max:max};
+  };
+  modules.forEach(function(mod){
+    var fiter=function(g,gi,subId){
+      g.items.forEach(function(it,ii){
+        var key=itemKey(mod.id,subId,gi,ii);
+        totalAll++;
+        var rk='qc_'+key;
+        var res=checkResults[rk];
+        if(res==='fail'){
+          failAll++;
+          if(it.category==='A')failA++;
+          else if(it.category==='B')failB++;
+        }else if(res==='pass'){
+          passAll++;
+        }else{
+          basicAll++;
+        }
+      });
+    };
+    if(mod.type==='sub'){
+      mod.subModules.forEach(function(sm){sm.groups.forEach(function(g,gi){fiter(g,gi,sm.id);});});
+    }else{
+      mod.groups.forEach(function(g,gi){fiter(g,gi,null);});
+    }
+    var qcs=calcQcScore(mod);
+    qcScoreTotal+=qcs.total;qcScoreMax+=qcs.max;
+  });
+  var score=qcScoreMax>0?Math.round(qcScoreTotal/qcScoreMax*100):0;
+  var now=new Date();
+  var dateStr=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+String(now.getDate()).padStart(2,'0');
+  document.getElementById('aiDate').textContent=dateStr;
+  document.getElementById('aiScore').textContent=score;
+  document.getElementById('aiTotal').textContent=totalAll;
+  document.getElementById('aiPass').textContent=passAll;
+  document.getElementById('aiBasic').textContent=basicAll;
+  document.getElementById('aiAFail').textContent=failA;
+  document.getElementById('aiBFail').textContent=failB;
+  document.getElementById('aiReportPage').classList.add('show');
+}
+function doSaveProgress(){
+  closeConfirmModal();
+  if(currentRole==='qc'){
+    generateAiReport();
+  }else{
+    showToast('进度已保存');
+    renderModuleList();
+  }
 }
 
 /* ===== INIT ===== */
