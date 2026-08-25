@@ -86,6 +86,19 @@ body::after{content:'';position:fixed;bottom:-80px;left:50%;transform:translateX
 .sub-card .sc-arrow{color:var(--aux);font-size:22px;font-weight:300}
 .sub-card .sc-progress-bar{width:50px;height:4px;background:#EDF0F5;border-radius:2px;margin-top:6px;overflow:hidden}
 .sub-card .sc-progress-fill{height:100%;background:linear-gradient(90deg,var(--pm),#0087C7);border-radius:2px;transition:width .3s}
+/* SVG icon sizing across containers */
+.mci{width:28px;height:28px;flex-shrink:0}
+.mc-icon-box .mci{width:30px;height:30px}
+.isi-block .mci{width:22px;height:22px}
+.isi-block.active .mci{filter:brightness(0) invert(1)}
+.sc-icon .mci-sc{width:24px;height:24px}
+.dh-icon .mci-dh{width:22px;height:22px}
+.imh-name .mci-sm{width:18px;height:18px;flex-shrink:0}
+.sd-title .mci-sm{width:16px;height:16px;flex-shrink:0}
+.rsc-label .mci-sm{width:16px;height:16px;flex-shrink:0}
+.mci-tag{width:16px;height:16px;flex-shrink:0}
+.mci-pmge{width:18px;height:18px}
+.cm-icon svg{width:26px;height:26px}
 
 /* Detail Page */
 .detail-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
@@ -707,7 +720,7 @@ body.role-qc .hpc-stats>#heroPmBlock,body.role-qc .hpc-stats>#heroQcBlock{grid-c
 <div class="modal-mask" id="confirmModal">
   <div class="confirm-modal">
     <div class="cm-header">
-      <div class="cm-icon">⚠️</div>
+      <div class="cm-icon" style="color:#FF4C4C"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 16H3z"/><path d="M12 9v5M12 17v.5" opacity=".6"/></svg></div>
       <div class="cm-title">确认提交</div>
     </div>
     <div class="cm-body">确认提交质检结果？提交后将生成AI质检报告。</div>
@@ -787,8 +800,8 @@ body.role-qc .hpc-stats>#heroPmBlock,body.role-qc .hpc-stats>#heroQcBlock{grid-c
 <!-- Sign Page -->
 <div class="sign-page" id="signPage">
   <div class="sign-header">
-    <button class="sign-close" onclick="closeSignPage()">×</button>
-    <div class="sign-title">✍️ 验收人员签名</div>
+    <button class="sign-close" onclick="closeSignPage()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="sign-title"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l5-1L20 8l-3-3L6 16z" opacity=".8"/><path d="M14 7l3 3" opacity=".5"/><path d="M4 20l1-5" opacity=".4"/></svg> 验收人员签名</div>
   </div>
   <div class="sign-content">
     <div class="sign-grid">
@@ -1138,6 +1151,41 @@ var subModulePinyin={
   fire:'消防',water:'给排水',monitor:'监控',audio:'音乐',ac:'空调'
 };
 var moduleColors={filing:'#86909C',guestroom:'#00A4F1',functional:'#00A4F1',public:'#02C2C2',facade:'#00A4F1',system:'#FFA64C',safety:'#FF4C4C',it:'#00A4F1'};
+
+/* ===== SVG ICONS (line style, currentColor) ===== */
+var modIcons={
+  it:'<path d="M3 5h18v11H3z" /><path d="M3 16h18v3H3z" opacity=".5"/><path d="M9 17.5h6" />',
+  filing:'<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M4 9h16"/><circle cx="8" cy="6" r=".8" fill="currentColor"/><circle cx="8" cy="13" r=".8" fill="currentColor"/><path d="M11 6h6M11 13h6" opacity=".5"/>',
+  guestroom:'<path d="M3 11h18"/><path d="M6 11V7a2 2 0 012-2h8a2 2 0 012 2v4"/><path d="M4 11v6h16v-6"/><path d="M10 17v-3h4v3" opacity=".6"/>',
+  functional:'<path d="M3 21V10l9-7 9 7v11"/><path d="M9 21v-6h6v6"/><path d="M3 21h18" opacity=".4"/>',
+  public:'<path d="M3 21h18"/><path d="M6 21V9l6-5 6 5v12"/><path d="M10 21v-5h4v5" opacity=".6"/>',
+  facade:'<rect x="4" y="3" width="16" height="18" rx="1"/><path d="M9 3v18M15 3v18" opacity=".4"/><path d="M4 8h16M4 14h16" opacity=".3"/>',
+  system:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2" opacity=".6"/>',
+  safety:'<path d="M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z"/><path d="M9 12l2 2 4-4" opacity=".6"/>',
+  disinfection:'<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M5 8h14" opacity=".4"/><rect x="9" y="5" width="6" height="3" rx="1" opacity=".6"/><path d="M10 14l2 2 2-2" opacity=".5"/>',
+  equipment:'<rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 9h16" opacity=".4"/><circle cx="8" cy="13" r="1.5" fill="currentColor"/><circle cx="16" cy="13" r="1.5" fill="currentColor"/><path d="M8 17h8" opacity=".4"/>',
+  staff:'<circle cx="12" cy="7" r="3.5"/><path d="M5 21v-2a7 7 0 0114 0v2" opacity=".7"/>',
+  elevator:'<rect x="5" y="3" width="14" height="18" rx="1"/><path d="M10 9l-2-2 2-2M14 5l2 2-2 2" opacity=".6"/><path d="M9 17h6" opacity=".4"/>',
+  corridor:'<path d="M4 3v18M20 3v18"/><path d="M4 12h16" opacity=".4"/><circle cx="8" cy="6" r="1" fill="currentColor" opacity=".5"/><circle cx="16" cy="6" r="1" fill="currentColor" opacity=".5"/>',
+  restaurant:'<path d="M6 2v8a2 2 0 002 2v10M6 2v8M10 2v8M8 12V2" opacity=".6"/><path d="M16 2c-2 0-3 2-3 5s1 5 3 5v10" opacity=".6"/>',
+  kitchen:'<path d="M7 3v6a3 3 0 003 3v9" opacity=".6"/><path d="M11 3v6a3 3 0 003 3v9" opacity=".4"/><circle cx="17" cy="6" r="2" opacity=".5"/>',
+  laundry_gym:'<rect x="4" y="3" width="16" height="18" rx="2"/><circle cx="12" cy="10" r="4" opacity=".5"/><path d="M12 6v8M8 10h8" opacity=".4"/><circle cx="12" cy="10" r="1.5" fill="currentColor"/>',
+  meeting:'<rect x="3" y="4" width="18" height="13" rx="2"/><path d="M7 17v3M17 17v3M7 20h10" opacity=".5"/><circle cx="9" cy="10" r="1" fill="currentColor" opacity=".5"/><circle cx="15" cy="10" r="1" fill="currentColor" opacity=".5"/>',
+  lobby:'<path d="M3 21h18"/><path d="M5 21V8l7-5 7 5v13"/><path d="M10 21v-6h4v6" opacity=".6"/><circle cx="12" cy="11" r="1" fill="currentColor" opacity=".4"/>',
+  fire:'<path d="M12 2C9 6 6 8 6 13a6 6 0 0012 0c0-3-1.5-5-3-7 0 2-1 3-2 3 0-3-1-5-1-7z" opacity=".7"/><circle cx="12" cy="14" r="1.5" fill="currentColor" opacity=".5"/>',
+  water:'<path d="M12 2c-3 4-6 8-6 11a6 6 0 0012 0c0-3-3-7-6-11z" opacity=".7"/>',
+  monitor:'<rect x="3" y="4" width="18" height="13" rx="2"/><path d="M9 21h6M12 17v4" opacity=".5"/>',
+  audio:'<path d="M11 5L6 9H3v6h3l5 4z" opacity=".7"/><path d="M15 9a3 3 0 010 6M18 7a7 7 0 010 10" opacity=".4"/>',
+  ac:'<rect x="3" y="6" width="18" height="8" rx="2"/><path d="M6 6v-2M18 6v-2M6 14v2M18 14v2M12 14v2" opacity=".4"/><path d="M7 10h10" opacity=".3"/>',
+  warning:'<path d="M12 3l9 16H3z"/><path d="M12 9v5M12 17v.5" opacity=".6"/>',
+  room_empty:'<rect x="4" y="6" width="16" height="12" rx="2"/><path d="M4 10h16" opacity=".4"/><circle cx="8" cy="13" r="1" fill="currentColor" opacity=".3"/><circle cx="16" cy="13" r="1" fill="currentColor" opacity=".3"/>',
+  lock:'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 018 0v3" opacity=".5"/>',
+  list:'<path d="M8 6h13M8 12h13M8 18h13" opacity=".7"/><circle cx="4" cy="6" r="1" fill="currentColor"/><circle cx="4" cy="12" r="1" fill="currentColor"/><circle cx="4" cy="18" r="1" fill="currentColor"/>'
+};
+function iconSVG(id,cls){
+  var p=modIcons[id]||modIcons.list;
+  return '<svg class="'+(cls||'mci')+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">'+p+'</svg>';
+}
 var sidebarExpanded={};
 
 /* ===== STATE ===== */
@@ -1313,7 +1361,7 @@ function renderScoreSummary(modId,subId){
     });
   });
   var html='<div class="score-detail">';
-  html+='<div class="sd-title">📊 本模块得分情况</div>';
+  html+='<div class="sd-title"><svg class="mci-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16M7 16V9M12 16V5M17 16v-7" opacity=".7"/></svg> 本模块得分情况</div>';
   if(filingCount>0){
     var fScore=filingMax-filingDeduct;
     html+='<div class="sd-row"><span class="sd-label">项目经理（备案扣分制）</span><span class="sd-val pm">'+fScore+'/'+filingMax+'分</span></div>';
@@ -1375,7 +1423,7 @@ function renderModuleList(filtered){
 
     html+='<div class="mod-card" onclick="enterModule(\''+mod.id+'\')">';
     // icon box with gradient
-    html+='<div class="mc-icon-box" style="background:linear-gradient(135deg,'+color+','+lightenColor(color,30)+');">'+mod.icon+'</div>';
+    html+='<div class="mc-icon-box" style="background:linear-gradient(135deg,'+color+','+lightenColor(color,30)+');color:#fff">'+iconSVG(mod.id,'mci')+'</div>';
     // middle info
     html+='<div class="mc-mid">';
     html+='<div class="mc-name">'+mod.name+(isAllDone?' <span class="done-tag">已完成</span>':'')+'</div>';
@@ -1501,7 +1549,7 @@ function moduleScore(mod){
 function renderModuleScoreSummary(mod){
   var sc=moduleScore(mod);
   var html='<div class="score-detail">';
-  html+='<div class="sd-title">📊 本模块得分情况</div>';
+  html+='<div class="sd-title"><svg class="mci-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16M7 16V9M12 16V5M17 16v-7" opacity=".7"/></svg> 本模块得分情况</div>';
   if(sc.isFiling){
     html+='<div class="sd-row"><span class="sd-label">项目经理（备案扣分制）</span><span class="sd-val pm">'+sc.total+'/'+sc.max+'分</span></div>';
   }else{
@@ -1647,7 +1695,7 @@ function renderSidebar(){
     var dotColor=isAllDone?'#02C2C2':(pct>0?'#FFA64C':'#C8D2DC');
     var hasSub=mod.type==='sub';
     html+='<div class="insp-side-item" id="side_'+mod.id+'" onclick="onSidebarClick(\''+mod.id+'\')" data-status="'+dotColor+'">';
-    html+='<div class="isi-block"><span class="isi-emoji">'+mod.icon+'</span></div>';
+    html+='<div class="isi-block">'+iconSVG(mod.id,'mci')+'</div>';
     html+='<div class="isi-abbr">'+abbr+'</div>';
     html+='<div class="isi-dot" style="background:'+dotColor+'"></div>';
     html+='<div class="isi-divider"></div>';
@@ -1813,7 +1861,7 @@ function renderInspectionView(filterModId){
     var scoreText=sc.total+'/'+sc.max+'分';
     html+='<div class="insp-module" id="inspmod_'+mod.id+'" data-mod="'+mod.id+'">';
     html+='<div class="insp-module-header">';
-    html+='<div class="imh-name">'+mod.icon+' '+mod.name+'</div>';
+    html+='<div class="imh-name">'+iconSVG(mod.id,'mci-sm')+' '+mod.name+'</div>';
     html+='<div class="imh-progress">'+done+'/'+total+'项</div>';
     html+='<div class="imh-score" style="background:'+scoreBg+';color:'+scoreColor+'">'+scoreText+'</div>';
     html+='</div>';
@@ -1864,12 +1912,12 @@ function renderInspectionView(filterModId){
     }else{
       // QC role + guestroom: insert room sampling block; only show check items after a room is selected
       if(currentRole==='qc'&&mod.id==='guestroom'){
-        html+='<div class="pm-guestroom-entry" onclick="showPmGuestroom()"><span class="pmge-icon">📋</span><span class="pmge-text">查看项目经理客房质检详情</span><span class="pmge-arrow">›</span></div>';
+        html+='<div class="pm-guestroom-entry" onclick="showPmGuestroom()"><span class="pmge-icon" style="color:var(--pm)">'+iconSVG('list','mci-pmge')+'</span><span class="pmge-text">查看项目经理客房质检详情</span><span class="pmge-arrow">›</span></div>';
         html+=renderRoomSamplingBlock();
         if(expandedRoomIdx===null||roomNumbers.length===0){
           // 未点击具体房号前，不显示检查项
         }else{
-          html+='<div class="room-current-tag" style="margin:12px 0">🛏️ '+roomNumbers[expandedRoomIdx]+'号房 · 检查项</div>';
+          html+='<div class="room-current-tag" style="margin:12px 0">'+iconSVG('guestroom','mci-tag')+' '+roomNumbers[expandedRoomIdx]+'号房 · 检查项</div>';
           if(mod.groups.length>1){
             html+=renderGroupsTabs(mod.groups,mod.id,null,true);
           }else{
@@ -1951,7 +1999,7 @@ function renderSubModuleList(modId){
     });
     var pct=total>0?Math.round(done/total*100):0;
     html+='<div class="sub-card" onclick="enterSubModule(\''+modId+'\',\''+sm.id+'\')">';
-    html+='<div class="sc-icon">'+(sm.icon||'📁')+'</div>';
+    html+='<div class="sc-icon">'+iconSVG(sm.id||'list','mci-sc')+'</div>';
     html+='<div class="sc-info">';
     html+='<div class="sc-name">'+sm.name+'</div>';
     html+='<div class="sc-count">'+total+'项 · 已完成'+done+'项</div>';
@@ -1986,7 +2034,7 @@ function renderDetail(modId,subId){
       if(checkResults[myResultKey(itemKey(modId,subId,gi,ii))])done++;
     });
   });
-  html+='<div class="detail-header"><span class="dh-icon">'+(target.icon||mod.icon)+'</span><span class="dh-name">'+target.name+'</span><span class="dh-count">'+done+'/'+total+'</span></div>';
+  html+='<div class="detail-header"><span class="dh-icon">'+iconSVG(target.id||mod.id||'list','mci-dh')+'</span><span class="dh-name">'+target.name+'</span><span class="dh-count">'+done+'/'+total+'</span></div>';
   // image
   if(target.img){
     html+='<div class="loc-image"><img src="assets/'+target.img+'" alt="'+target.name+'效果图" onerror="this.parentElement.style.display=\'none\'"><div class="loc-img-label">'+target.name+' 效果图参考</div></div>';
@@ -2076,7 +2124,7 @@ function renderCheckItem(key,it){
         var failRoomKey=key+'_failrooms';
         html+='<div class="area-fail-section" id="areafail_'+key+'" style="display:'+(failShow?'flex':'none')+'">';
         html+='<div class="area-fail-field"><span class="aff-label">不符合房号</span>'+failRoomMultiSelect(key,failRoomKey)+'</div>';
-        html+='<div class="area-fail-field"><span class="aff-label">不符合照片</span><div class="area-fail-upload" onclick="document.getElementById(\'areafailfile_'+key+'\').click()"><div class="afu-icon">+</div><div class="afu-text">上传照片</div></div>';
+        html+='<div class="area-fail-field"><span class="aff-label">不符合照片</span><div class="area-fail-upload" onclick="document.getElementById(\'areafailfile_'+key+'\').click()"><div class="afu-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="6" width="16" height="12" rx="2"/><circle cx="9" cy="13" r="1" fill="currentColor"/><circle cx="15" cy="13" r="1" fill="currentColor"/><path d="M8 18l4-2 4 2" opacity=".4"/><path d="M12 9v2M11 10h2" opacity=".5"/></svg></div><div class="afu-text">上传照片</div></div>';
         html+='<input type="file" accept="image/*" capture="environment" id="areafailfile_'+key+'" style="display:none" onchange="onAreaFailPhoto(\''+key+'\',this)">';
         html+='<div class="pu-preview" id="areafailprev_'+key+'"></div></div>';
         html+='</div>';
@@ -2648,7 +2696,7 @@ function showPmGuestroom(){
   var html='';
   html+='<div class="insp-module" data-mod="'+mod.id+'">';
   html+='<div class="insp-module-header">';
-  html+='<div class="imh-name">'+mod.icon+' '+mod.name+'</div>';
+  html+='<div class="imh-name">'+iconSVG(mod.id,'mci-sm')+' '+mod.name+'</div>';
   html+='<div class="imh-progress">'+done+'/'+total+'项</div>';
   html+='<div class="imh-score" style="background:'+scoreBg+';color:'+scoreColor+'">'+sc.total+'/'+sc.max+'分</div>';
   html+='</div>';
@@ -2792,7 +2840,7 @@ function renderRoomSamplingBlock(){
   var manualScore=roomManualScores[0];
   if(manualScore===undefined||manualScore===null||isNaN(manualScore))manualScore='';
   html+='<div class="room-score-card">';
-  html+='<div class="rsc-label">📝 客房综合打分<span class="rsc-max-tag">满分 15 分</span></div>';
+  html+='<div class="rsc-label"><svg class="mci-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L18 8l-4-4L4 16z" opacity=".7"/><path d="M14 6l4 4" opacity=".5"/></svg> 客房综合打分<span class="rsc-max-tag">满分 15 分</span></div>';
   html+='<div class="rsc-row">';
   html+='<input type="number" class="rsc-input" id="roommanualscore" min="0" max="15" step="0.5" value="'+manualScore+'" placeholder="0" oninput="onRoomManualScoreInput(0,this.value)">';
   html+='<span class="rsc-max">/ 15</span>';
@@ -2881,7 +2929,7 @@ function renderRoomsView(){
   if(expandedRoomIdx!==null){
     html+=renderRoomItemsHtml(expandedRoomIdx);
   }else{
-    html+='<div class="room-items-empty"><div class="rie-icon">👆</div><div>点击上方房号开始检查</div><div style="margin-top:4px;font-size:12px">选择一间房后，检查项将在此显示</div></div>';
+    html+='<div class="room-items-empty"><div class="rie-icon" style="color:var(--aux)"><svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11V6a2 2 0 014 0v5"/><path d="M5 11h14v9H5z"/><path d="M9 11V7"/><path d="M5 11h14" opacity=".4"/></svg></div><div>点击上方房号开始检查</div><div style="margin-top:4px;font-size:12px">选择一间房后，检查项将在此显示</div></div>';
   }
   html+='</div></div>';
   // ===== Block 3: 客房打分 =====
@@ -2892,7 +2940,7 @@ function renderRoomsView(){
     var manualScore=roomManualScores[0];
     if(manualScore===undefined||manualScore===null||isNaN(manualScore))manualScore='';
     html+='<div class="room-score-card">';
-    html+='<div class="rsc-label">📝 客房综合打分<span class="rsc-max-tag">满分 15 分</span></div>';
+    html+='<div class="rsc-label"><svg class="mci-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L18 8l-4-4L4 16z" opacity=".7"/><path d="M14 6l4 4" opacity=".5"/></svg> 客房综合打分<span class="rsc-max-tag">满分 15 分</span></div>';
     html+='<div class="rsc-row">';
     html+='<input type="number" class="rsc-input" id="roommanualscore" min="0" max="15" step="0.5" value="'+manualScore+'" placeholder="0" oninput="onRoomManualScoreInput(0,this.value)">';
     html+='<span class="rsc-max">/ 15</span>';
@@ -2900,7 +2948,7 @@ function renderRoomsView(){
     html+='<div class="rsc-hint">所有房号已检查完成，请根据整体检查情况综合打分（支持0.5分步进）</div>';
     html+='</div>';
   }else{
-    html+='<div class="rsb-locked"><div class="rsli-icon">🔒</div><div class="rsli-text">完成所有房号检查后解锁打分</div><div class="rsli-progress-bar"><div class="rsli-progress-fill" style="width:'+(sampleCount>0?Math.round(doneTotal/sampleCount*100):0)+'%"></div></div><div class="rsli-progress">当前进度：<b>'+doneTotal+'</b> / '+sampleCount+' 间</div></div>';
+    html+='<div class="rsb-locked"><div class="rsli-icon" style="color:var(--aux)"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 018 0v3" opacity=".5"/></svg></div><div class="rsli-text">完成所有房号检查后解锁打分</div><div class="rsli-progress-bar"><div class="rsli-progress-fill" style="width:'+(sampleCount>0?Math.round(doneTotal/sampleCount*100):0)+'%"></div></div><div class="rsli-progress">当前进度：<b>'+doneTotal+'</b> / '+sampleCount+' 间</div></div>';
   }
   html+='</div></div>';
   }
@@ -2924,7 +2972,7 @@ function selectRoom(idx){
 }
 function renderRoomItemsHtml(idx){
   var html='';
-  html+='<div class="room-current-tag">🛏️ '+roomNumbers[idx]+'号房 · 检查项</div>';
+  html+='<div class="room-current-tag">'+iconSVG('guestroom','mci-tag')+' '+roomNumbers[idx]+'号房 · 检查项</div>';
   html+='<div class="room-items-list">';
   roomCheckItems.forEach(function(it,ci){
     var key=roomItemKey(idx,ci);
