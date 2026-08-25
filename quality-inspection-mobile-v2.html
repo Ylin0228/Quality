@@ -90,7 +90,7 @@ body::after{content:'';position:fixed;bottom:-80px;left:50%;transform:translateX
 .mci{width:28px;height:28px;flex-shrink:0}
 .mc-icon-box .mci{width:30px;height:30px}
 .isi-block .mci{width:22px;height:22px}
-.isi-block.active .mci{filter:brightness(0) invert(1)}
+.insp-side-item.active .isi-block .mci{filter:brightness(0) invert(1)}
 .sc-icon .mci-sc{width:24px;height:24px}
 .dh-icon .mci-dh{width:22px;height:22px}
 .imh-name .mci-sm{width:18px;height:18px;flex-shrink:0}
@@ -99,6 +99,7 @@ body::after{content:'';position:fixed;bottom:-80px;left:50%;transform:translateX
 .mci-tag{width:16px;height:16px;flex-shrink:0}
 .mci-pmge{width:18px;height:18px}
 .cm-icon svg{width:26px;height:26px}
+.insp-sub-badge .mci-badge{width:16px;height:16px;filter:brightness(0) invert(1)}
 
 /* Detail Page */
 .detail-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
@@ -1888,7 +1889,7 @@ function renderInspectionView(filterModId){
         var smColor=smAllDone?'#02C2C2':(smPct>0?'#FFA64C':'#86909C');
         html+='<div class="insp-submodule" id="inspsub_'+mod.id+'_'+sm.id+'">';
         html+='<div class="insp-sub-header">';
-        html+='<div class="insp-sub-badge" style="background:'+smColor+'">'+sabbr+'</div>';
+        html+='<div class="insp-sub-badge" style="background:'+smColor+'">'+iconSVG(sm.id||'list','mci-badge')+'</div>';
         html+='<div class="ish-name">'+sm.name+'</div>';
         html+='<div class="ish-line"></div>';
         html+='</div>';
