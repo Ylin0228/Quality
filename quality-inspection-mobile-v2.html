@@ -127,6 +127,13 @@ body::after{content:'';position:fixed;bottom:-80px;left:50%;transform:translateX
 .check-item .ci-category-tag.cat-b{background:linear-gradient(135deg,#FFA64C,#D48030)}
 .check-item .ci-score{font-size:11px;font-weight:500;color:var(--pm);background:#E6F7FF;padding:2px 10px;border-radius:999px;margin-left:auto;flex-shrink:0;white-space:nowrap}
 .check-item .ci-standard{font-size:12px;color:var(--muted);line-height:1.7}
+.ci-pm-result{display:flex;align-items:center;gap:6px;margin-top:8px;padding:6px 10px;background:#F7FAFE;border-radius:var(--radius);font-size:12px}
+.ci-pm-result .pmr-label{color:var(--aux);flex-shrink:0}
+.ci-pm-result .pmr-value{font-weight:600}
+.ci-pm-result .pmr-value.pass{color:var(--green)}
+.ci-pm-result .pmr-value.fail{color:var(--red)}
+.ci-pm-result .pmr-value.partial{color:#FFA64C}
+.ci-pm-result .pmr-value.unchecked{color:var(--aux)}
 .check-item .ci-tags{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
 .check-item .ci-tag{font-size:15px;font-weight:700;color:#3A5A9C;background:#F5F7FB;border:1.5px solid #E0E8F5;border-radius:14px;padding:10px 20px;letter-spacing:.5px}
 .filing-item .ci-tags{margin:5px 0}
@@ -178,6 +185,7 @@ body::after{content:'';position:fixed;bottom:-80px;left:50%;transform:translateX
 .filing-item .fi-name .ci-score{font-size:11px;font-weight:500;color:var(--pm);background:#E6F7FF;padding:2px 10px;border-radius:999px;margin-left:auto;flex-shrink:0;white-space:nowrap}
 .filing-item .fi-dir{font-size:12px;color:var(--pm);margin-bottom:4px;font-weight:500}
 .filing-item .fi-desc{font-size:13px;color:var(--muted);line-height:1.7}
+.filing-item .fi-divider{height:1px;background:#EDF0F5;margin:12px 0}
 .filing-item .fi-label,.filing-item .fi-name .fi-label,.filing-item .fi-desc .fi-label,.filing-item .fi-rooms-title .fi-label{font-size:11px!important;font-weight:500!important;color:#fff!important;background:linear-gradient(135deg,#FFA64C,#D48030);padding:2px 8px;border-radius:999px;margin-right:6px;flex-shrink:0;white-space:nowrap}
 .filing-item .fi-rooms{margin:10px 0}
 .filing-item .fi-rooms-title{margin-bottom:8px}
@@ -222,6 +230,37 @@ body::after{content:'';position:fixed;bottom:-80px;left:50%;transform:translateX
 .area-fail-field .aff-label{font-size:13px;color:var(--muted);font-weight:500}
 .area-fail-field .aff-input{width:100%;height:40px;border:1.5px solid var(--rule);border-radius:4px;padding:0 14px;font-size:14px;color:var(--ink);outline:none;background:#FAFBFD;font-family:inherit;transition:border-color .2s}
 .area-fail-field .aff-input:focus{border-color:var(--pm);background:#fff;box-shadow:0 0 0 3px rgba(0,164,241,.08)}
+/* Multi-select for fail rooms */
+.ms-box{width:100%;min-height:40px;border:1.5px solid var(--rule);border-radius:4px;padding:6px 10px;font-size:14px;color:var(--ink);outline:none;background:#FAFBFD;font-family:inherit;transition:border-color .2s;cursor:pointer;display:flex;flex-wrap:wrap;gap:6px;align-items:center;position:relative}
+.ms-box:focus,.ms-box.open{border-color:var(--pm);background:#fff;box-shadow:0 0 0 3px rgba(0,164,241,.08)}
+.ms-arrow{position:absolute;right:10px;top:50%;transform:translateY(-50%);color:var(--aux);font-size:12px;transition:transform .2s;pointer-events:none}
+.ms-box.open .ms-arrow{transform:translateY(-50%) rotate(180deg)}
+.ms-tag{display:inline-flex;align-items:center;gap:4px;background:#E6F7FF;color:var(--pm);border-radius:4px;padding:2px 8px;font-size:12px;font-weight:500;line-height:1.6}
+.ms-tag .ms-tag-x{cursor:pointer;font-size:13px;color:var(--pm);opacity:.7;pointer-events:auto}
+.ms-tag .ms-tag-x:hover{opacity:1}
+.ms-placeholder{color:#C9CDD4;font-size:13px}
+.ms-count{font-size:12px;color:var(--pm);background:#E6F7FF;border-radius:999px;padding:1px 8px;font-weight:500}
+.ms-dropdown{display:none;background:#fff;border:1px solid rgba(0,164,241,.15);border-radius:4px;box-shadow:0 8px 24px rgba(0,164,241,.12);padding:10px;position:relative;z-index:50}
+.ms-dropdown.show{display:block}
+.ms-dd-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;max-height:200px;overflow-y:auto}
+.ms-opt{height:32px;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--ink);background:#F7FAFE;border:1px solid #E5E6EB;border-radius:4px;cursor:pointer;user-select:none;transition:all .12s}
+.ms-opt:hover{border-color:rgba(0,164,241,.4);color:var(--pm)}
+.ms-opt.selected{background:#E6F7FF;border-color:var(--pm);color:var(--pm);font-weight:600}
+.ms-dd-footer{display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:8px;border-top:1px solid #F5F7FA}
+.ms-dd-clear{font-size:12px;color:var(--muted);cursor:pointer;background:none;border:none;padding:4px 8px;font-family:inherit}
+.ms-dd-clear:active{color:var(--red)}
+.ms-dd-done{font-size:12px;color:#fff;background:linear-gradient(135deg,#0087C7,#00A4F1);border:none;border-radius:4px;padding:5px 18px;cursor:pointer;font-family:inherit;font-weight:500}
+/* Noise test inputs */
+.ci-noise-inputs{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.ci-noise-input{width:100%;height:40px;border:1.5px solid var(--rule);border-radius:4px;padding:0 14px;font-size:14px;color:var(--ink);outline:none;background:#FAFBFD;font-family:inherit;transition:border-color .2s}
+.ci-noise-input:focus{border-color:var(--pm);background:#fff;box-shadow:0 0 0 3px rgba(0,164,241,.08)}
+/* Darkroom rows */
+.ci-darkrooms{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.dr-row{display:flex;align-items:center;gap:10px;background:#F7FAFE;border:1px solid rgba(0,164,241,.08);border-radius:4px;padding:8px 12px}
+.dr-no{font-size:13px;font-weight:600;color:var(--ink);flex-shrink:0;min-width:44px}
+.dr-area{font-size:12px;font-weight:600;color:var(--pm);flex-shrink:0}
+.dr-input{flex:1;height:32px;border:1.5px solid var(--rule);border-radius:4px;padding:0 10px;font-size:13px;color:var(--ink);outline:none;background:#fff;font-family:inherit;transition:border-color .2s;min-width:0}
+.dr-input:focus{border-color:var(--pm);box-shadow:0 0 0 3px rgba(0,164,241,.08)}
 .area-fail-upload{border:1.5px dashed var(--rule);border-radius:4px;padding:18px;text-align:center;cursor:pointer;transition:all .15s;background:#FAFBFD}
 .area-fail-upload:active{background:#F0F7FF;border-color:var(--pm)}
 .area-fail-upload .afu-icon{font-size:20px;color:var(--aux);margin-bottom:4px}
@@ -843,9 +882,13 @@ var modules=[
   },
   {id:'filing',name:'备案',icon:'📋',type:'direct',img:null,
     groups:[{type:'filing',label:'备案项',items:[
-      {name:'备案一',prefixLine:'备案方向：xxxxx',direction:'员工宿舍',description:'备案说明：xxxxx',score:2,scoreType:'deduction'},
-      {name:'暗房数量',direction:'暗房',description:'评审图纸',score:2,scoreType:'deduction',tags:['B101','B203','B305','B407','B509']},
-      {name:'客房面积',direction:'客房面积',description:'评审图纸',score:2,scoreType:'deduction',rooms:[{no:'101',area:'22'},{no:'102',area:'22'},{no:'201',area:'24'},{no:'202',area:'24'},{no:'301',area:'24'},{no:'302',area:'24'},{no:'401',area:'26'},{no:'501',area:'26'},{no:'601',area:'28'}]}
+      {name:'底线原则备案',score:2,scoreType:'deduction',records:[
+        {line:'备案方向：员工宿舍',desc:'备案说明：xxxxx'},
+        {line:'备案方向：xxxxx',desc:'备案说明：xxxxx'},
+        {line:'备案方向：xxxxx',desc:'备案说明：xxxxx'}
+      ]},
+      {name:'暗房数量',direction:'暗房',description:'1. 必须配备新风系统及景观装饰<br>2. 经济/中端：暗房房间数量占比＜10%；中高端：暗房房间数量占比＜6%<br>3. 暗房面积底线需高于标准底线10%（景观不计入房间面积）',score:2,scoreType:'deduction',tags:['B101','B203','B305','B407','B509']},
+      {name:'客房备案面积',direction:'客房面积',description:'评审图纸',score:2,scoreType:'deduction',rooms:[{no:'101',area:'22'},{no:'102',area:'22'},{no:'201',area:'24'},{no:'202',area:'24'},{no:'301',area:'24'},{no:'302',area:'24'},{no:'401',area:'26'},{no:'501',area:'26'},{no:'601',area:'28'}]}
     ]}]
   },
   {id:'guestroom',name:'客房',icon:'🛏️',type:'direct',img:'guestroom_feishu.jpg',
@@ -853,6 +896,7 @@ var modules=[
       {type:'objective',label:'客观项',scoreText:'符合：1分/项',items:[
         {name:'客房总数',standard:'106间，与设计图纸一致',inputType:'value',score:1,category:'A'},
         {name:'房型配比',standard:'单床64间(60%)、双床42间(40%)、亲子房3间，与设计图纸一致',inputType:'value',dualInput:[{label:'单床',standard:'64间'},{label:'双床',standard:'42间'},{label:'亲子房',standard:'3间'}],score:1,category:'A'},
+        {name:'暗房面积',standard:'暗房面积需高于标准底线10%（景观部分不计入房间面积）',inputType:'value',rooms:[{no:'B101',area:'16'}],score:1,category:'A'},
         {name:'客房层高',standard:'净高 2400mm',inputType:'value',score:1,category:'B'},
         {name:'单床房面积',standard:'≥15m²',inputType:'value',score:1,category:'A',areaGroups:[{letter:'A',label:'A房型'},{letter:'B',label:'B房型'}]},
         {name:'双床房面积',standard:'≥17m²',inputType:'value',score:1,category:'A',areaGroups:[{letter:'A',label:'A房型'},{letter:'B',label:'B房型'}],failSection:true},
@@ -1985,6 +2029,14 @@ function renderCheckItem(key,it){
   var hideScore=(currentRole==='qc'&&key.indexOf('guestroom')===0);
   html+='<div class="ci-name">'+(it.isBaseline?'<span class="ci-baseline-tag">底线</span>':'')+(it.category?'<span class="ci-category-tag cat-'+it.category.toLowerCase()+'">'+it.category+'类</span>':'')+'<span class="ci-name-text">'+it.name+'</span>'+(hideScore?'':scoreBadge(it))+'</div>';
   html+='<div class="ci-standard">'+(it.standard||'')+'</div>';
+  if(currentRole==='qc'){
+    var pmRes=checkResults[key];
+    var pmText='未检查',pmClass='unchecked';
+    if(pmRes==='pass'){pmText='符合';pmClass='pass';}
+    else if(pmRes==='fail'){pmText='不符合';pmClass='fail';}
+    else if(pmRes==='partial'){pmText='比较符合';pmClass='partial';}
+    html+='<div class="ci-pm-result"><span class="pmr-label">项目经理结果：</span><span class="pmr-value '+pmClass+'">'+pmText+'</span></div>';
+  }
   if(it.tags&&it.tags.length){
     html+='<div class="ci-tags">';
     it.tags.forEach(function(t){html+='<span class="ci-tag">'+t+'</span>';});
@@ -1992,7 +2044,19 @@ function renderCheckItem(key,it){
   }
   if(it.inputType==='value'){
     var vk=myResultKey(key);
-    if(it.areaGroups&&it.areaGroups.length){
+    if(it.rooms&&it.rooms.length){
+      // 暗房面积：显示房号、面积、实测值输入框
+      html+='<div class="ci-darkrooms">';
+      it.rooms.forEach(function(r,ri){
+        var rk=key+'_dr_'+ri;
+        html+='<div class="dr-row">';
+        html+='<span class="dr-no">'+r.no+'</span>';
+        html+='<span class="dr-area">'+r.area+'㎡</span>';
+        html+='<input type="text" class="dr-input" placeholder="请输入实测值：" value="'+(checkValues[rk]||'')+'" oninput="checkValues[\''+rk+'\']=this.value">';
+        html+='</div>';
+      });
+      html+='</div>';
+    }else if(it.areaGroups&&it.areaGroups.length){
       html+='<div class="area-groups">';
       it.areaGroups.forEach(function(ag,ai){
         var agk=key+'_ag_'+ai;
@@ -2011,7 +2075,7 @@ function renderCheckItem(key,it){
         var failShow=(checkResults[myResultKey(key)]==='fail');
         var failRoomKey=key+'_failrooms';
         html+='<div class="area-fail-section" id="areafail_'+key+'" style="display:'+(failShow?'flex':'none')+'">';
-        html+='<div class="area-fail-field"><span class="aff-label">不符合房号</span><input type="text" class="aff-input" placeholder="多个房号用逗号分隔，如101,102" value="'+(checkValues[failRoomKey]||'')+'" oninput="checkValues[\''+failRoomKey+'\']=this.value"></div>';
+        html+='<div class="area-fail-field"><span class="aff-label">不符合房号</span>'+failRoomMultiSelect(key,failRoomKey)+'</div>';
         html+='<div class="area-fail-field"><span class="aff-label">不符合照片</span><div class="area-fail-upload" onclick="document.getElementById(\'areafailfile_'+key+'\').click()"><div class="afu-icon">+</div><div class="afu-text">上传照片</div></div>';
         html+='<input type="file" accept="image/*" capture="environment" id="areafailfile_'+key+'" style="display:none" onchange="onAreaFailPhoto(\''+key+'\',this)">';
         html+='<div class="pu-preview" id="areafailprev_'+key+'"></div></div>';
@@ -2035,6 +2099,15 @@ function renderCheckItem(key,it){
     }else{
       html+='<div class="value-input"><input type="text" placeholder="请输入实测值" oninput="onValueInput(\''+key+'\',this.value)" value="'+(checkValues[vk]||'')+'"></div>';
     }
+  }
+  // 噪音测试：前3个抽检房号需输入实测分贝
+  if(currentRole==='qc'&&it.name==='噪音测试'&&expandedRoomIdx!==null&&expandedRoomIdx<3){
+    var ndk=key+'_noisedoor_'+expandedRoomIdx;
+    var nwk=key+'_noisewall_'+expandedRoomIdx;
+    html+='<div class="ci-noise-inputs">';
+    html+='<input type="text" class="ci-noise-input" placeholder="木门降噪实测分贝：" value="'+(checkValues[ndk]||'')+'" oninput="checkValues[\''+ndk+'\']=this.value">';
+    html+='<input type="text" class="ci-noise-input" placeholder="隔墙降噪实测分贝：" value="'+(checkValues[nwk]||'')+'" oninput="checkValues[\''+nwk+'\']=this.value">';
+    html+='</div>';
   }
   var isPartial=it.scoreType==='partial';
   html+='<div class="ci-actions'+(isPartial?' ci-actions-partial':'')+'">';
@@ -2071,9 +2144,20 @@ function renderCheckItem(key,it){
 function renderFilingItem(key,it){
   var html='<div class="filing-item" id="item_'+key+'">';
   html+='<div class="fi-name">'+it.name+scoreBadge(it)+'</div>';
-  if(it.prefixLine){html+='<div class="fi-name fi-sub">'+it.prefixLine+'</div>';}
-  if(it.prefixDesc){html+='<div class="fi-desc">'+it.prefixDesc+'</div>';}
-  html+='<div class="fi-desc">'+it.description+'</div>';
+  if(it.records&&it.records.length){
+    // 多条备案记录，每组之间用分割线分开
+    it.records.forEach(function(rc,ri){
+      if(ri>0)html+='<div class="fi-divider"></div>';
+      html+='<div class="fi-record">';
+      html+='<div class="fi-name fi-sub">'+rc.line+'</div>';
+      html+='<div class="fi-desc">'+rc.desc+'</div>';
+      html+='</div>';
+    });
+  }else{
+    if(it.prefixLine){html+='<div class="fi-name fi-sub">'+it.prefixLine+'</div>';}
+    if(it.prefixDesc){html+='<div class="fi-desc">'+it.prefixDesc+'</div>';}
+    html+='<div class="fi-desc">'+it.description+'</div>';
+  }
   if(it.rooms&&it.rooms.length){
     html+='<div class="fi-rooms"><div class="fi-rooms-title">备案房号及面积</div></div>';
     html+='<div class="fi-rooms-table">';
@@ -2159,6 +2243,121 @@ function setAreaGroupResult(agk,result){
     updateSidebarDots();
   }
 }
+
+/* Fail room multi-select */
+function getHotelRoomList(){
+  var rooms=[];var count=0;
+  for(var f=1;f<=6;f++){
+    for(var r=1;r<=18;r++){
+      if(count>=TOTAL_ROOMS)break;
+      rooms.push(f+''+(r<10?'0'+r:''+r));
+      count++;
+    }
+  }
+  return rooms;
+}
+function failRoomSelected(key){
+  var v=checkValues[key+'_failrooms']||'';
+  return v.split(',').filter(function(s){return s.trim()!=='';});
+}
+function failRoomMultiSelect(key,failRoomKey){
+  var sel=failRoomSelected(key);
+  var rooms=getHotelRoomList();
+  var html='<div class="ms-box'+(sel.length?'':'')+'" id="msbox_'+key+'" onclick="toggleFailRoomDropdown(\''+key+'\',event)">';
+  if(sel.length){
+    sel.forEach(function(rm){
+      html+='<span class="ms-tag">'+rm+'<span class="ms-tag-x" onclick="removeFailRoom(\''+key+'\',\''+rm+'\',event)">×</span></span>';
+    });
+  }else{
+    html+='<span class="ms-placeholder">请选择不符合的房号</span>';
+  }
+  html+='<span class="ms-count" style="margin-left:auto" id="mscount_'+key+'">'+(sel.length?sel.length+'间':'')+'</span>';
+  html+='<span class="ms-arrow">▼</span></div>';
+  html+='<div class="ms-dropdown" id="msdd_'+key+'">';
+  html+='<div class="ms-dd-grid">';
+  rooms.forEach(function(rm){
+    var isSel=sel.indexOf(rm)>=0;
+    html+='<div class="ms-opt'+(isSel?' selected':'')+'" id="msopt_'+key+'_'+rm+'" onclick="toggleFailRoom(\''+key+'\',\''+rm+'\',event)">'+rm+'</div>';
+  });
+  html+='</div>';
+  html+='<div class="ms-dd-footer">';
+  html+='<button class="ms-dd-clear" onclick="clearFailRooms(\''+key+'\',event)">清空</button>';
+  html+='<button class="ms-dd-done" onclick="closeFailRoomDropdown(\''+key+'\')">完成</button>';
+  html+='</div></div>';
+  return html;
+}
+function toggleFailRoomDropdown(key,e){
+  if(e)e.stopPropagation();
+  var dd=document.getElementById('msdd_'+key);
+  var box=document.getElementById('msbox_'+key);
+  if(!dd||!box)return;
+  // close others
+  document.querySelectorAll('.ms-dropdown.show').forEach(function(d){
+    if(d.id!=='msdd_'+key)d.classList.remove('show');
+  });
+  document.querySelectorAll('.ms-box.open').forEach(function(b){
+    if(b.id!=='msbox_'+key)b.classList.remove('open');
+  });
+  dd.classList.toggle('show');
+  box.classList.toggle('open');
+}
+function closeFailRoomDropdown(key){
+  var dd=document.getElementById('msdd_'+key);
+  var box=document.getElementById('msbox_'+key);
+  if(dd)dd.classList.remove('show');
+  if(box)box.classList.remove('open');
+}
+function toggleFailRoom(key,rm,e){
+  if(e)e.stopPropagation();
+  var sel=failRoomSelected(key);
+  var idx=sel.indexOf(rm);
+  if(idx>=0)sel.splice(idx,1);
+  else sel.push(rm);
+  sel.sort();
+  checkValues[key+'_failrooms']=sel.join(',');
+  // update option state
+  var opt=document.getElementById('msopt_'+key+'_'+rm);
+  if(opt)opt.classList.toggle('selected',idx<0);
+  renderFailRoomTags(key);
+}
+function removeFailRoom(key,rm,e){
+  if(e)e.stopPropagation();
+  var sel=failRoomSelected(key);
+  var idx=sel.indexOf(rm);
+  if(idx>=0)sel.splice(idx,1);
+  checkValues[key+'_failrooms']=sel.join(',');
+  var opt=document.getElementById('msopt_'+key+'_'+rm);
+  if(opt)opt.classList.remove('selected');
+  renderFailRoomTags(key);
+}
+function clearFailRooms(key,e){
+  if(e)e.stopPropagation();
+  checkValues[key+'_failrooms']='';
+  document.querySelectorAll('[id^="msopt_'+key+'_"]').forEach(function(o){o.classList.remove('selected');});
+  renderFailRoomTags(key);
+}
+function renderFailRoomTags(key){
+  var sel=failRoomSelected(key);
+  var box=document.getElementById('msbox_'+key);
+  if(!box)return;
+  var html='';
+  if(sel.length){
+    sel.forEach(function(rm){
+      html+='<span class="ms-tag">'+rm+'<span class="ms-tag-x" onclick="removeFailRoom(\''+key+'\',\''+rm+'\',event)">×</span></span>';
+    });
+    html+='<span class="ms-count" style="margin-left:auto">'+sel.length+'间</span>';
+  }else{
+    html+='<span class="ms-placeholder">请选择不符合的房号</span>';
+  }
+  html+='<span class="ms-arrow">▼</span>';
+  box.innerHTML=html;
+}
+document.addEventListener('click',function(e){
+  if(!e.target.closest('.ms-box')&&!e.target.closest('.ms-dropdown')){
+    document.querySelectorAll('.ms-dropdown.show').forEach(function(d){d.classList.remove('show');});
+    document.querySelectorAll('.ms-box.open').forEach(function(b){b.classList.remove('open');});
+  }
+});
 
 function onAreaFailPhoto(key,input){
   if(!input.files||!input.files.length)return;
