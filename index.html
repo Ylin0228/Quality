@@ -7,7 +7,7 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{--pm:#00A4F1;--qc:#FFA64C;--role:var(--pm);--bg:#F7F9FC;--card:#fff;--ink:#1D2129;--muted:#6E7681;--aux:#86909C;--rule:#EDF0F5;--green:#02C2C2;--red:#FF4C4C;--radius:4px}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans CJK SC","PingFang SC","Helvetica Neue",sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.6;max-width:375px;margin:0 auto;min-height:100vh;position:relative;overflow-x:hidden}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans CJK SC","PingFang SC","Helvetica Neue",sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.6;max-width:375px;margin:0 auto;min-height:100vh;position:relative;overflow-x:hidden;zoom:.8}
 /* 氛围光晕装饰 - 低透明度蓝色弥散 */
 body::before{content:'';position:fixed;top:-60px;left:50%;transform:translateX(-50%);width:380px;height:260px;background:radial-gradient(ellipse at center,rgba(0,164,241,.10) 0%,rgba(0,164,241,.04) 40%,transparent 70%);pointer-events:none;z-index:0}
 body::after{content:'';position:fixed;bottom:-80px;left:50%;transform:translateX(-50%);width:340px;height:220px;background:radial-gradient(ellipse at center,rgba(0,164,241,.05) 0%,transparent 65%);pointer-events:none;z-index:0}
@@ -509,7 +509,7 @@ body::after{content:'';position:fixed;bottom:-80px;left:50%;transform:translateX
 .insp-module{margin-bottom:10px}
 .insp-module-header{display:flex;align-items:center;gap:10px;padding:16px 18px;background:#fff;border-radius:var(--radius);box-shadow:0 2px 12px rgba(0,164,241,.05);border:1px solid rgba(0,164,241,.03);margin-bottom:10px}
 .insp-badge{width:34px;height:34px;border-radius:4px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;flex-shrink:0;letter-spacing:.2px;box-shadow:0 2px 6px rgba(0,164,241,.15)}
-.insp-module-header .imh-name{font-size:14px;font-weight:600;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink)}
+.insp-module-header .imh-name{font-size:14px;font-weight:600;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink);display:flex;align-items:center;gap:4px}
 .insp-module-header .imh-progress{font-size:11px;color:var(--aux);flex-shrink:0}
 .insp-module-header .imh-score{font-size:12px;font-weight:700;flex-shrink:0;margin-left:4px;background:#E6F7FF;padding:3px 10px;border-radius:999px}
 .insp-module-img{display:block;width:100%;height:auto;max-height:150px;object-fit:cover;border-radius:var(--radius);margin-bottom:10px}
@@ -522,40 +522,55 @@ body::after{content:'';position:fixed;bottom:-80px;left:50%;transform:translateX
 .insp-sub-img{display:block;width:100%;height:auto;max-height:120px;object-fit:cover;border-radius:4px;margin-bottom:10px}
 
 /* ===== HOME PAGE (New Design) ===== */
-.home-hero{background:linear-gradient(160deg,#0087C7 0%,#00A4F1 35%,#0087C7 70%,#A9E4FF 100%);padding:52px 18px 60px;position:relative;overflow:visible;flex-shrink:0;height:310px}
-.home-hero::before{content:'';position:absolute;top:-60px;right:-60px;width:240px;height:240px;background:radial-gradient(circle,rgba(255,255,255,.12) 0%,transparent 70%);border-radius:50%}
-.home-hero::after{content:'';position:absolute;bottom:-80px;left:-40px;width:200px;height:200px;background:radial-gradient(circle,rgba(169,228,255,.25) 0%,transparent 70%);border-radius:50%}
-.hero-top{display:flex;align-items:flex-start;justify-content:space-between;position:relative;z-index:1;margin-bottom:20px}
-.hero-title{font-size:32px;font-weight:800;color:#fff;letter-spacing:-.5px;line-height:1.2}
-.hero-subtitle{font-size:13px;color:rgba(255,255,255,.7);margin-top:6px}
+/* Home Hero - Premium mesh gradient */
+.home-hero{background:linear-gradient(155deg,#004E8C 0%,#0070B0 20%,#0094D8 45%,#00A4F1 65%,#4DC4FF 88%,#A9E4FF 100%);padding:56px 18px 62px;position:relative;overflow:visible;flex-shrink:0;height:401px}
+.home-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 200px 180px at 88% 8%,rgba(255,255,255,.16) 0%,transparent 70%),radial-gradient(ellipse 160px 140px at 10% 75%,rgba(169,228,255,.22) 0%,transparent 65%),radial-gradient(ellipse 120px 120px at 55% 45%,rgba(255,255,255,.06) 0%,transparent 60%);pointer-events:none}
+.home-hero::after{content:'';position:absolute;top:0;right:0;width:200px;height:200px;background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.09) 0%,transparent 55%);border-radius:50%;pointer-events:none;animation:heroGlow 6s ease-in-out infinite alternate}
+@keyframes heroGlow{from{opacity:.5;transform:scale(1)}to{opacity:1;transform:scale(1.12)}}
+.hero-top{display:flex;align-items:flex-start;justify-content:space-between;position:relative;z-index:1;margin-bottom:22px}
+.hero-title{font-size:30px;font-weight:300;color:#fff;letter-spacing:2px;line-height:1.15;text-shadow:0 2px 16px rgba(0,60,120,.2)}
+.hero-title::before{content:'';display:block;width:28px;height:2.5px;background:linear-gradient(90deg,#fff,rgba(255,255,255,.3));border-radius:2px;margin-bottom:10px}
+.hero-subtitle{font-size:12px;color:rgba(255,255,255,.65);margin-top:8px;letter-spacing:.3px;line-height:1.4;max-width:200px}
 .hero-right{display:flex;gap:10px;align-items:center}
-.hero-role-btn{display:flex;align-items:center;gap:4px;height:32px;padding:0 12px;border-radius:4px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.2);color:#fff;cursor:pointer;font-family:inherit;font-size:13px;font-weight:600;transition:all .15s;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
-.hero-role-btn:active{background:rgba(255,255,255,.28);transform:scale(.95)}
+.hero-role-btn{display:flex;align-items:center;gap:5px;height:34px;padding:0 14px;border-radius:17px;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.2);color:#fff;cursor:pointer;font-family:inherit;font-size:12px;font-weight:600;transition:all .2s ease;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.hero-role-btn:active{background:rgba(255,255,255,.24);transform:scale(.96);box-shadow:0 1px 6px rgba(0,0,0,.08)}
 .hero-role-btn .role-label{line-height:1}
-.hero-role-btn svg{width:16px;height:16px}
-.hero-icon-btn{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;position:relative;transition:all .15s;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
-.hero-icon-btn:active{background:rgba(255,255,255,.28);transform:scale(.95)}
-.hero-icon-btn svg{width:20px;height:20px}
-.badge-dot{position:absolute;top:8px;right:8px;width:8px;height:8px;background:#FF4C4C;border-radius:50%;border:1.5px solid #00A4F1}
-.hero-progress-card{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.2);border-radius:4px;padding:14px 16px;position:relative;z-index:1;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:0 8px 32px rgba(0,135,199,.15)}
-.hpc-stats{display:grid;grid-template-columns:repeat(6,1fr);gap:12px 4px}
-.hpc-fail-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;position:relative;z-index:1}
-.hpc-stats>#heroFailABlock,.hpc-stats>#heroFailBBlock,.hpc-stats>#heroFailBlock,.hpc-stats>#heroProgressBlock,.hpc-stats>#heroPmBlock,.hpc-stats>#heroQcBlock{grid-column:span 2}
-body.role-qc .hpc-stats>#heroProgressBlock{display:none}
-body.role-qc .hpc-stats>#heroPmBlock,body.role-qc .hpc-stats>#heroQcBlock{grid-column:span 3}
-.hpc-stat-block{text-align:center;min-width:0}
-.hpc-stat-clickable{cursor:pointer;transition:all .15s;border-radius:4px;padding:6px 4px;position:relative;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18)}
-.hpc-stat-clickable:active{background:rgba(255,255,255,.22);transform:scale(.95)}
-.hpc-stat-clickable::after{content:'›';position:absolute;right:2px;top:50%;transform:translateY(-50%);font-size:12px;color:rgba(255,255,255,.5);line-height:1}
-.hpc-stat-label{font-size:10px;color:rgba(255,255,255,.75);margin-bottom:4px;letter-spacing:.2px;line-height:1.2}
-.hpc-stat-value-wrap{display:flex;align-items:baseline;justify-content:center;gap:1px}
-.hpc-stat-value{font-size:21px;font-weight:800;color:#fff;line-height:1;letter-spacing:-.5px}
-.hpc-stat-unit{font-size:11px;font-weight:500;color:rgba(255,255,255,.7)}
-.hpc-stat-block.has-fail .hpc-stat-value{color:#FFD2D2}
-.hpc-dot{display:inline-block;width:5px;height:5px;border-radius:50%;margin-right:3px;vertical-align:middle}
-.hpc-dot-a{background:#02C2C2}
-.hpc-dot-b{background:#FFA64C}
-.hpc-stat-divider{grid-column:1/-1;height:1px;background:rgba(255,255,255,.12);margin:6px 0}
+.hero-role-btn svg{width:14px;height:14px;opacity:.75}
+.hero-icon-btn{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;position:relative;transition:all .2s;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.hero-icon-btn:active{background:rgba(255,255,255,.24);transform:scale(.95)}
+.hero-icon-btn svg{width:18px;height:18px}
+.badge-dot{position:absolute;top:7px;right:7px;width:7px;height:7px;background:#FF4C4C;border-radius:50%;border:1.5px solid rgba(0,100,180,.5);box-shadow:0 0 6px rgba(255,76,76,.4)}
+
+/* ── Fail Stats Row ── elevated glass cards with clear affordance */
+.hpc-fail-stats{display:flex;gap:8px;margin-bottom:14px;position:relative;z-index:1}
+.hpc-fail-stats .hpc-stat-block{text-align:center;min-width:0;flex:1}
+.hpc-fail-stats .hpc-stat-clickable{cursor:pointer;transition:all .22s ease;border-radius:8px;padding:14px 8px 12px;position:relative;overflow:hidden;background:linear-gradient(165deg,rgba(255,255,255,.16) 0%,rgba(255,255,255,.07) 100%);border:1px solid rgba(255,255,255,.2);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:0 4px 16px rgba(0,50,100,.1),inset 0 1px 0 rgba(255,255,255,.14);display:flex;flex-direction:column;align-items:center}
+.hpc-fail-stats .hpc-stat-clickable::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.1) 0%,transparent 45%);border-radius:inherit;pointer-events:none}
+.hpc-fail-stats .hpc-stat-clickable::after{content:'查看 ›';display:block;font-size:10px;color:rgba(255,255,255,.4);margin-top:8px;letter-spacing:.5px;font-weight:500;transition:all .22s ease}
+.hpc-fail-stats .hpc-stat-clickable:hover{background:linear-gradient(165deg,rgba(255,255,255,.24) 0%,rgba(255,255,255,.14) 100%);border-color:rgba(255,255,255,.32);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,50,100,.15),inset 0 1px 0 rgba(255,255,255,.2)}
+.hpc-fail-stats .hpc-stat-clickable:hover::after{color:rgba(255,255,255,.75)}
+.hpc-fail-stats .hpc-stat-clickable:active{background:linear-gradient(165deg,rgba(255,255,255,.28) 0%,rgba(255,255,255,.18) 100%);transform:translateY(0) scale(.97);box-shadow:0 2px 8px rgba(0,50,100,.12)}
+.hpc-fail-stats .hpc-stat-label{font-size:10px;color:rgba(255,255,255,.6);margin-bottom:6px;letter-spacing:.4px;line-height:1.2;font-weight:500;text-transform:uppercase}
+.hpc-fail-stats .hpc-stat-value-wrap{display:flex;align-items:baseline;justify-content:center;gap:2px}
+.hpc-fail-stats .hpc-stat-value{font-size:26px;font-weight:700;color:#fff;line-height:1;letter-spacing:-.5px;text-shadow:0 2px 10px rgba(0,50,100,.2)}
+.hpc-fail-stats .hpc-stat-unit{font-size:11px;font-weight:500;color:rgba(255,255,255,.45)}
+.hpc-fail-stats .hpc-stat-block.has-fail .hpc-stat-value{color:#FFB0B0;text-shadow:0 0 14px rgba(255,76,76,.25)}
+.hpc-fail-stats .hpc-stat-block.has-fail .hpc-stat-clickable{border-color:rgba(255,120,120,.25);background:linear-gradient(165deg,rgba(255,80,80,.14) 0%,rgba(255,80,80,.05) 100%)}
+.hpc-dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:4px;vertical-align:middle;box-shadow:0 0 6px currentColor}
+.hpc-dot-a{background:#5EE6C8}
+.hpc-dot-b{background:#FFD080}
+
+/* ── Progress Card ── refined frosted glass panel */
+.hero-progress-card{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:18px 14px;position:relative;z-index:1;-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);box-shadow:0 8px 32px rgba(0,50,100,.1),inset 0 1px 0 rgba(255,255,255,.12)}
+.hpc-stats{display:flex;gap:0}
+body.role-qc #heroProgressBlock{display:none}
+.hero-progress-card .hpc-stat-block{text-align:center;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 0;position:relative}
+.hero-progress-card .hpc-stat-block:not(:last-child)::after{content:'';position:absolute;right:0;top:18%;height:64%;width:1px;background:rgba(255,255,255,.1)}
+.hero-progress-card .hpc-stat-label{font-size:10px;color:rgba(255,255,255,.55);margin-bottom:6px;letter-spacing:.3px;font-weight:500}
+.hero-progress-card .hpc-stat-value-wrap{display:flex;align-items:baseline;justify-content:center;gap:2px}
+.hero-progress-card .hpc-stat-value{font-size:22px;font-weight:700;color:#fff;line-height:1;letter-spacing:-.5px}
+.hero-progress-card .hpc-stat-unit{font-size:11px;font-weight:500;color:rgba(255,255,255,.45)}
+.hpc-stat-divider{display:none}
 
 /* Fail Items List Page */
 .fi-header{padding:16px 16px 10px;background:#fff;border-radius:0 0 4px 4px;box-shadow:0 2px 8px rgba(0,164,241,.04)}
@@ -576,11 +591,11 @@ body.role-qc .hpc-stats>#heroPmBlock,body.role-qc .hpc-stats>#heroQcBlock{grid-c
 .fi-empty{text-align:center;padding:60px 20px;color:#86909C;font-size:14px}
 
 /* Home Content Area */
-.home-content{padding:10px 10px 30px;background:var(--bg);border-radius:4px 4px 0 0;margin-top:-20px;position:relative;z-index:2;height:544px}
+.home-content{padding:10px 10px 30px;background:var(--bg);border-radius:8px 8px 0 0;margin-top:-22px;position:relative;z-index:2;height:544px;box-shadow:0 -4px 24px rgba(0,60,120,.06)}
 .module-list{display:flex;flex-direction:column;gap:10px}
 .mod-card{background:#fff;border-radius:var(--radius);padding:14px 16px;display:flex;align-items:center;gap:14px;cursor:pointer;box-shadow:0 2px 12px rgba(0,164,241,.05);transition:all .2s;border:1px solid rgba(0,164,241,.03);position:relative}
 .mod-card:active{transform:scale(.98);box-shadow:0 1px 6px rgba(0,164,241,.08)}
-.mod-card .mc-icon-box{width:52px;height:52px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;box-shadow:0 4px 12px rgba(0,164,241,.12);position:relative;overflow:hidden}
+.mod-card .mc-icon-box{width:52px;height:52px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;box-shadow:0 4px 12px rgba(0,164,241,.12);position:relative;overflow:hidden;background:linear-gradient(135deg,#EDF4FE 0%,#E3EEFB 100%);color:var(--ink)}
 .mod-card .mc-icon-box::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.25) 0%,transparent 50%)}
 .mod-card .mc-mid{flex:1;min-width:0}
 .mod-card .mc-name{font-size:16px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:8px;margin-bottom:4px}
@@ -656,7 +671,8 @@ body.role-qc .hpc-stats>#heroPmBlock,body.role-qc .hpc-stats>#heroQcBlock{grid-c
         <div class="hpc-stat-block" id="heroProgressBlock">
           <div class="hpc-stat-label">整体检查进度</div>
           <div class="hpc-stat-value-wrap">
-            <span class="hpc-stat-value" id="heroProgressPct">0%</span>
+            <span class="hpc-stat-value" id="heroProgressDone">0</span>
+            <span class="hpc-stat-unit" id="heroProgressTotal">/125</span>
           </div>
         </div>
         <div class="hpc-stat-block" id="heroPmBlock">
@@ -876,26 +892,6 @@ body.role-qc .hpc-stats>#heroPmBlock,body.role-qc .hpc-stats>#heroQcBlock{grid-c
 <script>
 /* ===== DATA ===== */
 var modules=[
-  {id:'it',name:'IT',icon:'💻',type:'direct',img:null,
-    groups:[
-      {type:'objective',label:'底线项（必检）',scoreText:'',items:[
-        {name:'公安网监设备',standard:'酒店已采购启用网监设备',category:'A',score:0},
-        {name:'酒店集团门户',standard:'集团门户已完成上线',category:'A',score:0},
-        {name:'酒店合规投屏',standard:'集团统一智能电视系统/可扫码登录的一房一码的投屏。如不满足上述条件，电视机只可播放直播信号',category:'A',score:0},
-        {name:'酒店宽带线路',standard:'酒店带宽标准符合1+1（专线100M+大带宽），带宽满足4:1',category:'A',score:0},
-        {name:'无线设备',standard:'1. 标准酒店一房一面板（华为、锐捷、神州数码等）或带无线漫游的三网；2. 非标加盟酒店可沿用原先三网合同使用',category:'A',score:0}
-      ]},
-      {type:'subjective',label:'常规检查项',scoreText:'',items:[
-        {name:'酒店客房电视信号',standard:'使用合规电视信号',category:'B',score:0},
-        {name:'认证开启情况',standard:'门店认证开启归属方确认（首旅如家门户 / 公安网监认证）',category:'B',score:0},
-        {name:'公区各类显示屏红外遮挡',standard:'红外遮挡完成，0.5米外手机遥控失效，仅近距离遥控器可用',category:'B',score:0},
-        {name:'公区房价牌（网络白名单）',standard:'标准门店网络白名单已配置；非标门店按物理遮挡执行',category:'B',score:0},
-        {name:'网关路由层级',standard:'门店网关是否为一级路由；若酒店网关为二级路由或单供内网，同时未部署网监设备，告知酒店依照集团要求采购并开启网监',category:'B',score:0},
-        {name:'门锁、发票PMS直连',standard:'酒店需完成门锁与发票对于PMS系统的直连配置',category:'B',score:0},
-        {name:'前台电脑',standard:'前台PMS专用电脑：CPU要求i5系列以上，处理器代数12代及以上，型号禁止带有H/U/P/K/F等字母后缀，仅允许纯数字结尾标准型号；内存16G及以上；硬盘512G固态硬盘及以上',category:'B',score:0}
-      ]}
-    ]
-  },
   {id:'filing',name:'备案',icon:'📋',type:'direct',img:null,
     groups:[{type:'filing',label:'备案项',items:[
       {name:'底线原则备案',score:2,scoreType:'deduction',records:[
@@ -932,12 +928,9 @@ var modules=[
         {name:'灯光照明型号',standard:'灯控系统完成，灯具型号、色温符合公司设计标准',score:1,scoreTag:'符合：1分',category:'B'},
         {name:'噪音测试',standard:'木门隔音降噪≥35分贝；隔墙：装配式隔墙隔音降噪≥45分贝，砌块隔墙隔音降噪≥40分贝',score:0,category:'A'},
         {name:'热水测试',standard:'24小时供应热水，热水出水温度不低于40度，热水出水时间不超过30秒，水压正常',score:0,category:'A'},
-        {name:'电话测试',standard:'电话（一键呼叫功能）终端已按标准装好，可正常使用（客房与前台电话通话现场测试能正常使用且清晰无杂音。）能够准确播报出客房房间号',score:0,category:'A'},
         {name:'漏电保护测试',standard:'插座接线正确，漏保测试能正常断电',score:0,category:'A'},
         {name:'淋浴房试水测试',standard:'淋浴房试水是否存在渗漏（花洒冲刷淋浴房玻璃，每个淋浴房需试水2分钟及以上），地漏排水通畅。',score:0,category:'A'},
-        {name:'新风测试',standard:'新风系统出风口风量标准1.3-1.5m/s，排风口风量不得小于1.1m/s。（注：上述参数以风口 Ф150mm为计算标准，其余风口尺寸依照设计风量进行换算）',score:0,category:'A'},
-        {name:'空调测试',standard:'开机15分钟后，空调温度冬天制暖不得小于等于20度；夏天制冷不得大于等于26度',score:0,category:'A'},
-        {name:'排风扇风量',standard:'排风扇正常运行，无杂音，吸纸测试正常',score:0,category:'A'}
+        {name:'空调测试',standard:'开机15分钟后，空调温度冬天制暖不得小于等于20度；夏天制冷不得大于等于26度',score:0,category:'A'}
       ]}
     ]
   },
@@ -1141,6 +1134,26 @@ var modules=[
         {name:'结构安全',standard:'酒店整体建筑物没有倾斜或没有明显墙体结构性开裂（不包括墙体粉刷层开裂）',score:0,category:'A'},
         {name:'材料、安全',standard:'搭建辅房不可用作经营和住人，用作辅房需配齐消防设施和设备。厨房不准违规使用钢瓶液化石油气。，材料符合防火要求，不得使用夹层为聚苯板的彩钢夹芯板，符合承重要求。对于彩钢夹芯板的补救措施：采取阻燃措施（外包铁皮或内衬防火材料）或在同一栋楼物业管理方出具不适用酒店区域的证明和加盟商相对应的安全承诺书。',score:0,category:'A'},
         {name:'央采质量',standard:'现场央采产品抽样检查（抽任何两类工程央采物品）',score:10,scoreType:'partial',partialMin:0,partialMax:5,scoreTag:'符合：10分'}
+      ]}
+    ]
+  },
+  {id:'it',name:'IT',icon:'💻',type:'direct',img:null,
+    groups:[
+      {type:'objective',label:'底线项（必检）',scoreText:'',items:[
+        {name:'公安网监设备',standard:'酒店已采购启用网监设备',category:'A',score:0},
+        {name:'酒店集团门户',standard:'集团门户已完成上线',category:'A',score:0},
+        {name:'酒店合规投屏',standard:'集团统一智能电视系统/可扫码登录的一房一码的投屏。如不满足上述条件，电视机只可播放直播信号',category:'A',score:0},
+        {name:'酒店宽带线路',standard:'酒店带宽标准符合1+1（专线100M+大带宽），带宽满足4:1',category:'A',score:0},
+        {name:'无线设备',standard:'1. 标准酒店一房一面板（华为、锐捷、神州数码等）或带无线漫游的三网；2. 非标加盟酒店可沿用原先三网合同使用',category:'A',score:0}
+      ]},
+      {type:'subjective',label:'常规检查项',scoreText:'',items:[
+        {name:'酒店客房电视信号',standard:'使用合规电视信号',category:'B',score:0},
+        {name:'认证开启情况',standard:'门店认证开启归属方确认（首旅如家门户 / 公安网监认证）',category:'B',score:0},
+        {name:'公区各类显示屏红外遮挡',standard:'红外遮挡完成，0.5米外手机遥控失效，仅近距离遥控器可用',category:'B',score:0},
+        {name:'公区房价牌（网络白名单）',standard:'标准门店网络白名单已配置；非标门店按物理遮挡执行',category:'B',score:0},
+        {name:'网关路由层级',standard:'门店网关是否为一级路由；若酒店网关为二级路由或单供内网，同时未部署网监设备，告知酒店依照集团要求采购并开启网监',category:'B',score:0},
+        {name:'门锁、发票PMS直连',standard:'酒店需完成门锁与发票对于PMS系统的直连配置',category:'B',score:0},
+        {name:'前台电脑',standard:'前台PMS专用电脑：CPU要求i5系列以上，处理器代数12代及以上，型号禁止带有H/U/P/K/F等字母后缀，仅允许纯数字结尾标准型号；内存16G及以上；硬盘512G固态硬盘及以上',category:'B',score:0}
       ]}
     ]
   }
@@ -1405,8 +1418,6 @@ function renderModuleList(filtered){
     var sc=moduleScore(mod);
     var isAllDone=(done===total&&total>0);
     var color=isAllDone?'#02C2C2':(pct>0?'#FFA64C':'#86909C');
-
-    // Stats text: 不符合项/符合项
     var statsText='';
     var failCnt=0,passCnt=0;
     var countIt=function(g,gi,subId){
@@ -1426,7 +1437,7 @@ function renderModuleList(filtered){
 
     html+='<div class="mod-card" onclick="enterModule(\''+mod.id+'\')">';
     // icon box with gradient
-    html+='<div class="mc-icon-box" style="background:linear-gradient(135deg,'+color+','+lightenColor(color,30)+');color:#fff">'+iconSVG(mod.id,'mci')+'</div>';
+    html+='<div class="mc-icon-box"'+(isAllDone?' style="background:linear-gradient(135deg,#02C2C2,'+lightenColor('#02C2C2',30)+');color:#fff"':'')+'>'+iconSVG(mod.id,'mci')+'</div>';
     // middle info
     html+='<div class="mc-mid">';
     html+='<div class="mc-name">'+mod.name+(isAllDone?' <span class="done-tag">已完成</span>':'')+'</div>';
@@ -1498,18 +1509,19 @@ function renderModuleList(filtered){
   document.getElementById('heroFailCount').textContent=failAll;
   document.getElementById('heroTotalCount').textContent='/'+totalAll+'项';
   document.getElementById('heroPmScore').textContent=pmScoreTotal;
-  document.getElementById('heroPmMax').textContent='/'+pmScoreMax+'分';
+  document.getElementById('heroPmMax').textContent='/100分';
   document.getElementById('heroQcScore').textContent=qcScoreTotal;
-  document.getElementById('heroQcMax').textContent='/'+qcScoreMax+'分';
+  document.getElementById('heroQcMax').textContent='/100分';
   var heroFailABlock=document.getElementById('heroFailABlock');
   if(heroFailABlock)heroFailABlock.classList.toggle('has-fail',failA>0);
   var heroFailBBlock=document.getElementById('heroFailBBlock');
   if(heroFailBBlock)heroFailBBlock.classList.toggle('has-fail',failB>0);
   var heroFailBlock=document.getElementById('heroFailBlock');
   if(heroFailBlock)heroFailBlock.classList.toggle('has-fail',failAll>0);
-  var progressPct=totalAll>0?Math.round(doneAll/totalAll*100):0;
-  var heroProgressPct=document.getElementById('heroProgressPct');
-  if(heroProgressPct)heroProgressPct.textContent=progressPct+'%';
+  var heroProgressDone=document.getElementById('heroProgressDone');
+  var heroProgressTotal=document.getElementById('heroProgressTotal');
+  if(heroProgressDone)heroProgressDone.textContent=doneAll;
+  if(heroProgressTotal)heroProgressTotal.textContent='/'+totalAll;
 }
 
 function lightenColor(hex,pct){
@@ -1689,7 +1701,7 @@ function renderSidebar(){
   var sb=document.getElementById('inspSidebar');
   if(!sb)return;
   var html='';
-  modules.filter(function(m){return m.id!=='it';}).forEach(function(mod){
+  modules.forEach(function(mod){
     var abbr=modulePinyin[mod.id];
     var total=countAllItems(mod);
     var done=countCompleted(mod);
@@ -1982,7 +1994,7 @@ function enterModule(id){
   document.getElementById('headerTitle').textContent=mod.name;
   document.getElementById('backBtn').style.visibility='visible';
   var sb=document.getElementById('inspSidebar');
-  if(sb)sb.style.display=(id==='it')?'none':'';
+  if(sb)sb.style.display='';
   renderInspectionView(id);
   showPage('page-inspection');
   highlightSidebar(id);

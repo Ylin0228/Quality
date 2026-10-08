@@ -507,7 +507,7 @@ body::after{content:'';position:fixed;bottom:-80px;left:50%;transform:translateX
 .insp-module{margin-bottom:10px}
 .insp-module-header{display:flex;align-items:center;gap:10px;padding:16px 18px;background:#fff;border-radius:var(--radius);box-shadow:0 2px 12px rgba(0,164,241,.05);border:1px solid rgba(0,164,241,.03);margin-bottom:10px}
 .insp-badge{width:34px;height:34px;border-radius:4px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;flex-shrink:0;letter-spacing:.2px;box-shadow:0 2px 6px rgba(0,164,241,.15)}
-.insp-module-header .imh-name{font-size:14px;font-weight:600;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink)}
+.insp-module-header .imh-name{font-size:14px;font-weight:600;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink);display:flex;align-items:center;gap:4px}
 .insp-module-header .imh-progress{font-size:11px;color:var(--aux);flex-shrink:0}
 .insp-module-header .imh-score{font-size:12px;font-weight:700;flex-shrink:0;margin-left:4px;background:#E6F7FF;padding:3px 10px;border-radius:999px}
 .insp-module-img{display:block;width:100%;height:auto;max-height:150px;object-fit:cover;border-radius:var(--radius);margin-bottom:10px}
@@ -578,7 +578,7 @@ body.role-qc .hpc-stats>#heroPmBlock,body.role-qc .hpc-stats>#heroQcBlock{grid-c
 .module-list{display:flex;flex-direction:column;gap:10px}
 .mod-card{background:#fff;border-radius:var(--radius);padding:14px 16px;display:flex;align-items:center;gap:14px;cursor:pointer;box-shadow:0 2px 12px rgba(0,164,241,.05);transition:all .2s;border:1px solid rgba(0,164,241,.03);position:relative}
 .mod-card:active{transform:scale(.98);box-shadow:0 1px 6px rgba(0,164,241,.08)}
-.mod-card .mc-icon-box{width:52px;height:52px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;box-shadow:0 4px 12px rgba(0,164,241,.12);position:relative;overflow:hidden}
+.mod-card .mc-icon-box{width:52px;height:52px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;box-shadow:0 4px 12px rgba(0,164,241,.12);position:relative;overflow:hidden;background:linear-gradient(135deg,#EDF4FE 0%,#E3EEFB 100%);color:var(--ink)}
 .mod-card .mc-icon-box::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.25) 0%,transparent 50%)}
 .mod-card .mc-mid{flex:1;min-width:0}
 .mod-card .mc-name{font-size:16px;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:8px;margin-bottom:4px}
@@ -874,26 +874,6 @@ body.role-qc .hpc-stats>#heroPmBlock,body.role-qc .hpc-stats>#heroQcBlock{grid-c
 <script>
 /* ===== DATA ===== */
 var modules=[
-  {id:'it',name:'IT',icon:'💻',type:'direct',img:null,
-    groups:[
-      {type:'objective',label:'底线项（必检）',scoreText:'',items:[
-        {name:'公安网监设备',standard:'酒店已采购启用网监设备',category:'A',score:0},
-        {name:'酒店集团门户',standard:'集团门户已完成上线',category:'A',score:0},
-        {name:'酒店合规投屏',standard:'集团统一智能电视系统/可扫码登录的一房一码的投屏。如不满足上述条件，电视机只可播放直播信号',category:'A',score:0},
-        {name:'酒店宽带线路',standard:'酒店带宽标准符合1+1（专线100M+大带宽），带宽满足4:1',category:'A',score:0},
-        {name:'无线设备',standard:'1. 标准酒店一房一面板（华为、锐捷、神州数码等）或带无线漫游的三网；2. 非标加盟酒店可沿用原先三网合同使用',category:'A',score:0}
-      ]},
-      {type:'subjective',label:'常规检查项',scoreText:'',items:[
-        {name:'酒店客房电视信号',standard:'使用合规电视信号',category:'B',score:0},
-        {name:'认证开启情况',standard:'门店认证开启归属方确认（首旅如家门户 / 公安网监认证）',category:'B',score:0},
-        {name:'公区各类显示屏红外遮挡',standard:'红外遮挡完成，0.5米外手机遥控失效，仅近距离遥控器可用',category:'B',score:0},
-        {name:'公区房价牌（网络白名单）',standard:'标准门店网络白名单已配置；非标门店按物理遮挡执行',category:'B',score:0},
-        {name:'网关路由层级',standard:'门店网关是否为一级路由；若酒店网关为二级路由或单供内网，同时未部署网监设备，告知酒店依照集团要求采购并开启网监',category:'B',score:0},
-        {name:'门锁、发票PMS直连',standard:'酒店需完成门锁与发票对于PMS系统的直连配置',category:'B',score:0},
-        {name:'前台电脑',standard:'前台PMS专用电脑：CPU要求i5系列以上，处理器代数12代及以上，型号禁止带有H/U/P/K/F等字母后缀，仅允许纯数字结尾标准型号；内存16G及以上；硬盘512G固态硬盘及以上',category:'B',score:0}
-      ]}
-    ]
-  },
   {id:'filing',name:'备案',icon:'📋',type:'direct',img:null,
     groups:[{type:'filing',label:'备案项',items:[
       {name:'底线原则备案',score:2,scoreType:'deduction',records:[
@@ -1139,6 +1119,26 @@ var modules=[
         {name:'结构安全',standard:'酒店整体建筑物没有倾斜或没有明显墙体结构性开裂（不包括墙体粉刷层开裂）',score:0,category:'A'},
         {name:'材料、安全',standard:'搭建辅房不可用作经营和住人，用作辅房需配齐消防设施和设备。厨房不准违规使用钢瓶液化石油气。，材料符合防火要求，不得使用夹层为聚苯板的彩钢夹芯板，符合承重要求。对于彩钢夹芯板的补救措施：采取阻燃措施（外包铁皮或内衬防火材料）或在同一栋楼物业管理方出具不适用酒店区域的证明和加盟商相对应的安全承诺书。',score:0,category:'A'},
         {name:'央采质量',standard:'现场央采产品抽样检查（抽任何两类工程央采物品）',score:10,scoreType:'partial',partialMin:0,partialMax:5,scoreTag:'符合：10分'}
+      ]}
+    ]
+  },
+  {id:'it',name:'IT',icon:'💻',type:'direct',img:null,
+    groups:[
+      {type:'objective',label:'底线项（必检）',scoreText:'',items:[
+        {name:'公安网监设备',standard:'酒店已采购启用网监设备',category:'A',score:0},
+        {name:'酒店集团门户',standard:'集团门户已完成上线',category:'A',score:0},
+        {name:'酒店合规投屏',standard:'集团统一智能电视系统/可扫码登录的一房一码的投屏。如不满足上述条件，电视机只可播放直播信号',category:'A',score:0},
+        {name:'酒店宽带线路',standard:'酒店带宽标准符合1+1（专线100M+大带宽），带宽满足4:1',category:'A',score:0},
+        {name:'无线设备',standard:'1. 标准酒店一房一面板（华为、锐捷、神州数码等）或带无线漫游的三网；2. 非标加盟酒店可沿用原先三网合同使用',category:'A',score:0}
+      ]},
+      {type:'subjective',label:'常规检查项',scoreText:'',items:[
+        {name:'酒店客房电视信号',standard:'使用合规电视信号',category:'B',score:0},
+        {name:'认证开启情况',standard:'门店认证开启归属方确认（首旅如家门户 / 公安网监认证）',category:'B',score:0},
+        {name:'公区各类显示屏红外遮挡',standard:'红外遮挡完成，0.5米外手机遥控失效，仅近距离遥控器可用',category:'B',score:0},
+        {name:'公区房价牌（网络白名单）',standard:'标准门店网络白名单已配置；非标门店按物理遮挡执行',category:'B',score:0},
+        {name:'网关路由层级',standard:'门店网关是否为一级路由；若酒店网关为二级路由或单供内网，同时未部署网监设备，告知酒店依照集团要求采购并开启网监',category:'B',score:0},
+        {name:'门锁、发票PMS直连',standard:'酒店需完成门锁与发票对于PMS系统的直连配置',category:'B',score:0},
+        {name:'前台电脑',standard:'前台PMS专用电脑：CPU要求i5系列以上，处理器代数12代及以上，型号禁止带有H/U/P/K/F等字母后缀，仅允许纯数字结尾标准型号；内存16G及以上；硬盘512G固态硬盘及以上',category:'B',score:0}
       ]}
     ]
   }
@@ -1424,7 +1424,7 @@ function renderModuleList(filtered){
 
     html+='<div class="mod-card" onclick="enterModule(\''+mod.id+'\')">';
     // icon box with gradient
-    html+='<div class="mc-icon-box" style="background:linear-gradient(135deg,'+color+','+lightenColor(color,30)+');color:#fff">'+iconSVG(mod.id,'mci')+'</div>';
+    html+='<div class="mc-icon-box"'+(isAllDone?' style="background:linear-gradient(135deg,#02C2C2,'+lightenColor('#02C2C2',30)+');color:#fff"':'')+'>'+iconSVG(mod.id,'mci')+'</div>';
     // middle info
     html+='<div class="mc-mid">';
     html+='<div class="mc-name">'+mod.name+(isAllDone?' <span class="done-tag">已完成</span>':'')+'</div>';
